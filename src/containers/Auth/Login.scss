@@ -32,6 +32,17 @@
 
             .login-input{
                 margin: 10px 0;
+
+                .custom-input-password{
+                    position: relative;
+
+                    i{
+                        position: absolute;
+                        right: 5px;
+                        top: 10px;
+                        cursor: pointer;
+                    }
+                }
             }
 
             .btn-login{
