@@ -2,23 +2,59 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './userManage.scss';
-import { getAllUsers } from '../../services/userService';
+import { getAllUsers, createNewUserService } from '../../services/userService';
+import ModalUsers from './ModalUsers';
 class UserManage extends Component {
 
     constructor(props){
         super(props);
         this.state = {
             arrUsers : [],
+            isOpenModalUser: false,
         }
     }
 
     async componentDidMount() {
+        await this.getAllUsersFormReact(); 
+    }
+
+    getAllUsersFormReact = async () =>{
         let response = await getAllUsers('ALL');
         if(response && response.errCode === 0){
             this.setState({
                 arrUsers: response.users,
+                
             }); 
-        }  
+        }
+    }
+
+    handleAddNewUser = () =>{
+        this.setState({
+            isOpenModalUser: true,
+        })
+    }
+
+    toggleUserModal = () =>{
+        this.setState({
+            isOpenModalUser: !this.state.isOpenModalUser,
+        })
+    }
+
+    createNewUser = async (data) =>{
+        try {
+            let response = await createNewUserService(data);
+            if(response && response.errCode !== 0){
+                alert(response.errMessage);
+            }else{
+                await this.getAllUsersFormReact();
+                this.setState({
+                    isOpenModalUser: false,
+                })
+            }     
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
 
 
@@ -29,29 +65,45 @@ class UserManage extends Component {
         return (
             <div className="users-container">
                 <div className='title text-center'>Manage users with Onizuka</div>
+                <ModalUsers 
+                    isOpen={this.state.isOpenModalUser}
+                    toggleUserModal={this.toggleUserModal}
+                    createNewUser={this.createNewUser}
+                />
+                <div className='mx-1'>
+                    <button 
+                        className="btn btn-primary px-3"
+                        onClick={() => this.handleAddNewUser()}
+                    >
+                        <i className="fa-solid fa-plus"></i> Add new user
+                    </button>
+                </div>
                 <div className='users-table mt-3 mx-1'>
                     <table>
-                        <tr>
-                            <th>Email</th>
-                            <th>firstName</th>
-                            <th>LastName</th>
-                            <th>Address</th>
-                            <th>Actions</th>
-                        </tr>
-                        {arrUsers.map((item, index) => {
-                            return(
-                                <tr>
-                                    <td>{item.email}</td>
-                                    <td>{item.firstName}</td>
-                                    <td>{item.lastName}</td>
-                                    <td>{item.address}</td>
-                                    <td>
-                                        <button className='btn-edit'><i className="fa-solid fa-pen-to-square"></i></button>
-                                        <button className='btn-delete'><i className="fa-solid fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
+                        <tbody>
+                            <tr>
+                                <th>Email</th>
+                                <th>firstName</th>
+                                <th>LastName</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        
+                           {arrUsers.map((item, index) => {
+                                return(
+                                    <tr key={index}>
+                                        <td>{item.email}</td>
+                                        <td>{item.firstName}</td>
+                                        <td>{item.lastName}</td>
+                                        <td>{item.address}</td>
+                                        <td>
+                                            <button className='btn-edit'><i className="fa-solid fa-pen-to-square"></i></button>
+                                            <button className='btn-delete'><i className="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                )
+                            })} 
+                        </tbody>
                     </table>
                 </div>
             </div>
