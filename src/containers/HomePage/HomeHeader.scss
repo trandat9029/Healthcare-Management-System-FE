@@ -1,0 +1,186 @@
+
+// home-header-container
+.home-header-container{
+    height: 70px;
+    width: 100%;
+    padding: 0 20px;
+
+    .home-header-content{
+        width: 100%;
+        height: 100%;
+        display: flex;
+
+        .left-content{
+            display: flex;
+            align-items: center;
+            width: 20%;
+            height: 100%;
+
+            .header-logo{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                transform: scale(0.9, 0.9);
+            }
+            i{
+                font-size: 25px;
+                color: gray;
+                cursor: pointer;
+            }
+        }
+        .center-content{
+            width: 55%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+
+            .child-content{
+
+                .subs-desc{
+                    font-size: 14px;
+                    font-weight: 400;
+                    margin: 0;
+                }
+            }
+        }
+        .right-content{
+            width: 25%;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .support{
+                padding-right: 50px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                
+
+                i{
+                    font-size: 18px;
+                    margin-right: 5px;
+                }
+            }
+
+            .language-vi{
+                cursor: pointer;
+
+                &:active{
+                    color: orange;
+                }
+            }
+            .language-en{
+                margin: 0 10px;
+                cursor: pointer; 
+
+                &:active{
+                    color: blue;
+                }
+            }
+        }
+    }
+}
+
+//home-header-banner
+.home-header-banner{
+    background-image: url(../../assets/banner.jpg) ;
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+
+    .content-up{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1));
+        padding-top: 40px;
+        height: 65%;
+
+        .title1{
+            text-align: center;
+            font-size: 30PX;
+            color: white;
+            text-shadow: 1px 1px 1px #333;
+            margin-bottom: 5px;
+            margin-top: 30px;
+        }
+        .title2{
+            text-align: center;
+            font-size: 30PX;
+            color: white;
+            text-shadow: 1px 1px 1px #333;
+            margin-bottom: 15px;
+        }
+        .search{
+            width: fit-content;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            padding: 10px;
+            margin-top: 50px;
+            border-radius: 25px;
+            background-color: #f7d800;
+
+            i{
+                margin: 0 5px;
+            }
+            input{
+                height: 30px;
+                width: 360px;
+                background: transparent;
+                border: none;
+                outline: none;
+            }
+
+        }
+    }
+
+    .content-down{
+        height: 35%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
+
+        .options{
+            text-align: center;
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+
+
+            .option-child{
+                width: 120px;
+
+                .icon-child{
+                    background: #fff;
+                    width:  40px;
+                    height: 40px;
+                    padding: 10px;
+                    border-radius: 50%;
+                    margin: 0 auto;
+
+                    i{
+                        color: #49bce2;
+                        font-size: 20px;
+                    }
+                }
+
+                .text-child{
+                    font-size: 19px;
+                    font-weight: 500;
+                    cursor: pointer;
+
+                    &:hover{
+                        color: #49bce2;
+                    }
+                }
+            }
+        }
+    }
+}
