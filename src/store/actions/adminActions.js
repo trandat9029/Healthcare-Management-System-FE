@@ -112,7 +112,7 @@ export const createNewUser = (data) =>{
             }
         } catch (error) {
             dispatch(saveUserFailed());
-            toast.warning("Create a new user failed!")
+            toast.error("Create a new user failed!")
             console.log('saveUserFailed error ', error);
         } 
     }
@@ -165,7 +165,7 @@ export const deleteUser = (userId) =>{
             }
         } catch (error) {
             dispatch(deleteUserFailed());
-            toast.warning("Delete a new user failed!");
+            toast.error("Delete a new user failed!");
             console.log('deleteUserFailed error ', error);
         } 
     }
