@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "../redux";
 import { ToastContainer } from "react-toastify";
@@ -20,6 +20,8 @@ import HomePage from './HomePage/HomePage.js';
 import CustomScrollbars from "../components/CustomScrollbars.js";
 
 import { CustomToastCloseButton } from "../components/CustomToast";
+import DetailDoctor from "./Patient/Doctor/DetailDoctor.js";
+
 
 class App extends Component {
   handlePersistorState = () => {
@@ -63,6 +65,9 @@ class App extends Component {
                       path={path.HOMEPAGE}
                       component={HomePage}
                     />
+                    <Route 
+                      path={path.DETAIL_DOCTOR} component={DetailDoctor}
+                    />
                   </Switch>
                 </CustomScrollbars>
             </div>
@@ -90,7 +95,7 @@ class App extends Component {
               draggable
               pauseOnHover
               theme="light"
-              // transition={Bounce}
+
             />
           </div>
         </Router>

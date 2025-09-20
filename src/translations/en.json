@@ -26,7 +26,7 @@
     "menu": {
         "admin": {
             "manage-user": "User System",
-            "manage-doctor": "Manage user",
+            "manage-doctor": "Manage doctor",
             "manage-admin": "Manage admin",
             "crud": "CRUD user",
             "crud-redux": "CRUD Redux ",

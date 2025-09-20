@@ -5,6 +5,15 @@ import './TableManageUser.scss';
 
 import * as actions from "../../../store/actions"
 
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
+
+const mdParser = new MarkdownIt();
+
+function handleEditorChange({html, text}){
+
+}
 
 class TableManageUser extends Component {
 
@@ -39,48 +48,51 @@ class TableManageUser extends Component {
     render() {
         let arrUsers = this.state.userRedux;
         return (
-            <div className="users-container">
-                <div className='title text-center'>Manage users with Onizuka</div>
-                <div className='users-table mt-3 mx-1'>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Email</th>
-                                <th>firstName</th>
-                                <th>LastName</th>
-                                <th>Address</th>
-                                <th>Actions</th>
-                            </tr>
-                            {arrUsers && arrUsers.length > 0 && 
-                                arrUsers.map((item, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{item.email}</td>
-                                            <td>{item.password}</td>
-                                            <td>{item.firstName}</td>
-                                            <td>{item.lastName}</td>
-                                            <td>
-                                                <button 
-                                                    className='btn-edit'
-                                                    onClick={() =>{this.handleEditUser(item)}}
-                                                >
-                                                    <i className="fa-solid fa-pen-to-square"></i>
-                                                </button>
-                                                <button 
-                                                    className='btn-delete'
-                                                    onClick={() =>{this.handleDeleteUser(item)}}
-                                                >
-                                                    <i className="fa-solid fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+            <>
+                <div className="users-container">
+                    <div className='title text-center'>Manage users with Onizuka</div>
+                    <div className='users-table mt-3 mx-1'>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>firstName</th>
+                                    <th>LastName</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {arrUsers && arrUsers.length > 0 && 
+                                    arrUsers.map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{item.email}</td>
+                                                <td>{item.password}</td>
+                                                <td>{item.firstName}</td>
+                                                <td>{item.lastName}</td>
+                                                <td>
+                                                    <button 
+                                                        className='btn-edit'
+                                                        onClick={() =>{this.handleEditUser(item)}}
+                                                    >
+                                                        <i className="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button 
+                                                        className='btn-delete'
+                                                        onClick={() =>{this.handleDeleteUser(item)}}
+                                                    >
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+                <MdEditor style={{ height: '500px' }} renderHTML={text => mdParser.render(text)} onChange={handleEditorChange}/>
+            </>
         );
     }
 
