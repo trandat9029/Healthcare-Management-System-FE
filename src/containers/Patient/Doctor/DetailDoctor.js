@@ -8,6 +8,7 @@ import './DetailDoctor.scss'
 
 import { getDetailInfoDoctorService } from '../../../services/userService';
 import { LANGUAGES } from '../../../utils';
+import DoctorSchedule from './DoctorSchedule';
 
 class DetailDoctor extends Component {
     
@@ -16,6 +17,7 @@ class DetailDoctor extends Component {
         this.state = {
             // infoDoctor: [],
             detailDoctor: {},
+            currentDoctorId:  -1,
 
         }
     }
@@ -24,11 +26,15 @@ class DetailDoctor extends Component {
         // this.props.getInfoDetailDoctorRedux()
         if(this.props.match && this.props.match.params && this.props.match.params.id){
             let id = this.props.match.params.id;
-            let res = await getDetailInfoDoctorService(id);
+            this.setState({
+                currentDoctorId: id,
+            })
 
+            let res = await getDetailInfoDoctorService(id);
             if(res && res.errCode === 0){
                 this.setState({
                     detailDoctor: res.data,
+
                 })
             } else{
 
@@ -78,7 +84,17 @@ class DetailDoctor extends Component {
                     </div>
 
                     {/* schedule doctor */}
-                    <div className="schedule-doctor"></div>
+                    <div className="schedule-doctor">
+                        <div className="content-left">
+                            <DoctorSchedule 
+                                doctorIdFormParent={this.state.currentDoctorId} 
+                            />
+                        </div>
+                        <div className="content-right">
+
+                        </div>
+
+                    </div>
 
                     {/* detail-info-doctor */}
                     <div className="detail-info-doctor">
