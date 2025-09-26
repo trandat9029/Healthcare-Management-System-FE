@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import * as actions from "../../../store/actions"
 import './DoctorSchedule.scss'
 import { getScheduleDoctorByDate} from '../../../services/userService'
+import BookingModal from './Modal/BookingModal';
 
 class DoctorSchedule extends Component {
     
@@ -15,6 +16,8 @@ class DoctorSchedule extends Component {
         this.state = {
             allDays : [],
             allAvailableTime: [],
+            isOpenModalBooking: false,
+            dataScheduleTimeModal: {}
 
         }
     }
@@ -70,9 +73,9 @@ class DoctorSchedule extends Component {
            })
         }
 
-        if(this.props.doctorIdFormParent !== prevProps.doctorIdFormParent){
+        if(this.props.doctorIdFromParent !== prevProps.doctorIdFromParent){
             let allDays = this.getArrDays(this.props.language);
-            let res = await getScheduleDoctorByDate(this.props.doctorIdFormParent, allDays[0].value);
+            let res = await getScheduleDoctorByDate(this.props.doctorIdFromParent, allDays[0].value);
             this.setState({
                 allAvailableTime: res.data ? res.data : [],
             })
@@ -80,8 +83,8 @@ class DoctorSchedule extends Component {
     }
 
     handleOnChangeSelect = async (event) =>{
-        if(this.props.doctorIdFormParent && this.props.doctorIdFormParent !== -1){
-            let doctorId = this.props.doctorIdFormParent;
+        if(this.props.doctorIdFromParent && this.props.doctorIdFromParent !== -1){
+            let doctorId = this.props.doctorIdFromParent;
             let date = event.target.value;
             let res = await getScheduleDoctorByDate(doctorId, date);
 
@@ -95,9 +98,21 @@ class DoctorSchedule extends Component {
         }
     }
 
+    handleClickScheduleTime = (time) =>{
+        this.setState({
+            isOpenModalBooking: true,
+            dataScheduleTimeModal: time
+        })
+    }
+
+    closeBookingModal = () =>{
+        this.setState({
+            isOpenModalBooking: false
+        })
+    }
 
     render() {
-        let { allDays, allAvailableTime } = this.state;
+        let { allDays, allAvailableTime, isOpenModalBooking, dataScheduleTimeModal } = this.state;
         let { language } = this.props;
 
         return (
@@ -135,6 +150,7 @@ class DoctorSchedule extends Component {
                                                 <button 
                                                     key={index} 
                                                     className={language === LANGUAGES.VI ? 'btn-time-vi' : 'btn-time-en'}
+                                                    onClick={() =>this.handleClickScheduleTime(item)}
                                                 >
                                                     {timeDisplay}
                                                 </button>
@@ -159,6 +175,11 @@ class DoctorSchedule extends Component {
                         </div>
                     </div>
                 </div>
+                <BookingModal 
+                    isOpenModal={isOpenModalBooking} 
+                    closeBookingModal={this.closeBookingModal} 
+                    dataTime={dataScheduleTimeModal}
+                />
             </>
             
         );
