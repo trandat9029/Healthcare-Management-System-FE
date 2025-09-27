@@ -79,6 +79,20 @@
             "detail": "See detail",
             "payment": "The clinic accepts payment by",
             "hide-price": "Hide price list"
+        },
+        "booking-modal":{
+            "title": "Medical appointment information",
+            "fullName": "Full name",
+            "phoneNumber": "Phone number",
+            "email": "Email",
+            "address": "Address",
+            "reason": "Reason for examination",
+            "birthday": "Date of birth",
+            "gender":"Gender",
+            "btnConfirm": "Confirm",
+            "btnCancel": "Cancel",
+            "priceBooking": "Free booking",
+            "price":"Examination price"
         }
     }, 
     "admin":{

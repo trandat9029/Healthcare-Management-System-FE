@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { LANGUAGES } from '../../../utils';
 import { FormattedMessage } from 'react-intl';
-import * as actions from "../../../store/actions"
 
 class DefaultClass extends Component {
     
