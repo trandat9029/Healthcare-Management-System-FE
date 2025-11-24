@@ -132,13 +132,15 @@ class BookingModal extends Component {
         let date = new Date(this.state.birthday).getTime();
         let timeString = this.buildDataBooking(this.props.dataTime);
         let doctorName = this.buildDoctorName(this.props.dataTime)
+
         let res = await postPatientBookAppointmentService({
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
             email: this.state.email,
             address: this.state.address,
             reason: this.state.reason,
-            date: date,
+            date: this.props.dataTime.date,
+            birthday: date,
             selectedGender: this.state.selectedGender.value,
             doctorId: this.state.doctorId,
             timeType: this.state.timeType,
@@ -147,9 +149,11 @@ class BookingModal extends Component {
             doctorName: doctorName,
 
         })
+        
         if(res && res.errCode === 0){
             toast.success('Booking a new appointment succeed!');
             this.props.closeBookingModal();
+            console.log('check data confirm: ', this.state.selectedGender);
         }else{
             toast.error('Booking a new appointment error!');
         }

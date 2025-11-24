@@ -159,4 +159,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalUsers);
+    export default connect(mapStateToProps, mapDispatchToProps)(ModalUsers);

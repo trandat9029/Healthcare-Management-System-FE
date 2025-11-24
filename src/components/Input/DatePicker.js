@@ -82,7 +82,7 @@ class DatePicker extends Component {
     //     var output = '';
 
     //     if (values.length == 3) {
-    //         var year = values[2].length !== 4 ? parseInt(values[2]) + 2000 : parseInt(values[2]);
+    //         var year = values[3].length !== 4 ? parseInt(values[2]) + 2000 : parseInt(values[2]);
     //         var month = parseInt(values[0]) - 1;
     //         var day = parseInt(values[1]);
     //         var d = new Date(year, month, day);
