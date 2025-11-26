@@ -7,6 +7,8 @@ import Header from '../containers/Header/Header';
 import ManageDoctor from '../containers/System/Admin/ManageDoctor';
 import ManageSpecialty from '../containers/System/Specialty/ManageSpecialty';
 import ManageClinic from '../containers/System/Clinic/ManageClinic';
+import ManageHandbook from '../containers/System/Handbook/ManageHandbook';
+import './System.scss';
 
 class System extends Component {
     render() {
@@ -15,15 +17,33 @@ class System extends Component {
             <>
                 {isLoggedIn && <Header />}
                 <div className="system-container">
-                    <div className="system-list">
-                        <Switch>
-                            <Route path="/system/user-manage" component={UserManage} />
-                            <Route path="/system/user-redux" component={UserRedux} />
-                            <Route path="/system/manage-doctor" component={ManageDoctor} />
-                            <Route path="/system/manage-specialty" component={ManageSpecialty} />
-                            <Route path="/system/manage-clinic" component={ManageClinic} />
-                            <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
-                        </Switch>
+                    <div className='sidebar-container'>
+                        <div className="sidebar-list">
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                            <div>onizuka</div>
+                        </div>
+                    </div>
+                    <div className='system-container'>
+                        <div className="system-list">
+                            <Switch>
+                                <Route path="/system/user-manage" component={UserManage} />
+                                <Route path="/system/user-redux" component={UserRedux} />
+                                <Route path="/system/manage-doctor" component={ManageDoctor} />
+                                <Route path="/system/manage-specialty" component={ManageSpecialty} />
+                                <Route path="/system/manage-clinic" component={ManageClinic} />
+                                <Route path="/system/manage-handbook" component={ManageHandbook} />
+                                <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
+                            </Switch>
+                        </div>
                     </div>
                 </div>
             </>

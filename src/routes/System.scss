@@ -1,0 +1,14 @@
+.system-container{
+    display: flex;
+     width: 100%;
+
+    .sidebar-container{
+        width: 16%;
+        border: 2px solid red;
+    }
+
+    .system-container{
+        width: 84%;
+        border: 2px solid blue;
+    }
+}

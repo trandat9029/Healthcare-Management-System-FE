@@ -50,6 +50,7 @@ class Specialty extends Component {
                   dataSpecialty.map((item, index) =>{
                     return (
                         <div 
+                        
                           className="section-customize specialty-child" 
                           key={index}
                           onClick={() => this.handleViewDetailSpecialty(item)}

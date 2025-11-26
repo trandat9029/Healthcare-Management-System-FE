@@ -45,7 +45,7 @@ export const adminMenu = [
         name: 'menu.admin.handbook', 
         menus: [
             {
-                name: 'menu.admin.manage-handbook', link: '/system/manage-manage-handbook', 
+                name: 'menu.admin.manage-handbook', link: '/system/manage-handbook', 
             },            
         ]
     },
