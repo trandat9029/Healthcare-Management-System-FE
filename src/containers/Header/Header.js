@@ -44,11 +44,9 @@ class Header extends Component {
     const { processLogout, language, userInfo } = this.props;
     
     return (
-      <div className="header-container">
+      <div className="header-containers">
         {/* thanh navigator */}
-        <div className="header-tabs-container">
-          <Navigator menus={this.state.menuApp} />
-        </div>
+        
 
         <div className="languages">
           <span className="welcome"><FormattedMessage id="homeHeader.welcome"/>{userInfo && userInfo.lastName ? userInfo.lastName : ''}!</span>

@@ -1,101 +1,161 @@
 @import "../styles/common.scss";
 
+// Sidebar menu tổng
 .navigator-menu {
+    height: 100%;
     display: flex;
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 12px;
+    align-items: stretch;
+    padding: 16px 18px;
+    margin-top: 0;
+
     &.list-unstyled,
     .list-unstyled {
         list-style-type: none;
     }
+
+    // Mỗi block menu chính
     .menu-group {
-        &:hover {
-            cursor: pointer;
-            background-color: darken($colormain, 5);
-        }
-        .menu-group-name {
-            line-height: 40px;
-            padding: 0 15px;
-            border-right: 1px solid $border;
-            &:first-child {
-                border-left: 1px solid $border;
+        position: relative;
+        width: 100%;
+        border-radius: 114x;
+        background: #ffffff;
+        border: 1px solid #c5f0cf; // viền xanh lá nhạt
+        box-shadow: 0 3px 8px rgba(12, 97, 56, 0.06); // tăng nhẹ shadow
+        transition: all 0.2s ease;
+        overflow: hidden;
+
+        // trạng thái active
+        &.active {
+            border-color: #22c55e;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.18);
+
+            .menu-group-name {
+                background: linear-gradient(90deg, #22c55e, #16a34a);
+                .menu-main-link {
+                    color: #ffffff;
+
+                    .menu-icon {
+                        color: #ffffff;
+                    }
+                }
+
+                .menu-toggle-btn {
+                    background-color: rgba(255, 255, 255, 0.16);
+                    border-color: transparent;
+
+                    i {
+                        color: #ffffff;
+                    }
+                }
             }
         }
+
+        // hover nhẹ cho toàn block
+        &:hover {
+            cursor: pointer;
+            border-color: #22c55e33;
+            box-shadow: 0 3px 8px rgba(34, 197, 94, 0.12);
+        }
+
+        // Hàng chính chứa icon, text, nút +
+        .menu-group-name {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px 12px 16px;   // trước 8px 10px 8px 12px
+            background-color: #f8fff9;
+            transition: background-color 0.2s ease;
+
+            .menu-main-link {
+                flex: 1;
+                text-decoration: none;
+                color: #065f46;
+                font-weight: 500;
+                font-size: 16px;  
+                display: inline-flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 8px;
+                text-align: left;
+            }
+
+            .menu-icon {
+                font-size: 18px; 
+                color: #16a34a;
+            }
+
+            .menu-toggle-btn {
+                margin-left: 8px;
+                width: 32px;                   // trước 28
+                height: 32px; 
+                border-radius: 999px;
+                border: 1px solid #bbf7d0;
+                background-color: #ecfdf3;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+
+                i {
+                    font-size: 14px;
+                    color: #15803d;
+                }
+
+                &:hover {
+                    background-color: #22c55e;
+                    border-color: #22c55e;
+
+                    i {
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+
+        // box submenu
         .menu-list {
             display: none;
-            background-color: $bg-menu-color;
-            box-shadow: 2px 2px 4px 0 $box-shadow-color;
-            -webkit-box-shadow: 2px 2px 4px 0 $box-shadow-color;
-            color: $text-in-light;
-            position: absolute;
-            padding: 0;
+            padding: 6px 10px 10px 10px; 
+            background-color: #ffffff;
+
             .menu {
                 width: 100%;
-                padding: 0 15px;
-                height: 35px;
-                line-height: 35px;
+                height: 36px;
+                line-height: 32px;
+                border-radius: 8px;
+                padding: 0 8px;
                 text-transform: none;
-
-                &.active{
-                    a{
-                        color: orange !important;
-                    }
-                    background-color: #ededed;
-                }
+                transition: background-color 0.15s ease;
 
                 .menu-link {
                     text-decoration: none;
-                    color: $text-in-light;
-                }
-                .sub-menu-list {
-                    display: none;
-                    background-color: $bg-menu-color;
-                    box-shadow: 2px 2px 4px 0 $box-shadow-color;
-                    -webkit-box-shadow: 2px 2px 4px 0 $box-shadow-color;
-                    position: absolute;
-                    top: 0;
-                    left: 205px;
-                    padding: 0;
-                    .sub-menu {
-                        padding: 0 15px;
-                        height: 35px;
-                        line-height: 35px;
-                        white-space: nowrap;
-                        &:hover {
-                            background-color: darken($bg-menu-color, 5);
-                        }
-                        .sub-menu-link {
-                            text-decoration: none;
-                            color: $text-in-light;
-                        }
-                        a {
-                            display: block;
-                        }
-                        &.active a {
-                            font-weight: 500;
-                            color: $colormain;
-                        }
-                    }
-                }
-                &.active span {
-                    font-weight: 500;
-                    color: $colormain;
-                }
-                &:hover {
-                    background-color: darken($bg-menu-color, 3);
-                    .sub-menu-list {
-                        display: block;
-                    }
-                }
-                .icon-right {
+                    color: #065f46;
+                    font-size: 14px;
                     display: block;
-                    position: absolute;
-                    top: 0;
-                    right: 10px;
+                    text-align: left;
+                }
+
+                &:hover {
+                    background-color: #f0fdf4;
+                }
+
+                &.active {
+                    background-color: #dcfce7;
+
+                    .menu-link {
+                        color: #15803d;
+                        font-weight: 500;
+                    }
                 }
             }
         }
-        &:hover {
+
+        // Khi mở submenu
+        &.open {
             .menu-list {
                 display: block;
             }

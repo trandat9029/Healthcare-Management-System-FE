@@ -25,21 +25,35 @@
 
     "menu": {
         "admin": {
-            "manage-user": "User System",
-            "manage-doctor": "Manage doctor",
+            "dashboard": "Dashboard",
+            
+            "manage-user": "Manage User",
+
+            "manage-doctor": "Manage Doctor",
+
             "manage-admin": "Manage admin",
             "crud": "CRUD user",
             "crud-redux": "CRUD Redux ",
+
             "clinic": "Clinic",
-            "manage-clinic": "Manage clinics",
+            "manage-clinic": "Manage Clinic",
+
             "specialty":"Specialties",
-            "manage-specialty": "Manage specialties",
+            "manage-specialty": "Manage Specialty",
+
+            "schedule": "Schedules",
+            "manage-schedule": "Manage Schedule",
+
+            "booking": "Bookings",
+            "manage-booking": "Manage Booking",
+
             "handbook": "Handbook",
-            "manage-handbook": "Manage handbook"
+            "manage-handbook": "Manage Handbook"
         },
         "doctor": {
             "manage-schedule": "Manage Doctor's schedule",
-            "manage-patient": "Manage Patient's"
+            "manage-patient": "Manage Patient's",
+            "manage-profile": "Manage Profile"
         }   
     },
     "manage-user":{

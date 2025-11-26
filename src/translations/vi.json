@@ -24,21 +24,33 @@
     },
     "menu": {
         "admin": {
+            "dashboard": "Bảng điều khiển ",
+
             "manage-user": "Người dùng",
             "manage-doctor": "Quản lý bác sĩ",
             "manage-admin": "Quản lý admin",
             "crud": "CRUD user",
             "crud-redux": "CRUD Redux ",
-            "clinic": "Phòng khám",
-            "manage-clinic": "Quản lý phòng khám",
-            "specialty":"Chuyên khoa",
-            "manage-specialty": "Quản lý chuyên khoa",
-            "handbook": "Cẩm nang",
-            "manage-handbook": "Quản lý cẩm nang"
+
+            "clinic": "Clinic",
+            "manage-clinic": "Quẩn lí phòng khám  ",
+
+            "specialty":"Specialties",
+            "manage-specialty": "Quản lí chuyên khoa  ",
+
+            "schedule": "Schedules",
+            "manage-schedule": "Quản lí lịch khám ",
+
+            "booking": "Bookings",
+            "manage-booking": "Quản lí lịch đặt  ",
+
+            "handbook": "Handbook",
+            "manage-handbook": "Quản lí cẩm nang  "
         },
         "doctor": {
             "manage-schedule": "Quản lý kế hoạch khám bệnh",
-            "manage-patient": "Quản lý bệnh nhân"
+            "manage-patient": "Quản lý bệnh nhân",
+            "manage-profile": "Quản lý hồ sơ"
         }
     },
     "manage-user":{
@@ -98,6 +110,7 @@
     },
     "admin":{
         "manage-doctor": {
+            "manage-dashboard": "Bảng điều khiển",
             "title": "Tạo thêm thông tin bác sĩ",
             "select-doctor": "Chọn bác sĩ",
             "intro": "Thông tin giới thiệu",

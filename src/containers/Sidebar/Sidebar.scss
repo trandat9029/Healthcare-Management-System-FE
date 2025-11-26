@@ -1,13 +1,17 @@
 @import "../../styles/common.scss";
 
-.header-container {
-    z-index: 99;
-    display: flex;
-    justify-content: space-between;
-    background-color: $colormain;
-    color: $common-text-color;
-    height: 40px;
-    position: relative;
+.sidebar-container{
+    width: 100%;
 
-    
+    .header-logos{
+        display: flex;
+        align-items: center;
+        background-color: rgb(237, 255, 250);
+        height: 70px;
+        width: 100%;
+
+            img{
+                height: 70px;
+            }
+    }
 }

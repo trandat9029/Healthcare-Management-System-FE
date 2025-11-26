@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import * as actions from "../../store/actions";
 import Navigator from "../../components/Navigator";
-import { adminMenu, doctorMenu } from "./menuApp";
+import { adminMenu, doctorMenu } from "../Header/menuApp";
 import "./Sidebar.scss";
+import logo from "../../assets/logo.svg"
 import { LANGUAGES, USER_ROLE } from "../../utils";
 import _ from 'lodash'
 
@@ -40,13 +41,22 @@ class Sidebar extends Component {
     }) 
   }
 
+  returnToHome = () =>{
+    if(this.props.history){
+      this.props.history.push(`/system/user-manage`)
+    }
+  }
+
   render() {
     const { processLogout, language, userInfo } = this.props;
     
     return (
-      <div className="header-container">
+      <div className="sidebar-container">
+        <div className='header-logos'>
+          <img src={logo} alt="logo"  onClick={() => this.returnToHome()} />
+        </div>
         {/* thanh navigator */}
-        <div className="header-tabs-container">
+        <div className="sidebar-tab">
           <Navigator menus={this.state.menuApp} />
         </div>
 
