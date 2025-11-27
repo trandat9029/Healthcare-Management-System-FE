@@ -8,24 +8,15 @@ export const adminMenu = [
 
     { //Quản lý người dùng
         name: 'menu.admin.manage-user', 
-        link: '/system/user-redux',
+        link: '/system/manage-user',
         icon: 'fa-solid fa-user', 
-        menus: [
-            {
-                name: 'menu.admin.crud-redux', link: '/system/user-redux', 
-            },
-        ]
+        
     },
     
     { //Quản lý bác sĩ
         name: 'menu.admin.manage-doctor', 
         link: '/system/manage-doctor',
         icon: 'fa-solid fa-user-doctor',  
-        menus: [
-            {
-                name: 'menu.admin.save-doctor', link: '/system/save-doctor', 
-            },
-        ]
     },
 
     { //Quản lý kết hoạch khám bệnh của bác sĩ

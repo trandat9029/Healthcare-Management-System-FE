@@ -9,12 +9,22 @@ const initialState = {
     isLoadingPosition: false,
     isLoadingRole: false,
     users: [],
+    total: 0,
+    page: 1,
+    limit: 10,
     topDoctors: [],
     allDoctors: [],
     infoDoctor: [],
     allScheduleTime: [],
     allRequiredDoctorInfo: [],
-
+    specialties: [],
+    specialtyTotal: 0,
+    specialtyPage: 1,
+    specialtyLimit: 10,
+    clinics: [],
+    clinicTotal: 0,
+    clinicPage: 1,
+    clinicLimit: 8,
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -86,19 +96,24 @@ const adminReducer = (state = initialState, action) => {
                 
             }  
 
-        // get all users
-        case actionTypes.FETCH_ALL_USERS_SUCCESS:
-            state.users = action.users;        
+        // USERS
+            case actionTypes.FETCH_ALL_USERS_SUCCESS:
             return {
                 ...state,
+                users: action.payload.users,
+                total: action.payload.total,
+                page: action.payload.page,
+                limit: action.payload.limit,
                 
-            }
-        case actionTypes.FETCH_ALL_USERS_FAILED:
-            state.users = [];        
+            };
+            
+
+            case actionTypes.FETCH_ALL_USERS_FAILED:
             return {
                 ...state,
-                
-            }
+                users: [],
+                total: 0,
+            };
         // get top doctors
         case actionTypes.FETCH_TOP_DOCTORS_SUCCESS:
             state.topDoctors = action.dataDoctors;        
@@ -115,15 +130,20 @@ const adminReducer = (state = initialState, action) => {
 
         //get all doctors
         case actionTypes.FETCH_All_DOCTORS_SUCCESS:
-            state.allDoctors = action.dataDr;    
-            return {
-                ...state
-            }
+        return {
+            ...state,
+            allDoctors: action.payload.doctors,
+            doctorTotal: action.payload.total,
+            doctorPage: action.payload.page,
+            doctorLimit: action.payload.limit,
+        };
+
         case actionTypes.FETCH_All_DOCTORS_FAILED:
-            state.allDoctors = [];    
-            return {
-                ...state
-            }
+        return {
+            ...state,
+            allDoctors: [],
+            doctorTotal: 0,
+        };
         
         // get info detail doctor    
         // case actionTypes.FETCH_INFO_DETAIL_DOCTORS_SUCCESS:
@@ -160,6 +180,40 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+
+         // get all specialty   
+        case actionTypes.FETCH_ALL_SPECIALTY_SUCCESS:
+            return {
+                ...state,
+                specialties: action.payload.specialties,
+                specialtyTotal: action.payload.total,
+                specialtyPage: action.payload.page,
+                specialtyLimit: action.payload.limit,
+            };
+
+        case actionTypes.FETCH_ALL_SPECIALTY_FAILED:
+            return {
+                ...state,
+                specialties: [],
+                specialtyTotal: 0,
+            };
+        
+        case actionTypes.FETCH_ALL_CLINIC_SUCCESS:
+        return {
+            ...state,
+            clinics: action.payload.clinics,
+            clinicTotal: action.payload.total,
+            clinicPage: action.payload.page,
+            clinicLimit: action.payload.limit,
+        };
+
+        case actionTypes.FETCH_ALL_CLINIC_FAILED:
+        return {
+            ...state,
+            clinics: [],
+            clinicTotal: 0,
+        };
+
 
         default:
             return state;

@@ -126,6 +126,9 @@
             "note": "Note",
             "specialty":"Choose specialty",
             "select-clinic": "Choose clinic"
+        },
+        "manage-user":{
+            "title": "Manage User"
         }
     }
 }

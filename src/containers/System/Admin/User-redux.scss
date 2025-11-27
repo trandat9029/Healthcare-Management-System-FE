@@ -1,21 +1,206 @@
-.preview-img-container{
-    .label-upload{
-        padding: 5px;
-        border-radius: 5px;
-        background-color: #ddd;
-        cursor: pointer;
+/* Overlay mờ phía sau */
+.user-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), transparent),
+              radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.2), transparent),
+              rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
 
-        &:hover{
-            opacity: 0.9;
-        }
+/* Khung modal chính */
+.user-modal {
+  background-color: #ffffff;
+  border-radius: 20px;
+  max-width: 980px;
+  width: 95%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow:
+    0 18px 45px rgba(15, 118, 110, 0.38),
+    0 0 0 1px rgba(16, 185, 129, 0.05);
+  padding: 20px 26px 22px 26px;
+}
+
+/* Header modal */
+.user-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #065f46;
+  }
+}
+
+/* Nút đóng modal */
+.user-modal-close {
+  border: none;
+  background: #ecfdf5;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #16a34a;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.18);
+  transition: background-color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+
+  &:hover {
+    background-color: #22c55e;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(22, 163, 74, 0.35);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+  }
+}
+
+/* Body form */
+.user-redux-body {
+  margin-top: 8px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  .form-control,
+  select.form-control {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    padding: 7px 10px;
+    background-color: #f9fafb;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+
+    &:focus {
+      background-color: #ffffff;
+      border-color: #16a34a;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.45);
+    }
+  }
+
+  .col-12,
+  .col-3,
+  .col-9 {
+    margin-bottom: 10px;
+  }
+}
+
+/* Nút lưu */
+.user-modal .btn.btn-primary {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  border: none;
+  padding: 8px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px rgba(22, 163, 74, 0.5);
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 8px 18px rgba(22, 163, 74, 0.4);
+  }
+}
+
+/* Nút lưu khi edit (btn-warning) cho đồng bộ màu xanh */
+.user-modal .btn.btn-warning {
+  background: linear-gradient(135deg, #15803d, #22c55e);
+  border: none;
+  padding: 8px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(21, 128, 61, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px rgba(21, 128, 61, 0.5);
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 8px 18px rgba(21, 128, 61, 0.4);
+  }
+}
+
+/* Upload ảnh */
+.preview-img-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .label-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background-color: #ecfdf5;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #bbf7d0;
+    transition: background-color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+
+    i {
+      font-size: 12px;
     }
 
-    .preview-image{
-        height: 50px;
-        width: 100%;
-        border: 1px solid #ddd;
-        background: center center no-repeat;
-        background-size: contain;
-        cursor: pointer;
+    &:hover {
+      background-color: #22c55e;
+      color: #ffffff;
+      box-shadow: 0 6px 14px rgba(22, 163, 74, 0.35);
+      transform: translateY(-1px);
     }
+  }
+
+  .preview-image {
+    height: 66px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px dashed #a7f3d0;
+    background: #f0fdf4 center center no-repeat;
+    background-size: cover;
+    cursor: pointer;
+  }
 }

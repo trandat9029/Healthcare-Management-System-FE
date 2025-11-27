@@ -1,42 +1,38 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { getAllCodeService } from '../../../services/userService';
 import { LANGUAGES, CRUD_ACTIONS } from '../../../utils/constant';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-import './User-redux.scss'
-import TableManageUser from './TableManageUser';
-
-import * as actions from "../../../store/actions"
+import './User-redux.scss';
+import * as actions from '../../../store/actions';
 import CommonUtils from '../../../utils/CommonUtils';
 
 class UserRedux extends Component {
-
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            genderArr : [],
-            positionArr : [],
-            roleArr : [],
-            previewImgURL: '',
-            isOpen: false,
+        genderArr: [],
+        positionArr: [],
+        roleArr: [],
+        previewImgURL: '',
+        isOpen: false,
 
-            userEditId: '',
+        userEditId: '',
 
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            phoneNumber: '',
-            address: '',
-            gender: '',
-            position: '',
-            role: '',
-            avatar: '',
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        address: '',
+        gender: '',
+        position: '',
+        role: '',
+        avatar: '',
 
-            action: '',
-        }
+        action: props.actionMode || CRUD_ACTIONS.CREATE,
+        };
     }
 
     async componentDidMount() {
@@ -44,46 +40,67 @@ class UserRedux extends Component {
         this.props.getPositionStart();
         this.props.getRoleStart();
 
-        // try {
-        //     let res = await getAllCodeService('gender');
-        //     if(res && res.errCode === 0 ){
-        //         this.setState({
-        //             genderArr : res.data
-        //         })
-        //     }
-        //     console.log("check res: ", res);
-             
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevProps.genderRedux !== this.props.genderRedux){
-            let arrGenders = this.props.genderRedux;
-            this.setState({
-                genderArr : arrGenders,
-                gender : arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : ''
-            })
-        }
-        if(prevProps.positionRedux !== this.props.positionRedux){
-            let arrPositions = this.props.positionRedux;
-            this.setState({
-                positionArr : arrPositions,
-                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ''
+        if (this.props.actionMode === CRUD_ACTIONS.EDIT && this.props.currentUser) {
+            const user = this.props.currentUser;
+            let imageBase64 = '';
+            if (user.image) {
+                imageBase64 = new Buffer(user.image, 'base64').toString('binary');
+            }
 
-            })
-        }
-        if(prevProps.roleRedux !== this.props.roleRedux){
-            let arrRoles = this.props.roleRedux; 
             this.setState({
-                roleArr : arrRoles,
-                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : ''
-            })
+                email: user.email,
+                password: 'HARDCODE',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                address: user.address,
+                gender: user.gender,
+                position: user.positionId,
+                role: user.roleId,
+                avatar: '',
+                previewImgURL: imageBase64,
+                action: CRUD_ACTIONS.EDIT,
+                userEditId: user.id,
+            });
         }
-        if(prevProps.listUsers !== this.props.listUsers){
-            let arrGenders = this.props.genderRedux;
-            let arrPositions = this.props.positionRedux;
-            let arrRoles = this.props.roleRedux
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.genderRedux !== this.props.genderRedux) {
+            const arrGenders = this.props.genderRedux;
+            this.setState((prev) => ({
+                genderArr: arrGenders,
+                gender:
+                prev.gender ||
+                (arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : ''),
+            }));
+        }
+
+        if (prevProps.positionRedux !== this.props.positionRedux) {
+            const arrPositions = this.props.positionRedux;
+            this.setState((prev) => ({
+                positionArr: arrPositions,
+                position:
+                prev.position ||
+                (arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : ''),
+            }));
+        }
+
+        if (prevProps.roleRedux !== this.props.roleRedux) {
+            const arrRoles = this.props.roleRedux;
+            this.setState((prev) => ({
+                roleArr: arrRoles,
+                role:
+                prev.role ||
+                (arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : ''),
+            }));
+        }
+
+        if (prevProps.listUsers !== this.props.listUsers) {
+            const arrGenders = this.props.genderRedux;
+            const arrPositions = this.props.positionRedux;
+            const arrRoles = this.props.roleRedux;
+
             this.setState({
                 email: '',
                 password: '',
@@ -91,66 +108,79 @@ class UserRedux extends Component {
                 lastName: '',
                 phoneNumber: '',
                 address: '',
-                gender : arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
-                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
+                gender:
+                arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
+                position:
+                arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
                 role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
                 avatar: '',
-                action: CRUD_ACTIONS.CREATE,
                 previewImgURL: '',
-            })
+                action: CRUD_ACTIONS.CREATE,
+                userEditId: '',
+            });
+
+            if (this.props.onClose) {
+                this.props.onClose();
+            }
         }
     }
 
-    handleOnChangeImage = async (event) =>{
-        let data = event.target.files;
-        let file = data[0];
-        if(file){
-            let base64 = await CommonUtils.getBase64(file);
-            let objectUrl = URL.createObjectURL(file);
+    handleOnChangeImage = async (event) => {
+        const data = event.target.files;
+        const file = data[0];
+        if (file) {
+            const base64 = await CommonUtils.getBase64(file);
+            const objectUrl = URL.createObjectURL(file);
             this.setState({
                 previewImgURL: objectUrl,
-                avatar: base64
-            })     
+                avatar: base64,
+            });
         }
-    }
+    };
 
-    openPreviewImage = () =>{
-        if(!this.state.previewImgURL) return;
+    openPreviewImage = () => {
+        if (!this.state.previewImgURL) return;
         this.setState({
-            isOpen: true
-        })
-    }
+            
+        });
+    };
 
-    checkValidateInput = () =>{
+    checkValidateInput = () => {
         let isValid = true;
-        let arrCheck = ['email', 'password', 'firstName', 'lastName', 'phoneNumber', 'address']
-        for(let i =0; i < arrCheck.length; i++){
-            if(!this.state[arrCheck[i]]){
+        const arrCheck = [
+            'email',
+            'password',
+            'firstName',
+            'lastName',
+            'phoneNumber',
+            'address',
+        ];
+        for (let i = 0; i < arrCheck.length; i++) {
+            if (!this.state[arrCheck[i]]) {
                 isValid = false;
                 alert('This input is required: ' + arrCheck[i]);
                 break;
             }
         }
         return isValid;
-    }
+    };
 
-    OnChangeInput = (event, id) =>{
-        let copyState = { ...this.state}
+    OnChangeInput = (event, id) => {
+        const copyState = { ...this.state };
         copyState[id] = event.target.value;
 
         this.setState({
-            ...copyState
-        })
-    }
+            ...copyState,
+        });
+    };
 
-    handleSaveUser = () =>{
-        let isValid = this.checkValidateInput();
-        if(isValid === false) return;
+    handleSaveUser = () => {
+        const isValid = this.checkValidateInput();
+        if (isValid === false) return;
 
-        let {action} = this.state;
+        const { action } = this.state;
 
-        if(action === CRUD_ACTIONS.CREATE){
-            //fire redux action create
+        if (action === CRUD_ACTIONS.CREATE) {
             this.props.createNewUser({
                 email: this.state.email,
                 password: this.state.password,
@@ -161,11 +191,11 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 avatar: this.state.avatar,
                 roleId: this.state.role,
-                positionId: this.state.position,            
-            })
+                positionId: this.state.position,
+            });
         }
-        if(action === CRUD_ACTIONS.EDIT){
-            //fire redux action edit
+
+        if (action === CRUD_ACTIONS.EDIT) {
             this.props.editUserRedux({
                 id: this.state.userEditId,
                 email: this.state.email,
@@ -177,214 +207,276 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 avatar: this.state.avatar,
                 roleId: this.state.role,
-                positionId: this.state.position, 
-
-            })
+                positionId: this.state.position,
+            });
         }
-    }
-
-    handleEditUserFormParent = (user) =>{
-        let imageBase64 = '';
-        if(user.image){
-            imageBase64 = new Buffer(user.image, 'base64').toString('binary')
-            
-        }
-        
-        this.setState({
-                email: user.email,
-                password: 'HARDCODE',
-                firstName: user.firstName,
-                lastName: user.lastName,
-                phoneNumber: user.phoneNumber,
-                address: user.address,
-                gender : user.gender,
-                position: user.positionId,
-                role: user.roleId,
-                avatar: '',
-                previewImgURL: imageBase64,
-                action: CRUD_ACTIONS.EDIT,
-                userEditId: user.id
-            })
-        
-    }
+    };
 
     render() {
-        let genders = this.state.genderArr;
-        let language = this.props.language;
-        let isLoading = this.props.isLoadingGender;
-        let positions = this.state.positionArr;
-        let roles = this.state.roleArr;
+        if (!this.props.isOpen) return null;
 
-        let {email, password, firstName, lastName, phoneNumber, address, gender, position, role, avatar} = this.state
+        const {
+            genderArr,
+            positionArr,
+            roleArr,
+            email,
+            password,
+            firstName,
+            lastName,
+            phoneNumber,
+            address,
+            gender,
+            position,
+            role,
+        } = this.state;
 
-        return (
-            <>
-                <div className='user-redux-container'>
-                    <div className="title" >User redux</div>
-                    
-                    <div className='user-redux-body'>
-                        <div className='container'>
-                            <div className="row">
-                                <div className="col-12 my-3"><FormattedMessage id="manage-user.add" /></div>
-                                <div className='col-12'>{isLoading === true ? "Loading" : ""}</div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.email" /></label>
-                                    <input className='form-control' type="email" 
-                                        value={email}
-                                        onChange={(event) => {this.OnChangeInput(event, 'email')}}
-                                        disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.password" /></label>
-                                    <input className='form-control' type="password" 
-                                        onChange={(event) => {this.OnChangeInput(event, 'password')}}
-                                        value={password}
-                                        disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.first-name" /></label>
-                                    <input className='form-control' type="text" 
-                                        onChange={(event) => {this.OnChangeInput(event, 'firstName')}}
-                                        value={firstName}
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.last-name" /></label>
-                                    <input className='form-control' type="text" 
-                                        onChange={(event) => {this.OnChangeInput(event, 'lastName')}}
-                                        value={lastName}
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.phone-number" /></label>
-                                    <input className='form-control' type="text" 
-                                        onChange={(event) => {this.OnChangeInput(event, 'phoneNumber')}}
-                                        value={phoneNumber}
-                                    />
-                                </div>
-                                <div className="col-9">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.address" /></label>
-                                    <input className='form-control' type="text" 
-                                        onChange={(event) => {this.OnChangeInput(event, 'address')}}
-                                        value={address}
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
-                                    <select className='form-control'
-                                        value={gender}
-                                        onChange={(event) => {this.OnChangeInput(event, 'gender')}}
-                                    >
-                                        {genders && genders.length > 0 && 
-                                        genders.map((item, index) =>{
-                                            return (
-                                                <option key={index} value={item.keyMap}>{language === LANGUAGES.VI ? item.valueVi : item.valueEn}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.position" /></label>
-                                    <select className='form-control'
-                                        value={position}
-                                        onChange={(event) => {this.OnChangeInput(event, 'position')}}
-                                    >
-                                        {positions && positions.length > 0 &&
-                                        positions.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.keyMap}>{language === LANGUAGES.VI ? item.valueVi : item.valueEn}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor=""><FormattedMessage id="manage-user.role" /></label>
-                                    <select className='form-control'
-                                        value={role}
-                                        onChange={(event) => {this.OnChangeInput(event, 'role')}}
-                                    >
-                                        {roles && roles.length > 0 &&
-                                        roles.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.keyMap}>{language === LANGUAGES.VI ? item.valueVi : item.valueEn}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="col-3">
-                                    <label htmlFor="">Image</label>
-                                    <div className='preview-img-container'>
-                                        <input id='previewImg' className='form-control' type="file" hidden 
-                                            onChange={(event => this.handleOnChangeImage(event))}
+    const language = this.props.language;
+
+    return (
+        <>
+            <div className="user-modal-overlay" onClick={this.props.onClose}>
+                <div className="user-modal" onClick={(e) => e.stopPropagation()}>
+                    <div className="user-modal-header">
+                    <div className="title">
+                        {this.state.action === CRUD_ACTIONS.EDIT
+                        ? 'Chỉnh sửa người dùng'
+                        : 'Thêm người dùng'}
+                    </div>
+                    <button className="user-modal-close" onClick={this.props.onClose}>
+                        ×
+                    </button>
+                    </div>
+
+                    <div className="user-redux-body">
+                        <div className="container-fluid">
+                            <form autoComplete="off">
+                                <div className="row">
+                                    <div className="col-3">
+                                        <label>Email</label>
+                                        <input
+                                            name="bh_email"
+                                            autoComplete="off"
+                                            className="form-control"
+                                            type="email"
+                                            value={email}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'email')
+                                            }
+                                            disabled={
+                                            this.state.action === CRUD_ACTIONS.EDIT ? true : false
+                                            }
                                         />
-                                        <label className='label-upload' htmlFor="previewImg">Tải ảnh<i className='fas fa-upload'></i></label>
-                                        <div className="preview-image"
-                                            style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
-                                            onClick={() => this.openPreviewImage()}
-                                        ></div>
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Mật khẩu</label>
+                                        <input
+                                            name="bh_password"
+                                            autoComplete="new-password"
+                                            className="form-control"
+                                            type="password"
+                                            value={password}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'password')
+                                            }
+                                            disabled={
+                                            this.state.action === CRUD_ACTIONS.EDIT ? true : false
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Tên</label>
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            value={firstName}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'firstName')
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Họ</label>
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            value={lastName}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'lastName')
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Số điện thoại</label>
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            value={phoneNumber}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'phoneNumber')
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="col-9">
+                                        <label>Địa chỉ</label>
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            value={address}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'address')
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Giới tính</label>
+                                        <select
+                                            className="form-control"
+                                            value={gender}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'gender')
+                                            }
+                                        >
+                                            {genderArr &&
+                                            genderArr.length > 0 &&
+                                            genderArr.map((item, index) => (
+                                                <option key={index} value={item.keyMap}>
+                                                {language === LANGUAGES.VI
+                                                    ? item.valueVi
+                                                    : item.valueEn}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Chức danh</label>
+                                        <select
+                                            className="form-control"
+                                            value={position}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'position')
+                                            }
+                                        >
+                                            {positionArr &&
+                                            positionArr.length > 0 &&
+                                            positionArr.map((item, index) => (
+                                                <option key={index} value={item.keyMap}>
+                                                {language === LANGUAGES.VI
+                                                    ? item.valueVi
+                                                    : item.valueEn}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="col-3">
+                                    <label>Vai trò</label>
+                                        <select
+                                            className="form-control"
+                                            value={role}
+                                            onChange={(event) =>
+                                            this.OnChangeInput(event, 'role')
+                                            }
+                                        >
+                                            {roleArr &&
+                                            roleArr.length > 0 &&
+                                            roleArr.map((item, index) => (
+                                                <option key={index} value={item.keyMap}>
+                                                {language === LANGUAGES.VI
+                                                    ? item.valueVi
+                                                    : item.valueEn}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="col-3">
+                                        <label>Image</label>
+                                        <div className="preview-img-container">
+                                            <input
+                                                id="previewImg"
+                                                className="form-control"
+                                                type="file"
+                                                hidden
+                                                onChange={(event) =>
+                                                    this.handleOnChangeImage(event)
+                                                }
+                                            />
+                                            <label
+                                                className="label-upload"
+                                                htmlFor="previewImg"
+                                            >
+                                                Tải ảnh <i className="fas fa-upload"></i>
+                                            </label>
+                                            <div
+                                                className="preview-image"
+                                                style={{
+                                                    backgroundImage: `url(${this.state.previewImgURL})`,
+                                                }}
+                                                onClick={() => this.openPreviewImage()}
+                                            ></div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-12 my-3">
+                                        <button
+                                            className={
+                                            this.state.action === CRUD_ACTIONS.EDIT
+                                                ? 'btn btn-warning'
+                                                : 'btn btn-primary'
+                                            }
+                                            onClick={this.handleSaveUser}
+                                        >
+                                            {this.state.action === CRUD_ACTIONS.EDIT
+                                            ? 'Cập nhật'
+                                            : 'Lưu user'}
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="col-12 my-3">
-                                    <button className={this.state.action === CRUD_ACTIONS.EDIT ? "btn btn-warning" : 'btn btn-primary'}
-                                        onClick={() => this.handleSaveUser()}
-                                    >
-                                        {this.state.action === CRUD_ACTIONS.EDIT ? 
-                                            <FormattedMessage id="manage-user.edit" />
-                                        :
-                                            <FormattedMessage id="manage-user.save" />    
-                                        }
-                                        
-                                    </button>
-                                </div> 
-                                
-                                <div className='col-12 mb-5'>
-                                    <TableManageUser
-                                        handleEditUserFormParent={this.handleEditUserFormParent}
-                                        action = {this.state.action}
-                                    />
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    
-                    {this.state.isOpen === true && 
+
+                    {this.state.isOpen === true && (
                         <Lightbox
                             mainSrc={this.state.previewImgURL}
-                            onCloseRequest={() => this.setState({ isOpen: false })}
+                            onCloseRequest={() =>
+                            this.setState({ isOpen: false })
+                            }
                         />
-                    }
+                    )}
                 </div>
-            </>
-        )
+            </div>
+        </>
+        );
     }
-
 }
 
-const mapStateToProps = state => {
-    return {
-        language: state.app.language,
-        genderRedux: state.admin.genders,
-        isLoadingGender: state.admin.isLoadingGender,
-        positionRedux: state.admin.positions,
-        roleRedux: state.admin.roles,
-        listUsers: state.admin.users
-    };
+const mapStateToProps = (state) => {
+  return {
+    language: state.app.language,
+    genderRedux: state.admin.genders,
+    isLoadingGender: state.admin.isLoadingGender,
+    positionRedux: state.admin.positions,
+    roleRedux: state.admin.roles,
+    listUsers: state.admin.users,
+  };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getGenderStart: () => dispatch(actions.fetchGenderStart()),
-        getPositionStart: () => dispatch(actions.fetchPositionStart()),
-        getRoleStart: () => dispatch(actions.fetchRoleStart()),
-        createNewUser: (data) =>dispatch(actions.createNewUser(data)),
-        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
-        editUserRedux: (data) => dispatch(actions.editUser(data))
-        
-        // processLogout: () => dispatch(actions.processLogout()),
-        // changeLanguageAppRedux: (language) =>dispatch(actions.changeLanguageApp(language))
-    };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getGenderStart: () => dispatch(actions.fetchGenderStart()),
+    getPositionStart: () => dispatch(actions.fetchPositionStart()),
+    getRoleStart: () => dispatch(actions.fetchRoleStart()),
+    createNewUser: (data) => dispatch(actions.createNewUser(data)),
+    editUserRedux: (data) => dispatch(actions.editUser(data)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRedux);

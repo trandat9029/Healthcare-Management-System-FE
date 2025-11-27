@@ -136,27 +136,46 @@ export const saveUserFailed = () =>({
 });
 
 //get all users
-export const fetchAllUsersStart =  () => {
-    return async (dispatch, getState) =>{
+export const fetchAllUsersStart = (
+    page = 1,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortOrder = 'DESC'
+    ) => {
+    return async (dispatch) => {
         try {
-            let res = await getAllUsers("ALL");            
-            if(res && res.errCode === 0){
-                let users = res.users.reverse();
-                dispatch(fetchAllUsersSuccess(users));
-            }else {
-                dispatch(fetchAllUsersFailed());
-            }
-        } catch (error) {
+        let res = await getAllUsers({
+            id: 'ALL',
+            page,
+            limit,
+            sortBy,
+            sortOrder,
+        });
+        if (res && res.errCode === 0) {
+            dispatch(
+            fetchAllUsersSuccess({
+                users: res.users,
+                total: res.total,
+                page: res.page,
+                limit: res.limit,
+            })
+            );
+        } else {
             dispatch(fetchAllUsersFailed());
-            console.log('fetchAllUsersStart error ', error);
-        } 
-    }
+        }
+        } catch (error) {
+        console.log('fetchAllUsersStart error ', error);
+        dispatch(fetchAllUsersFailed());
+        }
+    };
 };
 
-export const fetchAllUsersSuccess = (data) =>({
-    type: actionTypes.FETCH_ALL_USERS_SUCCESS,
-    users: data
+
+export const fetchAllUsersSuccess = (data) => ({
+  type: actionTypes.FETCH_ALL_USERS_SUCCESS,
+  payload: data,
 });
+
 export const fetchAllUsersFailed = () =>({
     type: actionTypes.FETCH_ALL_USERS_FAILED
 });
@@ -243,29 +262,45 @@ export const fetchTopDoctor = () =>{
 
 
 // get all doctors  
-export const fetchAllDoctor = () =>{
-    return async (dispatch, getState) =>{
+export const fetchAllDoctor = (
+    page = 1,
+    limit = 10,
+    sortBy = 'firstName',
+    sortOrder = 'DESC'
+    ) => {
+    return async (dispatch, getState) => {
         try {
-            let res = await getAllDoctorsService();
-            if(res && res.errCode === 0){
-                dispatch({
-                    type: actionTypes.FETCH_All_DOCTORS_SUCCESS,
-                    dataDr: res.data
-                });
-            }else{  
-                dispatch({
-                    type: actionTypes.FETCH_All_DOCTORS_FAILED
-                });
-            }
-            
-        } catch (error) {
-            console.log('FETCH_ALL_DOCTORS_FAILED: ', error);
+        let res = await getAllDoctorsService({
+            page,
+            limit,
+            sortBy,
+            sortOrder,
+        });
+
+        if (res && res.errCode === 0) {
             dispatch({
-                type: actionTypes.FETCH_All_DOCTORS_FAILED
+            type: actionTypes.FETCH_All_DOCTORS_SUCCESS,
+            payload: {
+                doctors: res.doctors,
+                total: res.total,
+                page: res.page,
+                limit: res.limit,
+            },
             });
-        } 
-    }
-}
+        } else {
+            dispatch({
+            type: actionTypes.FETCH_All_DOCTORS_FAILED,
+            });
+        }
+        } catch (error) {
+        console.log('FETCH_ALL_DOCTORS_FAILED: ', error);
+        dispatch({
+            type: actionTypes.FETCH_All_DOCTORS_FAILED,
+        });
+        }
+    };
+};
+
 
 // save info doctor
 export const saveDetailDoctor = (data) =>{
@@ -396,4 +431,83 @@ export const fetchRequiredDoctorInfoFailed = () => ({
     type: actionTypes.FETCH_REQUIRED_DOCTOR_INFO_FAILED
 });
 
+ 
+// get all specialty
+export const fetchAllSpecialty = (
+    page = 1,
+    limit = 8,
+    sortBy = 'name',
+    sortOrder = 'ASC'
+) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getAllSpecialtyService({
+                page,
+                limit,
+                sortBy,
+                sortOrder,
+            });
+
+            console.log('fetchAllSpecialty res: ', res);
+
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_SPECIALTY_SUCCESS,
+                    payload: {
+                        specialties: res.specialties,
+                        total: res.total,
+                        page: res.page,
+                        limit: res.limit,
+                    },
+                });
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
+                });
+            }
+        } catch (error) {
+            console.log('FETCH_ALL_SPECIALTY_FAILED: ', error);
+            dispatch({
+                type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
+            });
+        }
+    };
+};
+
+// get all clinic
+
+// FETCH ALL CLINIC
+export const fetchAllClinic = (
+  page = 1,
+  limit = 8,
+  sortBy = 'name',
+  sortOrder = 'ASC'
+) => {
+  return async (dispatch) => {
+    try {
+      let res = await getAllClinicService(page, limit, sortBy, sortOrder);
+
+      if (res && res.errCode === 0) {
+        dispatch({
+          type: actionTypes.FETCH_ALL_CLINIC_SUCCESS,
+          payload: {
+            clinics: res.data,
+            total: res.total,
+            page: res.page,
+            limit: res.limit,
+          },
+        });
+      } else {
+        dispatch({
+          type: actionTypes.FETCH_ALL_CLINIC_FAILED,
+        });
+      }
+    } catch (error) {
+      console.log('FETCH_ALL_CLINIC_FAILED:', error);
+      dispatch({
+        type: actionTypes.FETCH_ALL_CLINIC_FAILED,
+      });
+    }
+  };
+};
 

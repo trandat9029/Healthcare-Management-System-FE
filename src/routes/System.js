@@ -14,6 +14,10 @@ import Dashboard from '../containers/System/Dashboard/Dashboard';
 import Schedule from '../containers/System/Schedule/Schedule';
 import ManageProfile from '../containers/System/Profile/ManageProfile';
 import ManageBooking from '../containers/System/Booking/ManageBooking';
+import TableManageUser from '../containers/System/Admin/TableManageUser';
+import TableManageDoctor from '../containers/System/Admin/TableManageDoctor';
+import TableManageSpecialty from '../containers/System/Specialty/TableManageSpecialty';
+import TableManageClinic from '../containers/System/Clinic/TableManageClinic';
 
 class System extends Component {
     render() {
@@ -33,11 +37,13 @@ class System extends Component {
                         <div className="system-content-inner">
                             <Switch>
                                 <Route path="/system/dashboard" component={Dashboard} />
-                                <Route path="/system/user-manage" component={UserManage} />
-                                <Route path="/system/user-redux" component={UserRedux} />
-                                <Route path="/system/manage-doctor" component={ManageDoctor} />
-                                <Route path="/system/manage-specialty" component={ManageSpecialty} />
-                                <Route path="/system/manage-clinic" component={ManageClinic} />
+                                <Route path="/system/manage-user" component={TableManageUser} />
+                                <Route path="/system/manage-doctor" component={TableManageDoctor} />
+                                <Route path="/system/save-doctor" component={ManageDoctor} />
+                                <Route path="/system/manage-specialty" component={TableManageSpecialty} />
+                                <Route path="/system/create-specialty" component={ManageSpecialty} />
+                                <Route path="/system/manage-clinic" component={TableManageClinic} />
+                                <Route path="/system/create-clinic" component={ManageClinic} />
                                 <Route path="/system/manage-handbook" component={ManageHandbook} />
                                 <Route path="/system/manage-schedule" component={Schedule} />
                                 <Route path="/system/manage-booking" component={ManageBooking} />

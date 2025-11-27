@@ -4,9 +4,12 @@ const handleLoginApi = (userEmail, userPassword) =>{
     return axios.post('/api/login', {email: userEmail, password: userPassword});
 }
 
-const getAllUsers = (inputId) =>{
-    return axios.get(`/api/get-all-users?id=${inputId}`, {id: inputId})
-}
+const getAllUsers = (params) => {
+    return axios.get('/api/get-all-users', {
+        params,
+    });
+};
+
  
 const createNewUserService = (data) =>{ 
     return axios.post('/api/create-new-user', data);
@@ -31,10 +34,9 @@ const getAllCodeService = (inputType) =>{
 const getTopDoctorHomeService = (limit) =>{
     return axios.get(`/api/top-doctor-home?limit=${limit}`)
 }   
-const getAllDoctorsService = (limit) =>{
-    return axios.get(`/api/get-all-doctors`)
-}   
-
+const getAllDoctorsService = (params) => {
+  return axios.get('/api/get-all-doctors', { params });
+};
 const saveDetailDoctorService = (data) =>{
     return axios.post(`/api/save-info-doctors`, data)
 }
@@ -70,9 +72,9 @@ const createNewSpecialtyService = (data) =>{
     return axios.post(`/api/create-new-specialty`, data)
 }
 
-const getAllSpecialtyService = () =>{
-    return axios.get(`/api/get-specialty`)
-} 
+const getAllSpecialtyService = (params) => {
+    return axios.get('/api/get-specialty', { params });
+};
 
 const getAllDetailSpecialtyByIdService = (data) =>{
     return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`)
@@ -82,9 +84,11 @@ const createNewClinicService = (data) =>{
     return axios.post(`/api/create-new-clinic`, data)
 }
 
-const getAllClinicService = () =>{
-    return axios.get(`/api/get-clinic`)
-}
+const getAllClinicService = (page, limit, sortBy, sortOrder) => {
+  return axios.get('/api/get-clinic', {
+    params: { page, limit, sortBy, sortOrder },
+  });
+};
 
 const getAllDetailClinicByIdService = (data) =>{
     return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`)
