@@ -49,6 +49,11 @@ const postSendRemedy = (data) =>{
 const handleGetAllSchedule = (params) => {
   return axios.get('/api/schedule/all', { params });
 }
+
+const handleGetAllBooking = (params) => {
+  return axios.get('/api/booking/', { params });
+}
+
 export { 
     getTopDoctorHomeService,
     getAllDoctorsService,
@@ -63,4 +68,5 @@ export {
     getAllPatientForDoctorService,
     postSendRemedy,
     handleGetAllSchedule,
+    handleGetAllBooking,
 }

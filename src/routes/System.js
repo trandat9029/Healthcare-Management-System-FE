@@ -13,13 +13,14 @@ import Sidebar from '../containers/Sidebar/Sidebar';
 import Dashboard from '../containers/System/Dashboard/Dashboard';
 import Schedule from '../containers/System/Schedule/TableManageSchedule';
 import ManageProfile from '../containers/System/Profile/ManageProfile';
-import ManageBooking from '../containers/System/Booking/ManageBooking';
+import ManageBooking from '../containers/System/Booking/TableManageBooking';
 import TableManageUser from '../containers/System/Admin/TableManageUser';
 import TableManageDoctor from '../containers/System/Admin/TableManageDoctor';
 import TableManageSpecialty from '../containers/System/Specialty/TableManageSpecialty';
 import TableManageClinic from '../containers/System/Clinic/TableManageClinic';
 import TableManageHandbook from '../containers/System/Handbook/TableManageHandbook';
 import TableManageSchedule from '../containers/System/Schedule/TableManageSchedule';
+import TableManageBooking from '../containers/System/Booking/TableManageBooking';
 
 class System extends Component {
     render() {
@@ -49,7 +50,7 @@ class System extends Component {
                                 <Route path="/system/manage-handbook" component={TableManageHandbook} />
                                 <Route path="/system/create-handbook" component={ManageHandbook} />
                                 <Route path="/system/manage-schedule" component={TableManageSchedule} />
-                                <Route path="/system/manage-booking" component={ManageBooking} />
+                                <Route path="/system/manage-booking" component={TableManageBooking} />
                                 <Route path="/system/manage-profile" component={ManageProfile} />
                                 <Route component={() => <Redirect to={systemMenuPath} />} />
                             </Switch>

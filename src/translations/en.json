@@ -48,7 +48,8 @@
             "manage-booking": "Manage Booking",
 
             "handbook": "Handbook",
-            "manage-handbook": "Manage Handbook"
+            "manage-handbook": "Manage Handbook",
+            "create-handbook": "Create Handbook"
         },
         "doctor": {
             "manage-schedule": "Manage Doctor's schedule",

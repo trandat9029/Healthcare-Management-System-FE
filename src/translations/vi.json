@@ -45,7 +45,8 @@
             "manage-booking": "Quản lí lịch đặt  ",
 
             "handbook": "Handbook",
-            "manage-handbook": "Quản lí cẩm nang  "
+            "manage-handbook": "Quản lí cẩm nang  ",
+            "create-handbook": "Thêm mới cẩm nang "
         },
         "doctor": {
             "manage-schedule": "Quản lý kế hoạch khám bệnh",
@@ -111,7 +112,6 @@
     },
     "admin":{
         "manage-doctor": {
-            "manage-dashboard": "Bảng điều khiển",
             "title": "Tạo thêm thông tin bác sĩ",
             "select-doctor": "Chọn bác sĩ",
             "intro": "Thông tin giới thiệu",
