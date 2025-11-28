@@ -1,36 +1,5 @@
 import axios from "../axios";
 
-const handleLoginApi = (userEmail, userPassword) =>{
-    return axios.post('/api/login', {email: userEmail, password: userPassword});
-}
-
-const getAllUsers = (params) => {
-    return axios.get('/api/get-all-users', {
-        params,
-    });
-};
-
- 
-const createNewUserService = (data) =>{ 
-    return axios.post('/api/create-new-user', data);
-}
-
-const deleteUserService = (userId) =>{
-    return axios.delete(`/api/delete-user`,{
-        data: {
-            id: userId
-        }
-    })
-}
-
-const editUserService = (inputData) =>{
-    return axios.put(`/api/edit-user`, inputData)
-}
-
-const getAllCodeService = (inputType) =>{
-    return axios.get(`/api/allCode?type=${inputType}`)
-}
-
 const getTopDoctorHomeService = (limit) =>{
     return axios.get(`/api/top-doctor-home?limit=${limit}`)
 }   
@@ -68,31 +37,6 @@ const postVerifyBookAppointmentService = (data) =>{
     return axios.post(`/api/verify-book-appointment`, data)
 }
 
-const createNewSpecialtyService = (data) =>{
-    return axios.post(`/api/create-new-specialty`, data)
-}
-
-const getAllSpecialtyService = (params) => {
-    return axios.get('/api/get-specialty', { params });
-};
-
-const getAllDetailSpecialtyByIdService = (data) =>{
-    return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`)
-} 
-
-const createNewClinicService = (data) =>{
-    return axios.post(`/api/create-new-clinic`, data)
-}
-
-const getAllClinicService = (page, limit, sortBy, sortOrder) => {
-  return axios.get('/api/get-clinic', {
-    params: { page, limit, sortBy, sortOrder },
-  });
-};
-
-const getAllDetailClinicByIdService = (data) =>{
-    return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`)
-} 
 
 const getAllPatientForDoctorService = (data) =>{
     return axios.get(`/api/get-list-patient-for-doctor?doctorId=${data.doctorId}&date=${data.date}`)
@@ -102,15 +46,10 @@ const postSendRemedy = (data) =>{
     return axios.post(`/api/send-remedy`, data)
 }
 
-
-
+const handleGetAllSchedule = (params) => {
+  return axios.get('/api/schedule/all', { params });
+}
 export { 
-    handleLoginApi,
-    getAllUsers,
-    createNewUserService, 
-    deleteUserService,
-    editUserService,
-    getAllCodeService,
     getTopDoctorHomeService,
     getAllDoctorsService,
     saveDetailDoctorService,
@@ -121,12 +60,7 @@ export {
     getProfileDoctorByIdService,
     postPatientBookAppointmentService,
     postVerifyBookAppointmentService,
-    createNewSpecialtyService,
-    getAllSpecialtyService,
-    getAllDetailSpecialtyByIdService,
-    createNewClinicService,
-    getAllClinicService,     
-    getAllDetailClinicByIdService,
     getAllPatientForDoctorService,
     postSendRemedy,
+    handleGetAllSchedule,
 }

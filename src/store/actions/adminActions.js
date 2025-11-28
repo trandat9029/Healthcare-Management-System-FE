@@ -516,70 +516,74 @@ export const fetchAllClinic = (
 
 // FETCH ALL HANDBOOK
 export const fetchAllHandbook = (
-  page = 1,
-  limit = 8,
-  sortBy = 'name',
-  sortOrder = 'ASC'
-) => {
-  return async (dispatch) => {
-    try {
-      let res = await handleGetAllHandbook(page, limit, sortBy, sortOrder);
-      if (res && res.errCode === 0) {
-        const { data, total, page, limit } = res;
+    page = 1,
+    limit = 8,
+    sortBy = 'name',
+    sortOrder = 'ASC'
+    ) => {
+    return async (dispatch) => {
+        try {
+        let res = await handleGetAllHandbook(page, limit, sortBy, sortOrder);
+        if (res && res.errCode === 0) {
+            const { data, total, page, limit } = res;
 
+            dispatch({
+            type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,
+            payload: {
+                handbooks: data,
+                total,
+                page,
+                limit,
+            },
+            });
+        } else {
+            dispatch({
+            type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
+            });
+        }
+        } catch (error) {
+        console.log('FETCH_ALL_HANDBOOK_FAILED:', error);
         dispatch({
-          type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,
-          payload: {
-            handbooks: data,
-            total,
-            page,
-            limit,
-          },
+            type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
         });
-      } else {
-        dispatch({
-          type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
-        });
-      }
-    } catch (error) {
-      console.log('FETCH_ALL_HANDBOOK_FAILED:', error);
-      dispatch({
-        type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
-      });
-    }
-  };
+        }
+    };
 };
 
 export const deleteHandbook = (id) => {
-  return async (dispatch, getState) => {
-    try {
-      let res = await handleDeleteHandbook(id);
-      if (res && res.errCode === 0) {
-        dispatch(deleteHandbookSuccess());
+    return async (dispatch, getState) => {
+        try {
+        let res = await handleDeleteHandbook(id);
+        if (res && res.errCode === 0) {
+            dispatch(deleteHandbookSuccess());
 
-        // sau khi xóa, gọi lại list với page, limit hiện tại
-        const state = getState();
-        const page = state.admin.handbookPage || 1;
-        const limit = state.admin.handbookLimit || 8;
-        const sortBy = 'createdAt';
-        const sortOrder = 'DESC';
+            // sau khi xóa, gọi lại list với page, limit hiện tại
+            const state = getState();
+            const page = state.admin.handbookPage || 1;
+            const limit = state.admin.handbookLimit || 8;
+            const sortBy = 'createdAt';
+            const sortOrder = 'DESC';
 
-        dispatch(fetchAllHandbook(page, limit, sortBy, sortOrder));
-      } else {
+            dispatch(fetchAllHandbook(page, limit, sortBy, sortOrder));
+        } else {
+            dispatch(deleteHandbookFailed());
+        }
+        } catch (e) {
+        console.log('deleteHandbook error', e);
         dispatch(deleteHandbookFailed());
-      }
-    } catch (e) {
-      console.log('deleteHandbook error', e);
-      dispatch(deleteHandbookFailed());
-    }
-  };
+        }
+    };
 };
 
 
 export const deleteHandbookSuccess = () => ({
-  type: actionTypes.DELETE_HANDBOOK_SUCCESS,
+    type: actionTypes.DELETE_HANDBOOK_SUCCESS,
 });
 
 export const deleteHandbookFailed = () => ({
-  type: actionTypes.DELETE_HANDBOOK_FAILED,
+    type: actionTypes.DELETE_HANDBOOK_FAILED,
 });
+
+
+// FETCH ALL HANDBOOK
+

@@ -234,6 +234,7 @@ const adminReducer = (state = initialState, action) => {
             handbooks: [],
             handbookTotal: 0,
         };
+        
         case actionTypes.DELETE_HANDBOOK_SUCCESS:
         return {
             ...state,
