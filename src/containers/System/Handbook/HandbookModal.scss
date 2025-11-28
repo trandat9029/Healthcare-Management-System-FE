@@ -1,0 +1,245 @@
+/* Backdrop mờ nhẹ */
+.handbook-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Container modal */
+.handbook-modal-content {
+  position: relative;
+  width: 95%;
+  max-width: 1180px;
+  max-height: 92vh;
+  padding: 18px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #d1fae5;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Nút đóng */
+.handbook-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  border: 1px solid #d1fae5;
+  background: #ffffff;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.handbook-modal-close i {
+  font-size: 16px;
+  color: #16a34a;
+}
+
+.handbook-modal-close:hover {
+  background: #16a34a;
+}
+
+.handbook-modal-close:hover i {
+  color: #ffffff;
+}
+
+/* Container nội dung */
+.manage-handbook-container {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #d1fae5;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+/* Header */
+.ms-header {
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+
+  .ms-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #065f46;
+    letter-spacing: 0.08em;
+  }
+
+  .ms-subtitle {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+/* Layout */
+.add-new-handbook {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.handbook-left {
+  border-right: 1px solid #e5e7eb;
+  padding-right: 14px;
+}
+
+.handbook-right {
+  padding-left: 10px;
+}
+
+/* Form input */
+.manage-handbook-container .form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #047857;
+  letter-spacing: 0.04em;
+}
+
+.form-control {
+  border-radius: 999px;
+  font-size: 14px;
+  border: 1px solid #d1fae5;
+  padding: 8px 14px;
+  transition: 0.15s ease;
+}
+
+.form-control:focus {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  outline: none;
+}
+
+/* Markdown editor */
+.editor-wrapper .rc-md-editor {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.editor-wrapper .rc-md-navigation {
+  background: #f0fdf4;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Upload ảnh */
+.custom-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-upload-input {
+  display: none;
+}
+
+/* Button chọn ảnh */
+.custom-upload-btn {
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid #d1fae5;
+  background: #bbf7d0;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-upload-btn:hover {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.custom-upload-btn i {
+  font-size: 13px;
+}
+
+.custom-upload-text {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Preview ảnh */
+.handbook-image-preview {
+  margin-top: 12px;
+}
+
+.handbook-image-preview img {
+  width: 70%;
+  max-width: 250px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  width: 46px;
+  height: 24px;
+  border-radius: 999px;
+  background: #e5f9f0;
+  border: 1px solid #bbf7d0;
+  position: relative;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.toggle-switch.on {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+
+.toggle-switch.on .toggle-circle {
+  transform: translateX(20px);
+}
+
+/* Save button */
+.btn-save-handbook {
+  border: none;
+  min-width: 110px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-save-handbook:hover {
+  background: #22c55e;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .add-new-handbook {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,7 +1,8 @@
+// src/containers/System/Handbook/ManageHandbook.js
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
-import './ManageHandbook.scss'
+import './ManageHandbook.scss';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import CommonUtils from '../../../utils/CommonUtils';
@@ -12,164 +13,207 @@ import { handleCreateHandbook } from '../../../services/handbookService';
 const mdParser = new MarkdownIt();
 
 class ManageHandbook extends Component {
-    
-    constructor(props){
-        super(props);
-        this.state = {
-            name: '',
-            author: '',
-            datePublish: new Date(),
-            imageBase64: '',
-            descriptionHTML: '',
-            descriptionMarkdown: '',
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      author: '',
+      datePublish: new Date(),
+      imageBase64: '',
+      descriptionHTML: '',
+      descriptionMarkdown: '',
+      isPublished: true, // trạng thái toggle
+    };
+  }
 
-    async componentDidMount(){
-     
-    }
+  async componentDidMount() {}
 
-    async componentDidUpdate(prevProps, prevState, snapshot){
-        if(this.props.language !== prevProps.language){
-            
-        }
+  async componentDidUpdate(prevProps) {
+    if (this.props.language !== prevProps.language) {
+      // chưa dùng language ở đây
     }
+  }
 
-    handleOnChangeInput = (event, id) =>{
-        let stateCopy = { ...this.state};
-        stateCopy[id] = event.target.value;
-        this.setState({
-            ...stateCopy
-        }) 
+  handleOnChangeInput = (event, id) => {
+    let stateCopy = { ...this.state };
+    stateCopy[id] = event.target.value;
+    this.setState({
+      ...stateCopy,
+    });
+  };
+
+  handleEditorChange = ({ html, text }) => {
+    this.setState({
+      descriptionMarkdown: text,
+      descriptionHTML: html,
+    });
+  };
+
+  handleOnChangeImage = async (event) => {
+    let data = event.target.files;
+    let file = data[0];
+    if (file) {
+      let base64 = await CommonUtils.getBase64(file);
+      this.setState({
+        imageBase64: base64,
+      });
     }
+  };
 
-    handleEditorChange = ({html, text}) =>{
-        this.setState({
-            descriptionMarkdown: text,
-            descriptionHTML: html,
-        });
+  handleOnchangeDatePicker = (date) => {
+    // nếu DatePicker trả về mảng [date]
+    const pickedDate = Array.isArray(date) ? date[0] : date;
+    this.setState({
+      datePublish: pickedDate,
+    });
+  };
+
+  handleToggleStatus = () => {
+    this.setState((prev) => ({
+      isPublished: !prev.isPublished,
+    }));
+  };
+
+  handleSaveNewSpecialty = async () => {
+    const payload = {
+      ...this.state,
+    };
+
+    let res = await handleCreateHandbook(payload);
+    if (res && res.errCode === 0) {
+      toast.success('Add new handbook succeed');
+      this.setState({
+        name: '',
+        author: '',
+        datePublish: new Date(),
+        imageBase64: '',
+        descriptionHTML: '',
+        descriptionMarkdown: '',
+        isPublished: true,
+      });
+    } else {
+      toast.error(res.errMessage || 'Error');
+      console.log('check state handbook: ', this.state);
     }
+  };
 
-    handleOnChangeImage = async (event) =>{
-        let data = event.target.files;
-        let file = data[0];
-        if(file){
-            let base64 = await CommonUtils.getBase64(file);
-            this.setState({
-                imageBase64: base64,
-            })     
-        }
-    }
-    handleOnchangeDatePicker = (date) =>{
-        this.setState({
-            datePublish: new Date(),
-        })
-    }
+  render() {
+    let { language } = this.props;
+    const { isPublished } = this.state;
 
-    handleSaveNewSpecialty = async () =>{
-        console.log('check state: ', this.state);
-        
-        let res = await handleCreateHandbook(this.state);
-        if(res && res.errCode === 0){
-            toast.success('Add new specialty succeed!');
-            this.setState({
-                name: '',
-                author: '',
-                datePublish: '',
-                imageBase64: '',
-                descriptionHTML: '',
-                descriptionMarkdown: '',
-            })
-        }else{
-            toast.error(res.errMessage) ;
-            console.log('chech state specialty: ', this.state);
-        } 
-    }
+    return (
+      <div className="manage-handbook-page">
+        <div className="manage-handbook-container">
+          <div className="ms-header">
+            <div className="ms-title">Quản lý cẩm nang</div>
+            <div className="ms-subtitle">
+              Tạo và quản lý các bài viết hướng dẫn cho bệnh nhân
+            </div>
+          </div>
 
-    render() {
-        let { language } = this.props;
-        
+          <div className="add-new-handbook">
+            {/* Cột trái */}
+            <div className="handbook-left">
+              <div className="form-group mb-3">
+                <label className="mb-2">Tên cẩm nang</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={this.state.name}
+                  onChange={(event) => this.handleOnChangeInput(event, 'name')}
+                  placeholder="Nhập tiêu đề cẩm nang"
+                />
+              </div>
 
-        return (
-            <>
-                <div className='manage-handbook-container'>
-                    <div className='ms-title'>Quản lý cẩm nang</div>
-                    
-                    <div className='add-new-handbook row'>
-                        <div className='col-6 form-group mb-3'>
-                            <label className='mb-2' htmlFor="">Tên cẩm nang</label>
-                            <input 
-                                className='form-control' 
-                                type='text'
-                                value={this.state.name}
-                                onChange={(event)=> this.handleOnChangeInput(event, 'name')}
-                            />
-                        </div>
-                        <div className='img-upload col-6 form-group mb-3'>
-                            <label htmlFor="" className='mb-2'>Ảnh cẩm nang</label>
-                            <input 
-                                className='form-control-file' 
-                                type='file' 
-                                onChange={(event) => this.handleOnChangeImage(event)}
-                            />
-                        </div>
-                        <div className='col-6 form-group mb-3'>
-                            <label className='mb-2' htmlFor="">Tên tác giả</label>
-                            <input 
-                                className='form-control' 
-                                type='text'
-                                value={this.state.author}
-                                onChange={(event)=> this.handleOnChangeInput(event, 'author')}
-                            />
-                        </div>
-                        <div className='col-6 form-group mb-3'>
-                            <label className='mb-2' htmlFor="">Ngày đăng tải</label>
-                                <DatePicker
-                                    className="form-control"
-                                    onChange={this.handleOnchangeDatePicker}
-                                    value={new Date()}
-                                    
-                                />
-                                {/* <input 
-                                    className='form-control' 
-                                    type='text'
-                                    value={this.state.datePublish}
-                                    onChange={(event)=> this.handleOnChangeInput(event, 'datePublish')}
-                                /> */}
-                        </div>
-                        <div className='col-12 form-group'>
-                            <MdEditor 
-                                style={{ height: '400px' }} 
-                                renderHTML={text => mdParser.render(text)} 
-                                onChange={this.handleEditorChange}
-                                value={this.state.descriptionMarkdown}
-                            />
-                        </div>
-                        <div className='col-12'>
-                            <button 
-                                className='btn-save-handbook'
-                                onClick={() => this.handleSaveNewSpecialty()}
-                            >
-                                Save
-                            </button>
-                        </div>
-                    </div>
+              <div className="form-group mb-3">
+                <label className="mb-2">Ngày đăng tải</label>
+                <DatePicker
+                  className="form-control"
+                  onChange={this.handleOnchangeDatePicker}
+                  value={this.state.datePublish}
+                />
+              </div>
+
+              <div className="form-group editor-wrapper">
+                <label className="mb-2">Nội dung cẩm nang</label>
+                <MdEditor
+                  style={{ height: '380px' }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={this.handleEditorChange}
+                  value={this.state.descriptionMarkdown}
+                />
+              </div>
+            </div>
+
+            {/* Cột phải */}
+            <div className="handbook-right">
+              <div className="form-group mb-3">
+                <label className="mb-2">Tên tác giả</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={this.state.author}
+                  onChange={(event) => this.handleOnChangeInput(event, 'author')}
+                  placeholder="Nhập tên tác giả"
+                />
+              </div>
+
+              <div className="form-group mb-4">
+                <label className="mb-2">Ảnh cẩm nang</label>
+                <div className="custom-upload">
+                  <input
+                    id="handbookImage"
+                    className="custom-upload-input"
+                    type="file"
+                    onChange={(event) => this.handleOnChangeImage(event)}
+                  />
+                  <label htmlFor="handbookImage" className="custom-upload-btn">
+                    <i className="fa-regular fa-image" />
+                    Chọn ảnh
+                  </label>
+                  <span className="custom-upload-text">
+                    Chưa có tệp nào được chọn
+                  </span>
                 </div>
-            </> 
-        );
-    }
+              </div>
+
+              <div className="form-group mb-4 status-row">
+                <div className="status-label">Trạng thái hiển thị</div>
+                <div
+                  className={`toggle-switch ${isPublished ? 'on' : ''}`}
+                  onClick={this.handleToggleStatus}
+                >
+                  <div className="toggle-circle" />
+                </div>
+                <span className="status-text">
+                  {isPublished ? 'Đang hiển thị' : 'Đang ẩn'}
+                </span>
+              </div>
+
+              <div className="form-actions">
+                <button
+                  className="btn-save-handbook"
+                  onClick={this.handleSaveNewSpecialty}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => {
-    return {
-        language: state.app.language
-    };
+const mapStateToProps = (state) => {
+  return {
+    language: state.app.language,
+  };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-
-    };
+const mapDispatchToProps = (dispatch) => {
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageHandbook);

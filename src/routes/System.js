@@ -18,6 +18,7 @@ import TableManageUser from '../containers/System/Admin/TableManageUser';
 import TableManageDoctor from '../containers/System/Admin/TableManageDoctor';
 import TableManageSpecialty from '../containers/System/Specialty/TableManageSpecialty';
 import TableManageClinic from '../containers/System/Clinic/TableManageClinic';
+import TableManageHandbook from '../containers/System/Handbook/TableManageHandbook';
 
 class System extends Component {
     render() {
@@ -44,7 +45,8 @@ class System extends Component {
                                 <Route path="/system/create-specialty" component={ManageSpecialty} />
                                 <Route path="/system/manage-clinic" component={TableManageClinic} />
                                 <Route path="/system/create-clinic" component={ManageClinic} />
-                                <Route path="/system/manage-handbook" component={ManageHandbook} />
+                                <Route path="/system/manage-handbook" component={TableManageHandbook} />
+                                <Route path="/system/create-handbook" component={ManageHandbook} />
                                 <Route path="/system/manage-schedule" component={Schedule} />
                                 <Route path="/system/manage-booking" component={ManageBooking} />
                                 <Route path="/system/manage-profile" component={ManageProfile} />

@@ -25,6 +25,10 @@ const initialState = {
     clinicTotal: 0,
     clinicPage: 1,
     clinicLimit: 8,
+    handbooks: [],
+    handbookTotal: 0,
+    handbookPage: 1,
+    handbookLimit: 8,
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -212,6 +216,32 @@ const adminReducer = (state = initialState, action) => {
             ...state,
             clinics: [],
             clinicTotal: 0,
+        };
+        
+        //HANDBOOK
+        case actionTypes.FETCH_ALL_HANDBOOK_SUCCESS:
+        return {
+            ...state,
+            handbooks: action.payload.handbooks,
+            handbookTotal: action.payload.total,
+            handbookPage: action.payload.page,
+            handbookLimit: action.payload.limit,
+        };
+
+        case actionTypes.FETCH_ALL_HANDBOOK_FAILED:
+        return {
+            ...state,
+            handbooks: [],
+            handbookTotal: 0,
+        };
+        case actionTypes.DELETE_HANDBOOK_SUCCESS:
+        return {
+            ...state,
+        };
+
+        case actionTypes.DELETE_HANDBOOK_FAILED:
+        return {
+            ...state,
         };
 
 
