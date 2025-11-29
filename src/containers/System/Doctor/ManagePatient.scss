@@ -1,60 +1,182 @@
-div._loading_overlay_wrapper{
-    position: unset;
-    
+div._loading_overlay_wrapper {
+  position: unset;
 
-    ._loading_overlay_overlay{
-        z-index: 100000;
-    }
+  ._loading_overlay_overlay {
+    z-index: 100000;
+  }
 }
 
+/* Container */
 .manage-patient-container {
-    .manage-patient-title {
-        font-size: 16px;
-        margin: 10px 0;
-        text-align: center;
-        text-transform: uppercase;
-    }
+  padding: 12px 0;
 
-    .manage-patient-body{
-        padding: 0 20px;
+  .manage-patient-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #065f46;
+    margin-bottom: 18px;
+  }
 
-        .table-manage-patient{
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }
+  .manage-patient-body {
+    padding: 0 16px;
+  }
 
-            td, th {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
+  /* Filter bar */
+    .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 16px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    align-items: flex-end;
 
-            tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-            button{
-                border: none;
-                outline: none;
-                cursor: pointer;
+    .filter-item {
+      min-width: 220px;
+      display: flex;
+      flex-direction: column;
 
-            }
+      .filter-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: #065f46;
+        margin-bottom: 6px;
+      }
 
-            .mp-btn-confirm{
-                margin-right: 10px;
-                height: 30px;
-                border-radius: 5px;
-                background-color: orange;
-                
-            }
+      input.form-control {
+        border-radius: 12px;
+        border: 1px solid #a7f3d0;
+        background-color: #ffffff;
+        padding: 8px 12px;
+        font-size: 14px;
 
-            .mp-btn-remedy{
-                height: 30px;
-                border-radius: 5px;
-                background-color: aqua;
-
-            }
+        &:focus {
+          border-color: #059669;
+          outline: none;
         }
+      }
     }
+
+    .filter-item-search {
+      flex: 1;
+    }
+
+    .btn-reset-filters {
+      align-self: flex-start;
+      margin-top: 4px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #16a34a;
+      background-color: #ffffff;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+
+      &:hover {
+        background-color: #dcfce7;
+      }
+    }
+  }
+
+
+  /* React Select xanh lá */
+  .mp-select__control {
+    border-radius: 12px;
+    min-height: 42px;
+    border: 1px solid #a7f3d0;
+    background-color: #ffffff;
+    box-shadow: none !important;
+
+    &:hover {
+      border-color: #059669;
+    }
+  }
+
+  .mp-select__single-value {
+    color: #064e3b;
+    font-size: 14px;
+  }
+
+  .mp-select__menu {
+    border-radius: 12px;
+    border: 1px solid #a7f3d0;
+    background: #ffffff;
+  }
+
+  /* Datepicker */
+  .form-control {
+    border-radius: 12px;
+    border: 1px solid #a7f3d0;
+    background-color: #ffffff;
+    font-size: 14px;
+    padding: 8px 12px;
+
+    &:focus {
+      border-color: #059669;
+      outline: none;
+    }
+  }
+
+  /* Table */
+  .table-manage-patient {
+    border-radius: 14px;
+    overflow: hidden;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border: 1px solid #d1fae5;
+    }
+
+    th {
+      background: #16a34a;
+      color: white;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px;
+      font-size: 14px;
+      border-bottom: 1px solid #e5f5eb;
+      color: #064e3b;
+    }
+
+    tr:nth-child(even) td {
+      background: #f9fefb;
+    }
+
+    tr:hover td {
+      background: #ecfdf5;
+    }
+
+    /* Các nút hành động */
+    .mp-btn-confirm {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #16a34a, #059669);
+      color: white;
+      transition: .15s;
+
+      &:hover {
+        filter: brightness(1.08);
+      }
+    }
+  }
 }

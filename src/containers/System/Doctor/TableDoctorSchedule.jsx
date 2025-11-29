@@ -265,7 +265,9 @@ class TableDoctorSchedule extends Component {
                   value={selectedDate}
                 />
               </div>
-              <div className="user-create">
+              
+          </div>
+          <div className="user-create">
                 <button
                   className="btn-create-user"
                   onClick={this.openClinicModal}
@@ -274,7 +276,6 @@ class TableDoctorSchedule extends Component {
                 </button>
               </div>
             </div>
-          </div>
 
           <div className="users-table mt-3 mx-1">
             {loading && <div className="loading-overlay">Loading...</div>}
