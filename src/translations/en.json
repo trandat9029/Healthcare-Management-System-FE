@@ -126,7 +126,8 @@
             "address-clinic": "Clinic's address",
             "note": "Note",
             "specialty":"Choose specialty",
-            "select-clinic": "Choose clinic"
+            "select-clinic": "Choose clinic",
+            "schedule-title": "Manage Schedule"
         },
         "manage-user":{
             "title": "Manage User"

@@ -1,34 +1,174 @@
+/* backdrop cho modal */
+.schedule-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 95, 46, 0.20);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
-.manage-schedule-container{
+/* khung modal */
+.schedule-modal-content {
+  width: 96%;
+  max-width: 980px;
+  max-height: 92vh;
+  background: #ffffff;
+  border-radius: 26px;
+  box-shadow: 0 16px 40px rgba(22, 163, 74, 0.32);
+  overflow: hidden;
+  padding: 22px 28px 28px 28px;
+  position: relative;
+  border: 1px solid #d1fae5;
+}
 
-    .manage-schedule-title{
-        text-transform: uppercase;
-        margin: 15px 0 ;
-        font-weight: 600;
-        font-size: 18px;
-        text-align: center;
-    }
-    .pick-hour-container{
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        padding: 20px;
+/* nút close */
+.schedule-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: #ffffff;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.18);
 
-        .btn-schedule{
-            border: 1px solid gray;
-            padding: 5px 15px;
-            width: 120px;
+  i {
+    font-size: 18px;
+    color: #065f46;
+  }
 
-            &.active{
-                background-color: orange;
-            }
-        }
-    }
+  &:hover {
+    background-color: #ecfdf5;
+  }
+}
 
-    .btn-save-schedule{
-        margin: 10px auto;
-        width: 120px;
-        
-        
-    }
+/* tiêu đề trong modal */
+.manage-schedule-container {
+  .manage-schedule-title {
+    text-transform: uppercase;
+    margin: 4px 0 16px 0;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.08em;
+    color: #065f46;
+  }
+
+  .manage-schedule-form {
+    max-width: 880px;
+  }
+
+  .manage-schedule-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #047857;
+    margin-bottom: 6px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+}
+
+/* react select xanh lá */
+.manage-schedule-select__control {
+  border-radius: 14px;
+  min-height: 44px;
+  border-color: #a7f3d0;
+  background-color: #f0fdf4;
+  box-shadow: none;
+
+  &:hover {
+    border-color: #059669;
+  }
+}
+
+.manage-schedule-select__control--is-disabled {
+  background-color: #ecfdf5;
+}
+
+.manage-schedule-select__value-container {
+  padding: 4px 12px;
+  font-size: 14px;
+  color: #065f46;
+}
+
+.manage-schedule-select__single-value {
+  color: #065f46;
+}
+
+/* date picker */
+.manage-schedule-date {
+  border-radius: 14px;
+  border: 1px solid #a7f3d0;
+  background-color: #f0fdf4;
+  box-shadow: none;
+  font-size: 14px;
+  padding: 10px 14px;
+
+  &:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  }
+}
+
+/* khối chọn giờ */
+.pick-hour-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 0 10px 0;
+  justify-content: flex-start;
+}
+
+.btn-schedule {
+  border: 1px solid #d1fae5;
+  padding: 8px 20px;
+  min-width: 130px;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 14px;
+  color: #065f46;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.12);
+  text-align: center;
+
+  &:hover {
+    background-color: #ecfdf5;
+    border-color: #34d399;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #059669;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  }
+}
+
+/* nút lưu */
+.btn-save-schedule {
+  margin: 16px auto 0 auto;
+  max-width: 260px;
+  display: block;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #16a34a, #059669);
+  border-color: transparent;
+  transition: all 0.15s ease;
+
+  &:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
+  }
 }

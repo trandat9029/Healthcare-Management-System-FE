@@ -66,7 +66,7 @@ export const adminMenu = [
 
 export const doctorMenu = [
     {
-        name: 'menu.admin.manage-schedule', 
+        name: 'menu.doctor.manage-schedule', 
         link: '/doctor/manage-schedule',
         icon: 'fa-solid fa-calendar-days', 
     },

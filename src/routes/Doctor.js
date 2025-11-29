@@ -6,6 +6,7 @@ import ManageSchedule from '../containers/System/Doctor/ManageSchedule';
 import ManagePatient from '../containers/System/Doctor/ManagePatient';
 import ManageProfile from '../containers/System/Profile/ManageProfile';
 import Sidebar from '../containers/Sidebar/Sidebar';
+import TableDoctorSchedule from '../containers/System/Doctor/TableDoctorSchedule';
 
 
 class Doctor extends Component {
@@ -26,7 +27,7 @@ class Doctor extends Component {
                 <div className="system-content">
                     <div className="system-content-inner">
                         <Switch>
-                            <Route path="/doctor/manage-schedule" component={ManageSchedule} />
+                            <Route path="/doctor/manage-schedule" component={TableDoctorSchedule} />
                             <Route path="/doctor/manage-patient" component={ManagePatient} />
                             <Route path="/doctor/manage-profile" component={ManageProfile} />
                         </Switch>

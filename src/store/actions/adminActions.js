@@ -585,5 +585,4 @@ export const deleteHandbookFailed = () => ({
 });
 
 
-// FETCH ALL HANDBOOK
 

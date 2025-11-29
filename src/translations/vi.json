@@ -124,7 +124,8 @@
             "address-clinic": "Địa chỉ phòng khám",
             "note": "Ghi chú",
             "specialty":"Chọn Chuyên khoa",
-            "select-clinic": "Chọn phòng khám"
+            "select-clinic": "Chọn phòng khám",
+            "schedule-title": "Quản lí lịch khám"
 
         },
         "manage-user":{

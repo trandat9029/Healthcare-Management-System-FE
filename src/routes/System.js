@@ -50,9 +50,7 @@ class System extends Component {
                                 <Route path="/system/manage-handbook" component={TableManageHandbook} />
                                 <Route path="/system/create-handbook" component={ManageHandbook} />
                                 <Route path="/system/manage-schedule" component={TableManageSchedule} />
-                                <Route path="/system/manage-booking" component={TableManageBooking} />
-                                <Route path="/system/manage-profile" component={ManageProfile} />
-                                <Route component={() => <Redirect to={systemMenuPath} />} />
+                                <Route path="/system/manage-booking" component={TableManageBooking} />                                <Route component={() => <Redirect to={systemMenuPath} />} />
                             </Switch>
                         </div>
                     </div>
