@@ -1,152 +1,196 @@
+// src/containers/Auth/Login.js
 import React, { Component } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { connect } from 'react-redux';
-import { push } from "connected-react-router";
-import * as actions from "../../store/actions";
+import { push } from 'connected-react-router';
+import * as actions from '../../store/actions';
 import './Login.scss';
-import { FormattedMessage } from 'react-intl';
 import { handleLoginApi } from '../../services/userService';
+import logo from '../../assets/logo.svg';
 
+import ForgotPassword from './ForgotPassword';
+import SendEmailOTP from './SendEmailOTP';
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-            isShowPassword: false,
-            errMessage: '',
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+      isShowPassword: false,
+      errMessage: '',
+      activeForm: 'login', // login . forgot . reset
+    };
+  }
+
+  handleOnchangeUserName = (event) => {
+    this.setState({ username: event.target.value });
+  };
+
+  handleOnchangePassword = (event) => {
+    this.setState({ password: event.target.value });
+  };
+
+  handleLogin = async () => {
+    this.setState({ errMessage: '' });
+
+    try {
+      let data = await handleLoginApi(this.state.username, this.state.password);
+
+      if (data && data.errCode !== 0) {
+        this.setState({ errMessage: data.message });
+      }
+
+      if (data && data.errCode === 0) {
+        this.props.userLoginSuccess(data.user);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        this.setState({ errMessage: error.response.data.message });
+      }
     }
+  };
 
-    handleOnchangeUserName = (event) =>{
-        this.setState({
-            username: event.target.value,
-        })   
-    }
+  renderLoginForm = () => {
+    const { username, password, isShowPassword, errMessage } = this.state;
 
-    handleOnchangePassword = (event) =>{
-        this.setState({
-            password: event.target.value,
-        }); 
-    }
+    return (
+      <>
+        <div className="text-login">Đăng nhập</div>
 
-    handleLogin = async () =>{
-        this.setState({
-            errMessage: '',
-        }) ;
-        try {
-            let data = await handleLoginApi(this.state.username, this.state.password);
-            console.log('data: ', data);
-            
+        <div className="login-input">
+          <label>Email</label>
+          <div className="input-with-icon">
+            <span className="input-icon">
+              <i className="fa-regular fa-envelope" />
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Nhập email của bạn"
+              value={username}
+              onChange={this.handleOnchangeUserName}
+            />
+          </div>
+        </div>
 
-
-            if(data && data.errCode !== 0){        
-                this.setState({
-                    errMessage: data.message,
-                    
-                });  
-            }
-            if(data && data.errCode === 0){ 
-                this.props.userLoginSuccess(data.user);
-                console.log('Login succeed!');
-            }
-
-        } catch (error) {
-            if(error.response){
-                if(error.response.data){
-                    this.setState({
-                        errMessage: error.response.data.message,
-                    })
+        <div className="login-input">
+          <label>Mật khẩu</label>
+          <div className="input-with-icon">
+            <span className="input-icon">
+              <i className="fa-solid fa-lock" />
+            </span>
+            <input
+              type={isShowPassword ? 'text' : 'password'}
+              className="form-control"
+              placeholder="Nhập mật khẩu"
+              value={password}
+              onChange={this.handleOnchangePassword}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') this.handleLogin();
+              }}
+            />
+            <span
+              className="toggle-password"
+              onClick={() =>
+                this.setState({ isShowPassword: !isShowPassword })
+              }
+            >
+              <i
+                className={
+                  isShowPassword
+                    ? 'fa-solid fa-eye'
+                    : 'fa-solid fa-eye-slash'
                 }
-            }
-            console.log('test error', error.response);
-        }
+              />
+            </span>
+          </div>
+        </div>
+
+        {errMessage && <div className="login-error">{errMessage}</div>}
+
+        <button className="btn-login" onClick={this.handleLogin}>
+          Đăng nhập
+        </button>
+
+        <div className="login-extra-row">
+          <button
+            type="button"
+            className="btn-forgot-password"
+            onClick={() => this.setState({ activeForm: 'forgot' })}
+          >
+            Quên mật khẩu
+          </button>
+        </div>
+      </>
+    );
+  };
+
+  renderRightCard = () => {
+    const { activeForm } = this.state;
+
+    if (activeForm === 'login') {
+      return this.renderLoginForm();
     }
 
-    handleShowHidePassword = () =>{
-        this.setState({
-            isShowPassword : !this.state.isShowPassword,
-        })
+    if (activeForm === 'forgot') {
+      return (
+        <ForgotPassword
+          onBackToLogin={() => this.setState({ activeForm: 'login' })}
+          onOtpVerified={() => this.setState({ activeForm: 'reset' })}
+        />
+      );
     }
 
-    handleKeyDown = (event) =>{
-        if(event.key === 'Enter' || event.keyCode === 13){
-            this.handleLogin();
-        }
+    if (activeForm === 'reset') {
+      return (
+        <SendEmailOTP
+          onBackToLogin={() => this.setState({ activeForm: 'login' })}
+        />
+      );
     }
 
-    render() {
+    return null;
+  };
 
-        return (
-            <div className='login-background'>
-                <div className="login-container">
-                    <div className='login-content row'>
-                        <div className='col-12 text-login'>Login</div>
-                        <div className='col-12 form-group login-input'>
-                            <label >Username:</label>
-                            <input 
-                                type="text" 
-                                className='form-control' 
-                                placeholder='Enter your username'
-                                value={this.state.username}
-                                onChange={(event) => this.handleOnchangeUserName(event)}
-                            />
-                        </div>
-                        <div className='col-12 form-group login-input'>
-                            <label >Password:</label>
-                            <div className='custom-input-password'>
-                                <input 
-                                    type={this.state.isShowPassword ? "text" : "password"} 
-                                    className='form-control' 
-                                    placeholder='Enter your password'
-                                    value={this.state.password}
-                                    onChange={(event) => this.handleOnchangePassword(event)}
-                                    onKeyDown={(event) => this.handleKeyDown(event)}
-                                />
-                                <span onClick={() =>{this.handleShowHidePassword()}}>
-                                    <i className={this.state.isShowPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div className='col-12' style={{color: 'red'}}>
-                            {this.state.errMessage}
-                        </div>
-                        <div className='col-12'>
-                            <button 
-                                className='btn-login' 
-                                onClick={() => {this.handleLogin()}}
-                            >Login</button>
-                        </div>
-                        <div className='col-12'>
-                            <span className='forgot-password'>Forgot your password?</span>
-                        </div>
-                        <div className='col-12 text-center mt-3'>
-                            <span className='text-other-login'>Or Login with:</span>
-                        </div>
-                        <div className='col-12 social-login'>
-                            <i className="fa-brands fa-google-plus-g google"></i>
-                            <i className="fa-brands fa-facebook facebook"></i>
-                        </div>
-                    </div>
-                </div>
+  render() {
+    return (
+      <div className="login-background">
+        <div className="login-wrapper">
+          {/* Panel trái */}
+          <div className="login-left">
+            <div className="login-left-brand">
+              <div className="left-brand-top">
+                <img src={logo} alt="" className="login-logo-img" />
+              </div>
+              <span className="brand-subtitle">Nền tảng quản lý lịch khám</span>
             </div>
-        )
-    }
+
+            <div className="login-left-text">
+              <h1>Chào mừng trở lại</h1>
+              <p>
+                Đăng nhập để quản lý thiết bị và xem thông tin đặt lịch khám
+                của bạn.
+              </p>
+            </div>
+          </div>
+
+          {/* Panel phải khung thay đổi nội dung */}
+          <div className="login-card">
+            <div className="login-card-inner">{this.renderRightCard()}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => {
-    return {
-        language: state.app.language
-    };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    navigate: (path) => dispatch(push(path)),
+    userLoginSuccess: (userInfo) =>
+      dispatch(actions.userLoginSuccess(userInfo)),
+  };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        navigate: (path) => dispatch(push(path)),
-        // userLoginFail: () => dispatch(actions.adminLoginFail()), 
-        userLoginSuccess: (userInfo) => dispatch(actions.userLoginSuccess(userInfo))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
