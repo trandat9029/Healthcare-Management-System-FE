@@ -1,0 +1,249 @@
+/* =======================
+   CONTAINER CHUNG
+======================= */
+.manage-profile-container {
+  padding: 16px 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #022c22;
+  background: #f0fdf4;
+  border-radius: 12px;
+}
+
+/* loading / error */
+.profile-loading,
+.profile-error {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+  font-size: 14px;
+}
+
+.profile-error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+/* =======================
+   GRID 2 CỘT
+======================= */
+.manage-profile-grid {
+  display: grid;
+  grid-template-columns: 8fr 4fr;  /* CHỈNH NHỎ CỘT PHẢI */
+  gap: 20px;
+  margin-top: 8px;
+}
+
+/* =======================
+   CARD CHUNG
+======================= */
+.card-section {
+  border-radius: 16px;
+  border: 1px solid #bbf7d0;
+  background: #ffffff;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #047857;
+  margin-bottom: 10px;
+}
+
+/* =======================
+   THÔNG TIN CỘT TRÁI
+======================= */
+.info-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.info-label {
+  min-width: 140px;
+  color: #6b7280;
+}
+
+.info-value {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* =======================
+   SCROLL PHẦN MÔ TẢ
+======================= */
+/* Khối mô tả chi tiết cao hơn để lấp khoảng trống */
+.card-section.card-scroll {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tăng chiều cao tối thiểu */
+.card-section.card-scroll .scroll-body {
+  min-height: 260px;    /* tăng từ 260px → 360px */
+  max-height: 320px;    /* cho phép kéo dài đẹp */
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+
+/* scroll đẹp */
+.card-section.card-scroll .scroll-body::-webkit-scrollbar {
+  width: 6px;
+}
+.card-section.card-scroll .scroll-body::-webkit-scrollbar-track {
+  background: #ecfdf5;
+  border-radius: 999px;
+}
+.card-section.card-scroll .scroll-body::-webkit-scrollbar-thumb {
+  background: #a7f3d0;
+  border-radius: 999px;
+}
+
+/* Markdown */
+.markdown-content {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #111827;
+}
+.markdown-content p { margin-bottom: 8px; }
+.markdown-content ul {
+  padding-left: 18px;
+  margin-bottom: 8px;
+}
+.markdown-content li { margin-bottom: 4px; }
+
+/* =======================
+   CỘT PHẢI – PROFILE
+======================= */
+.manage-profile-right .card-section {
+  padding: 12px 14px;
+}
+
+/* Avatar gọn */
+.avatar-wrapper {
+  margin: 6px auto 10px auto;
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid #16a34a;
+  background: #dcfce7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  font-size: 36px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+/* Tên & chức danh */
+.profile-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.profile-role {
+  font-size: 12px;
+  color: #047857;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* Divider */
+.profile-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 10px 0 8px 0;
+}
+
+/* Hàng thông tin */
+.profile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.profile-info-row .icon {
+  width: 22px;
+  text-align: center;
+  color: #16a34a;
+}
+
+/* =======================
+   NÚT
+======================= */
+.profile-actions {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-primary,
+.btn-outline {
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  border: 1px solid #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: #15803d;
+  border-color: #15803d;
+}
+
+.btn-outline {
+  border: 1px solid #bbf7d0;
+  background: #ffffff;
+  color: #047857;
+}
+.btn-outline:hover {
+  background: #ecfdf5;
+}
+
+/* =======================
+   GỢI Ý
+======================= */
+.small-note p {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 992px) {
+  .manage-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .manage-profile-right { order: 1; }
+  .manage-profile-left  { order: 2; }
+}

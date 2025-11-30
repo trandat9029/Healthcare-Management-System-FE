@@ -1,0 +1,292 @@
+/* Overlay đơn giản, tông xanh nhẹ, không blur mạnh */
+.doctor-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 32px;
+  z-index: 999;
+}
+
+/* Khung modal chính, bỏ box shadow, dùng border và nền trắng */
+.doctor-modal-container {
+  width: 96%;
+  max-width: 1320px;
+  max-height: 92vh;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header trên cùng */
+.doctor-modal-header {
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #dcfce7, #ecfdf5);
+  border-bottom: 1px solid #a7f3d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doctor-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #065f46;
+}
+
+/* Nút đóng */
+.doctor-modal-close {
+  border: 1px solid #bbf7d0;
+  background: #ffffff;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  color: #16a34a;
+}
+
+.doctor-modal-close:hover {
+  background: #dcfce7;
+}
+
+/* Body */
+.doctor-modal-body {
+  padding: 16px 20px 12px 20px;
+  overflow-y: auto;
+  background: #f0fdf4;
+}
+
+/* Banner tên bác sĩ */
+.doctor-name-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  font-size: 14px;
+  color: #065f46;
+  margin-bottom: 14px;
+
+  strong {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Khối section */
+.doctor-section {
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 12px 14px 12px 14px;
+  margin-bottom: 12px;
+}
+
+.doctor-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #047857;
+  margin-bottom: 8px;
+}
+
+/* Grid khối thông tin cơ bản */
+.doctor-basic-grid {
+  display: grid;
+  grid-template-columns: 3fr 1.2fr;
+  gap: 16px;
+}
+
+.doctor-basic-right {
+  border-left: 1px solid #e5e7eb;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.avatar-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+/* Preview ảnh */
+.image-preview-box {
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.image-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-empty {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Nút upload ảnh */
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #bbf7d0;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.upload-button input {
+  display: none;
+}
+
+.upload-button i {
+  font-size: 13px;
+}
+
+.upload-hint {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* Label và input chung */
+.doctor-modal-body label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.doctor-modal-body .form-control {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  font-size: 14px;
+  padding: 7px 10px;
+}
+
+.doctor-modal-body .form-control:focus {
+  border-color: #16a34a;
+  outline: none;
+}
+
+/* Textarea giới thiệu ngắn */
+.more-info textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* React select */
+.doctor-modal-body .css-13cymwt-control {
+  border-radius: 10px;
+  border-color: #e5e7eb;
+  background-color: #ffffff;
+  min-height: 36px;
+  font-size: 14px;
+}
+
+.doctor-modal-body .css-13cymwt-control:hover {
+  border-color: #16a34a;
+}
+
+.doctor-modal-body .css-t3ipsp-control {
+  border-radius: 10px;
+  border-color: #16a34a;
+}
+
+/* Editor markdown, bỏ box shadow */
+.manage-doctor-editor {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.manage-doctor-editor .rc-md-editor {
+  border: none;
+}
+
+.manage-doctor-editor .rc-md-editor .rc-md-navigation {
+  background: #ecfdf5;
+  border-bottom: 1px solid #bbf7d0;
+}
+
+/* Footer */
+.doctor-modal-footer {
+  padding: 10px 20px 14px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-save {
+  border: 1px solid #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #15803d;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .doctor-basic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-basic-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+    margin-top: 8px;
+  }
+
+  .doctor-modal-body {
+    padding: 12px 12px 10px 12px;
+  }
+}
