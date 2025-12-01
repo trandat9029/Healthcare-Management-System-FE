@@ -26,7 +26,7 @@
         "admin": {
             "dashboard": "Bảng điều khiển ",
 
-            "manage-user": "Người dùng",
+            "manage-user": "Quản lí người dùng",
             "manage-doctor": "Quản lý bác sĩ",
             "manage-admin": "Quản lý admin",
             "crud": "CRUD user",
@@ -45,7 +45,7 @@
             "manage-booking": "Quản lí lịch đặt  ",
 
             "handbook": "Handbook",
-            "manage-handbook": "Quản lí cẩm nang  ",
+            "manage-handbook": "Quản lí cẩm nang ",
             "create-handbook": "Thêm mới cẩm nang "
         },
         "doctor": {
@@ -130,6 +130,18 @@
         },
         "manage-user":{
             "title": "Quản lý người dùng"
+        },
+        "manage-specialty":{
+            "title": "Quản lí chuyên khoa"
+        },
+        "manage-clinic":{
+            "title": "Quản lí phòng khám"
+        },
+        "manage-handbook":{
+            "title": "Quản lí cẩm nang"
+        },
+        "manage-booking":{
+            "title": "Quản lí lịch đặt"
         }
     }
 }

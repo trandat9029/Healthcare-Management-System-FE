@@ -5,6 +5,7 @@ import './TableManageHandbook.scss';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import { handlePostHandbook } from '../../../services/handbookService';
+import { getAllCodeService } from '../../../services/userService';
 import HandbookModal from './HandbookModal';
 
 class TableManageHandbook extends Component {
@@ -17,6 +18,11 @@ class TableManageHandbook extends Component {
       sortBy: 'datePublish',
       sortOrder: 'DESC',
       search: '',
+
+      // filter trạng thái
+      statusFilter: 'ALL',
+      statusOptions: [],
+
       showModal: false,
       selectedHandbook: null,
     };
@@ -25,6 +31,7 @@ class TableManageHandbook extends Component {
   async componentDidMount() {
     const { page, limit, sortBy, sortOrder } = this.state;
     await this.props.fetchAllHandbookRedux(page, limit, sortBy, sortOrder);
+    await this.loadStatusOptions();
   }
 
   componentDidUpdate(prevProps) {
@@ -34,6 +41,43 @@ class TableManageHandbook extends Component {
       });
     }
   }
+
+  // lấy list STATUS từ allCode
+  loadStatusOptions = async () => {
+    try {
+      const res = await getAllCodeService('STATUS'); // axios.get
+      if (res && res.data && res.data.errCode === 0) {
+        const codes = res.data.data || [];
+        const statusOptions = [
+          { value: 'ALL', label: 'Tất cả trạng thái' },
+          ...codes.map((item) => ({
+            value: item.keyMap,   // ví dụ S1. S0
+            label: item.valueVi,  // ví dụ Đăng. Ẩn
+          })),
+        ];
+        this.setState({ statusOptions });
+      } else {
+        // fallback nếu chưa cấu hình allCode STATUS
+        this.setState({
+          statusOptions: [
+            { value: 'ALL', label: 'Tất cả trạng thái' },
+            { value: 'PUBLISHED', label: 'Đăng' },
+            { value: 'HIDDEN', label: 'Ẩn' },
+          ],
+        });
+      }
+    } catch (error) {
+      console.log('loadStatusOptions error', error);
+      // fallback mặc định
+      this.setState({
+        statusOptions: [
+          { value: 'ALL', label: 'Tất cả trạng thái' },
+          { value: 'PUBLISHED', label: 'Đăng' },
+          { value: 'HIDDEN', label: 'Ẩn' },
+        ],
+      });
+    }
+  };
 
   // mở modal tạo mới
   openCreateModal = () => {
@@ -133,6 +177,12 @@ class TableManageHandbook extends Component {
     });
   };
 
+  handleChangeStatusFilter = (e) => {
+    this.setState({
+      statusFilter: e.target.value,
+    });
+  };
+
   // toggle status
   handleToggleStatus = async (handbook) => {
     try {
@@ -166,6 +216,8 @@ class TableManageHandbook extends Component {
       page,
       limit,
       search,
+      statusFilter,
+      statusOptions,
       showModal,
       selectedHandbook,
     } = this.state;
@@ -173,9 +225,33 @@ class TableManageHandbook extends Component {
 
     const totalPages = Math.ceil((totalHandbooks || 0) / limit) || 1;
 
-    const filteredHandbooks = (handbooks || []).filter((item) =>
-      item.name?.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredHandbooks = (handbooks || []).filter((item) => {
+      const matchesSearch = item.name
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
+      if (statusFilter === 'ALL') {
+        return matchesSearch;
+      }
+
+      const isPublished = !!item.status;
+
+      // hỗ trợ cả key allCode S1. S0 lẫn value custom PUBLISHED. HIDDEN
+      const wantPublished =
+        statusFilter === 'PUBLISHED' || statusFilter === 'S1';
+      const wantHidden =
+        statusFilter === 'HIDDEN' || statusFilter === 'S0';
+
+      if (wantPublished) {
+        return matchesSearch && isPublished;
+      }
+
+      if (wantHidden) {
+        return matchesSearch && !isPublished;
+      }
+
+      return matchesSearch;
+    });
 
     return (
       <>
@@ -198,6 +274,32 @@ class TableManageHandbook extends Component {
               />
               <i className="fa-solid fa-magnifying-glass" />
             </button>
+
+            <div className="handbook-right-tools">
+              <div className="filter-group">
+                <label className="filter-label">Lọc theo trạng thái</label>
+                <select
+                  className="status-select"
+                  value={statusFilter}
+                  onChange={this.handleChangeStatusFilter}
+                >
+                  {statusOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="user-create">
+                <button
+                  className="btn-create-user"
+                  onClick={this.openCreateModal}
+                >
+                  Thêm bài viết
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="users-table mt-3 mx-1">
@@ -295,7 +397,6 @@ class TableManageHandbook extends Component {
           </div>
         </div>
 
-        {/* Modal create/edit handbook */}
         {showModal && (
           <HandbookModal
             isOpen={showModal}

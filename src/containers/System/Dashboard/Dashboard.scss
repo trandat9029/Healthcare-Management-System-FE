@@ -1,0 +1,351 @@
+.dashboard-page {
+  height: calc(100vh - 60px);   /* chỉnh lại nếu header System cao khác */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background: white;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #bbf7d0 #ecfdf5;
+}
+
+.dashboard-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-page::-webkit-scrollbar-track {
+  background: #ecfdf5;
+  border-radius: 10px;
+}
+
+.dashboard-page::-webkit-scrollbar-thumb {
+  background: #bbf7d0;
+  border-radius: 10px;
+}
+
+/* header */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #022c22;
+}
+
+.dashboard-subtitle {
+  font-size: 13px;
+  color: #4b5563;
+  margin-top: 2px;
+}
+
+.dashboard-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: #374151;
+}
+
+.filter-label {
+  margin-bottom: 4px;
+}
+
+.btn-dashboard-tag {
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid #bbf7d0;
+  background: #ecfdf5;
+  font-size: 13px;
+  font-weight: 600;
+  color: #047857;
+  cursor: pointer;
+}
+
+/* thẻ số liệu */
+
+.dashboard-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.metric-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.metric-icon.doctors { background: #22c55e; }
+.metric-icon.patients { background: #3b82f6; }
+.metric-icon.specialties { background: #6366f1; }
+.metric-icon.clinics { background: #f97316; }
+.metric-icon.posts { background: #ec4899; }
+
+.metric-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #022c22;
+}
+
+.metric-desc {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* section chung */
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-section {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #d1fae5;
+  padding: 22px 24px 26px;
+}
+
+.dashboard-section.wide {
+  padding: 26px 28px 32px;
+}
+
+.dashboard-section.wide:hover {
+  border-color: #22c55e;
+  background-color: #f8fefb;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.section-header h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #064e3b;
+  letter-spacing: 0.01em;
+}
+
+.section-header p {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.section-body {
+  font-size: 13px;
+}
+
+/* nút nhỏ */
+
+.btn-small-secondary {
+  border-radius: 999px;
+  padding: 6px 14px;
+  border: 1px solid #bbf7d0;
+  background: #ecfdf5;
+  color: #047857;
+  cursor: pointer;
+}
+
+/* chiều cao chart */
+
+.chart-body-lg {
+  height: 440px;
+}
+
+.chart-body-md {
+  height: 260px;
+}
+
+/* các khối dưới, mỗi khối 1 hàng */
+
+.dashboard-lower {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* top bác sĩ */
+
+.doctor-section-body {
+  min-height: 220px;
+}
+
+.doctor-ranking {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.doctor-ranking li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.doctor-info .name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.doctor-info .meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.count-tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 11px;
+}
+
+/* hoạt động gần đây */
+
+.activities-tall {
+  min-height: 220px;
+}
+
+.activities {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.activity-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+.activity-title {
+  font-size: 13px;
+  color: #111827;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* tooltip cho chart */
+
+.bh-tooltip {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #0f172a;
+  min-width: 150px;
+}
+
+.bh-tooltip-title {
+  font-weight: 600;
+  color: #047857;
+  margin-bottom: 6px;
+}
+
+.bh-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+/* legend chỉnh khoảng cách */
+
+.recharts-legend-wrapper {
+  margin-top: 12px !important;
+}
+
+.recharts-legend-item {
+  padding: 0 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+/* responsive */
+
+@media (max-width: 1200px) {
+  .dashboard-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-metrics-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,6 +1,6 @@
 // src/containers/Auth/SendEmailOTP.js
 import React, { Component } from 'react';
-
+import './SendEmailOTP.scss'
 class SendEmailOTP extends Component {
   constructor(props) {
     super(props);

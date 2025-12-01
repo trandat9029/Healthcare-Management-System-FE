@@ -23,26 +23,27 @@ export const adminMenu = [
         name: 'menu.admin.manage-schedule', 
         link: '/system/manage-schedule',
         icon: 'fa-solid fa-calendar', 
-    },
-    { //Quản lý chuyên khoa
-        name: 'menu.admin.manage-specialty', 
-        link: '/system/manage-specialty',
-        icon: 'fa-solid fa-briefcase-medical', 
         menus: [
             {
                 name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
             },
         ]
     },
+    { //Quản lý chuyên khoa
+        name: 'menu.admin.manage-specialty', 
+        link: '/system/manage-specialty',
+        icon: 'fa-solid fa-briefcase-medical', 
+        
+    },
     { //Quản lý phòng khám
         name: 'menu.admin.manage-clinic', 
         link: '/system/manage-clinic', 
         icon: 'fa-solid fa-house-chimney-medical', 
-        menus: [
-            {
-                name: 'menu.admin.create-clinic', link: '/system/create-clinic', 
-            },
-        ]
+        // menus: [
+        //     {
+        //         name: 'menu.admin.create-clinic', link: '/system/create-clinic', 
+        //     },
+        // ]
     },
     { //Quản lý cẩm nang
         name: 'menu.admin.manage-handbook', 
@@ -58,6 +59,11 @@ export const adminMenu = [
         name: 'menu.admin.manage-booking', 
         link: '/system/manage-booking',
         icon: 'fa-solid fa-calendar-check',  
+        menus: [
+            {
+                name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
+            },
+        ]
     },
 
 ];

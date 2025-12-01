@@ -12,7 +12,7 @@ class TableManageSpecialty extends Component {
     this.state = {
       specialties: [],
       page: 1,
-      limit: 8,
+      limit: 7,
       sortBy: 'name',
       sortOrder: 'ASC',
 

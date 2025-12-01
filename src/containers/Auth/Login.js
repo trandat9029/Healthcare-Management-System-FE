@@ -8,6 +8,11 @@ import './Login.scss';
 import { handleLoginApi } from '../../services/userService';
 import logo from '../../assets/logo.svg';
 
+/* ====== ẢNH NỀN LOGIN ====== */
+/* Thêm ảnh bạn muốn vào thư mục: src/assets/login-bg.jpg */
+/* Sau đó import như sau: */
+import loginBg from '../../assets/banner.jpg';
+
 import ForgotPassword from './ForgotPassword';
 import SendEmailOTP from './SendEmailOTP';
 
@@ -19,7 +24,7 @@ class Login extends Component {
       password: '',
       isShowPassword: false,
       errMessage: '',
-      activeForm: 'login', // login . forgot . reset
+      activeForm: 'login',
     };
   }
 
@@ -155,7 +160,10 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="login-background">
+      <div
+        className="login-background"
+        style={{ backgroundImage: `url(${loginBg})` }} // ảnh nền mờ
+      >
         <div className="login-wrapper">
           {/* Panel trái */}
           <div className="login-left">
@@ -175,7 +183,7 @@ class Login extends Component {
             </div>
           </div>
 
-          {/* Panel phải khung thay đổi nội dung */}
+          {/* Panel phải */}
           <div className="login-card">
             <div className="login-card-inner">{this.renderRightCard()}</div>
           </div>

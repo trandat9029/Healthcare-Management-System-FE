@@ -1,7 +1,7 @@
 .users-container {
   display: flex;
   flex-direction: column;
-  gap: 10x;
+  gap: 10px;
 }
 
 /* Tiêu đề */
@@ -14,23 +14,111 @@
   margin: 0;
 }
 
-.user-function{
-  display: flex; 
-  gap: 10px;
+/* Thanh chức năng: search bên trái. filter bên phải */
+.user-function {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10px;
+  gap: 24px;
 
-  .btn-search{
-    border-radius: 50px;
-    background-color: white;
-    .input-search{
-      
+  /* Ô tìm kiếm */
+  .btn-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #d1fae5;
+    background-color: #ecfdf5;
+    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+    cursor: text;
+
+    .input-search {
       outline: none;
       border: none;
+      background: transparent;
+      font-size: 14px;
+      min-width: 260px;
+      color: #065f46;
+
+      &::placeholder {
+        color: #9ca3af;
+      }
     }
 
-    i{
-      // background-color: white;
+    i {
+      font-size: 14px;
+      color: #16a34a;
     }
   }
+}
+
+/* Hàng filter bên phải. tất cả nằm trên một dòng */
+.doctor-filters-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  color: #166534;
+}
+
+/* Select địa chỉ */
+.address-select {
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid #d1fae5;
+  padding: 0 14px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+  outline: none;
+  color: #065f46;
+  font-size: 14px;
+}
+
+/* React Select cho chức danh. prefix doctor-select */
+.doctor-select__control {
+  min-height: 36px;
+  border-radius: 999px;
+  border-color: #d1fae5;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.08);
+}
+
+.doctor-select__control--is-focused {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+}
+
+.doctor-select__value-container {
+  padding: 0 10px;
+}
+
+.doctor-select__single-value {
+  font-size: 14px;
+  color: #065f46;
+}
+
+.doctor-select__placeholder {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.doctor-select__menu {
+  font-size: 14px;
 }
 
 /* Card chứa bảng */
@@ -40,6 +128,7 @@
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
   padding: 16px 18px 10px 18px;
   overflow-x: auto;
+  margin-top: 16px;
 }
 
 /* Bảng */
@@ -91,7 +180,7 @@
   text-align: center;
 }
 
-/* Nút edit, delete */
+/* Nút edit và delete */
 .btn-edit,
 .btn-delete {
   border: none;
@@ -117,7 +206,7 @@
   background-color: #bbf7d0;
 }
 
-/* Delete */
+/* Delete. nếu dùng lại */
 .btn-delete {
   background-color: #fef2f2;
   color: #b91c1c;
@@ -158,68 +247,15 @@
   cursor: default;
 }
 
-.user-function {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-  gap: 16px;
-
-  .btn-search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    border: 1px solid #d1fae5;
-    background-color: #ecfdf5;
-    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
-    cursor: text;
-
-    .input-search {
-      outline: none;
-      border: none;
-      background: transparent;
-      font-size: 14px;
-      min-width: 220px;
-      color: #065f46;
-
-      &::placeholder {
-        color: #9ca3af;
-      }
-    }
-
-    i {
-      font-size: 14px;
-      color: #16a34a;
-    }
+/* Responsive nhẹ cho filter hàng ngang */
+@media (max-width: 992px) {
+  .user-function {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .user-create {
-    .btn-create-user {
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(22, 163, 74, 0.35);
-      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 12px 26px rgba(22, 163, 74, 0.45);
-        filter: brightness(1.03);
-      }
-
-      &:active {
-        transform: translateY(0);
-        box-shadow: 0 6px 14px rgba(22, 163, 74, 0.35);
-      }
-    }
+  .doctor-filters-row {
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }

@@ -131,6 +131,12 @@
         },
         "manage-user":{
             "title": "Manage User"
+        },
+        "manage-specialty":{
+            "title": "Manage specialties"
+        },
+        "manage-clinic":{
+            "title": "Manage Clinics"
         }
     }
 }

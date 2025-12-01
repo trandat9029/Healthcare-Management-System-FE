@@ -20,3 +20,43 @@
   font-size: 13px;
   margin-top: 6px;
 }
+
+/* nút quay lại đăng nhập (màn reset mật khẩu) */
+.login-small-link{
+  display: flex;
+  justify-content: flex-end;
+  .btn-inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #065f46;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-inline-link i {
+  font-size: 12px;
+}
+
+/* hiệu ứng hover */
+.btn-inline-link:hover {
+  background-color: #ecfdf5;
+  border-color: #16a34a;
+  color: #047857;
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.22);
+  transform: translateY(-1px);
+}
+
+/* khi ấn */
+.btn-inline-link:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+}

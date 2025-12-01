@@ -1,164 +1,171 @@
 @import "../styles/common.scss";
 
-// Sidebar menu tổng
+/* Sidebar tổng */
 .navigator-menu {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 12px;
-    align-items: stretch;
-    padding: 16px 18px;
-    margin-top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: #7ddcaf;
 
-    &.list-unstyled,
-    .list-unstyled {
-        list-style-type: none;
-    }
+  .list-unstyled {
+    list-style-type: none;
+  }
 
-    // Mỗi block menu chính
-    .menu-group {
-        position: relative;
-        width: 100%;
-        border-radius: 114x;
-        background: #ffffff;
-        border: 1px solid #c5f0cf; // viền xanh lá nhạt
-        box-shadow: 0 3px 8px rgba(12, 97, 56, 0.06); // tăng nhẹ shadow
-        transition: all 0.2s ease;
-        overflow: hidden;
+  /* ============================
+     MENU GROUP
+     ============================ */
+  .menu-group {
+    width: 100%;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #d1fae5;
+    transition: all 0.2s ease;
+    overflow: hidden;
 
-        // trạng thái active
-        &.active {
-            border-color: #22c55e;
-            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.18);
+    /* ---- trạng thái ACTIVE (nền xanh đậm, chữ trắng) ---- */
+    &.active {
+      background-color: #16a34a;
+      border-color: #15803d;
 
-            .menu-group-name {
-                background: linear-gradient(90deg, #22c55e, #16a34a);
-                .menu-main-link {
-                    color: #ffffff;
+      .menu-group-name {
+        background-color: #16a34a;
 
-                    .menu-icon {
-                        color: #ffffff;
-                    }
-                }
+        .menu-main-link {
+          color: #ffffff;
+          font-weight: 650;
 
-                .menu-toggle-btn {
-                    background-color: rgba(255, 255, 255, 0.16);
-                    border-color: transparent;
+          .menu-icon {
+            color: #ffffff;
+          }
+        }
+      }
 
-                    i {
-                        color: #ffffff;
-                    }
-                }
-            }
+      .menu-toggle-btn {
+        background-color: #15803d;
+        border-color: #15803d;
+
+        i {
+          color: #ffffff;
         }
 
-        // hover nhẹ cho toàn block
         &:hover {
-            cursor: pointer;
-            border-color: #22c55e33;
-            box-shadow: 0 3px 8px rgba(34, 197, 94, 0.12);
+          background-color: #0f6c2d;
+          border-color: #0f6c2d;
+
+          i {
+            color: #ffffff;
+          }
         }
-
-        // Hàng chính chứa icon, text, nút +
-        .menu-group-name {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 14px 12px 16px;   // trước 8px 10px 8px 12px
-            background-color: #f8fff9;
-            transition: background-color 0.2s ease;
-
-            .menu-main-link {
-                flex: 1;
-                text-decoration: none;
-                color: #065f46;
-                font-weight: 500;
-                font-size: 16px;  
-                display: inline-flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 8px;
-                text-align: left;
-            }
-
-            .menu-icon {
-                font-size: 18px; 
-                color: #16a34a;
-            }
-
-            .menu-toggle-btn {
-                margin-left: 8px;
-                width: 32px;                   // trước 28
-                height: 32px; 
-                border-radius: 999px;
-                border: 1px solid #bbf7d0;
-                background-color: #ecfdf3;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.2s ease;
-
-                i {
-                    font-size: 14px;
-                    color: #15803d;
-                }
-
-                &:hover {
-                    background-color: #22c55e;
-                    border-color: #22c55e;
-
-                    i {
-                        color: #ffffff;
-                    }
-                }
-            }
-        }
-
-        // box submenu
-        .menu-list {
-            display: none;
-            padding: 6px 10px 10px 10px; 
-            background-color: #ffffff;
-
-            .menu {
-                width: 100%;
-                height: 36px;
-                line-height: 32px;
-                border-radius: 8px;
-                padding: 0 8px;
-                text-transform: none;
-                transition: background-color 0.15s ease;
-
-                .menu-link {
-                    text-decoration: none;
-                    color: #065f46;
-                    font-size: 14px;
-                    display: block;
-                    text-align: left;
-                }
-
-                &:hover {
-                    background-color: #f0fdf4;
-                }
-
-                &.active {
-                    background-color: #dcfce7;
-
-                    .menu-link {
-                        color: #15803d;
-                        font-weight: 500;
-                    }
-                }
-            }
-        }
-
-        // Khi mở submenu
-        &.open {
-            .menu-list {
-                display: block;
-            }
-        }
+      }
     }
+
+    /* ---- HOVER ---- */
+    &:hover {
+      border-color: #86efac;
+      background-color: #fbfffc;
+    }
+
+    /* ============================
+       HÀNG CHÍNH. Icon + Text + [+]
+       ============================ */
+    .menu-group-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      height: 52px;                  /* Các ô cao bằng nhau */
+      background-color: #ffffff;
+      // border: 2px solid #16a34a;
+
+      .menu-main-link {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-size: 15px;             /* Chữ to hơn */
+        font-weight: 600;
+        color: #064e3b;
+        white-space: nowrap;
+      }
+
+      .menu-icon {
+        font-size: 18px;
+        color: #16a34a;
+      }
+
+      /* ---- Nút + hoặc – ---- */
+      .menu-toggle-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid #d1fae5;
+        background-color: #f0fdf4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        i {
+          font-size: 14px;
+          color: #047857;
+        }
+
+        &:hover {
+          background-color: #16a34a;
+          border-color: #16a34a;
+
+          i {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+
+    /* ============================
+       SUB MENU
+       ============================ */
+    .menu-list {
+      display: none;
+      padding: 6px 14px 10px 14px;
+      background-color: #ffffff;
+
+      .menu {
+        width: 100%;
+        height: 40px;                /* Các dòng submenu cao đều */
+        line-height: 40px;
+        border-radius: 8px;
+        padding: 0 12px;
+        font-size: 14px;
+        transition: background-color 0.15s ease;
+
+        .menu-link {
+          color: #065f46;
+          text-decoration: none;
+        }
+
+        &:hover {
+          background-color: #f0fdf4;
+        }
+
+        &.active {
+          background-color: #dcfce7;
+
+          .menu-link {
+            color: #047857;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    &.open {
+      .menu-list {
+        display: block;
+      }
+    }
+  }
 }
