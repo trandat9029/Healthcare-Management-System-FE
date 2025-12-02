@@ -16,15 +16,20 @@ import Home from "../routes/Home";
 import Login from "./Auth/Login";
 import System from "../routes/System";
 
-import HomePage from "./HomePage/HomePage.js";
-import CustomScrollbars from "../components/CustomScrollbars.js";
+import HomePage from "./HomePage/HomePage";
+import CustomScrollbars from "../components/CustomScrollbars";
 
-import { CustomToastCloseButton } from "../components/CustomToast";
-import DetailDoctor from "./Patient/Doctor/DetailDoctor.js";
-import Doctor from "../routes/Doctor.js";
-import VerifyEmail from "./Patient/VerifyEmail.js";
-import DetailSpecialty from "./Patient/Specialty/DetailSpecialty.js";
-import DetailClinic from "./Patient/Clinic/DetailClinic.js";
+import DetailDoctor from "./Patient/Doctor/DetailDoctor";
+import Doctor from "../routes/Doctor";
+import VerifyEmail from "./Patient/VerifyEmail";
+import DetailSpecialty from "./Patient/Specialty/DetailSpecialty";
+import DetailClinic from "./Patient/Clinic/DetailClinic";
+import Specialties from "./Patient/Specialty/Specialties";
+import Clinics from "./Patient/Clinic/Clinics";
+import Doctors from "./Patient/Doctor/Doctors";
+import Handbooks from "./Patient/Handbook/Handbooks";
+
+import ClientLayout from "./Patient/ClientLayout";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -53,6 +58,7 @@ class App extends Component {
             <div className="content-container">
               <CustomScrollbars style={{ height: "100vh", width: "100%" }}>
                 <Switch>
+                  {/* trang hệ thống, không dùng header bệnh nhân */}
                   <Route path={path.HOME} exact component={Home} />
                   <Route
                     path={path.LOGIN}
@@ -63,37 +69,96 @@ class App extends Component {
                     component={userIsAuthenticated(System)}
                   />
                   <Route
-                    path={"/doctor/"}
+                    path={path.DOCTOR}
                     component={userIsAuthenticated(Doctor)}
                   />
-                  <Route path={path.HOMEPAGE} component={HomePage} />
-                  <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
+
+                  {/* các trang public cho bệnh nhân, dùng ClientLayout */}
+                  <Route
+                    path={path.HOMEPAGE}
+                    exact
+                    render={(props) => (
+                      <ClientLayout showBanner={true}>
+                        <HomePage {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path="/specialties"
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <Specialties {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path="/clinics"
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <Clinics {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path="/doctors"
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <Doctors {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path="/handbooks"
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <Handbooks {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path={path.DETAIL_DOCTOR}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <DetailDoctor {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
                   <Route
                     path={path.DETAIL_SPECIALTY}
-                    component={DetailSpecialty}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <DetailSpecialty {...props} />
+                      </ClientLayout>
+                    )}
                   />
-                  <Route path={path.DETAIL_CLINIC} component={DetailClinic} />
-                  {/* <Route path={path.DETAIL_HANDBOOK} component={De} /> */}
+
+                  <Route
+                    path={path.DETAIL_CLINIC}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <DetailClinic {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
                   <Route
                     path={path.VERIFY_EMAIL_BOOKING}
-                    component={VerifyEmail}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <VerifyEmail {...props} />
+                      </ClientLayout>
+                    )}
                   />
                 </Switch>
               </CustomScrollbars>
             </div>
 
-            {/* <ToastContainer
-              className="toast-container"
-              toastClassName="toast-item"
-              bodyClassName="toast-item-body"
-              autoClose={false}
-              hideProgressBar={true}
-              pauseOnHover={false}
-              pauseOnFocusLoss={true}
-              closeOnClick={false}
-              draggable={false}
-              closeButton={<CustomToastCloseButton />}
-            /> */}
             <ToastContainer
               position="top-right"
               autoClose={5000}
@@ -120,8 +185,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

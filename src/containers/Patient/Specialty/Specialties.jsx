@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
+import './Specialties.scss'
 
-class DefaultClass extends Component {
+class Specialties extends Component {
     
     constructor(props){
         super(props);
@@ -21,13 +22,14 @@ class DefaultClass extends Component {
         }
     }
 
+
     render() {
         let { language } = this.props;
 
         return (
             <>
                 <div className='container'>
-                    
+                    Specialties
                 </div>
             </>
             
@@ -47,4 +49,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultClass);
+export default connect(mapStateToProps, mapDispatchToProps)(Specialties);

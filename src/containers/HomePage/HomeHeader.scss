@@ -1,207 +1,280 @@
+// ======================================================
+// HEADER BookingHealth . chỉnh cân . chữ to dễ nhìn
+// ======================================================
 
-// home-header-container
-.home-header-container{
-    height: 70px;
+.home-header-container {
+  padding: 0 240px;                    // hai bên bớt rộng cho nav nhìn cân hơn
+  margin: 0 auto;
+  height: 80px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #c8f2ea;
+  background-color: #e6fffb;          // nền xanh nhạt
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+  .home-header-content {
     width: 100%;
-    padding: 0 20px;
-    position: sticky;
-    top: 0;
-    border-bottom: 1px solid #f5f5f5;
-    background-color: #fff;
-    z-index: 100;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    // dùng flex tỷ lệ cho cân . không dùng width %
+    // trái : 1 . giữa : 2 . phải : 1
+    justify-content: space-between;
 
-    .home-header-content{
-        width: 100%;
-        height: 100%;
+    // TRÁI . menu + logo
+    .left-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      .header-logo {
         display: flex;
+        cursor: pointer;
+        transform: scale(0.9);
+      }
 
+      i {
+        font-size: 22px;
+        color: #777;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 999px;
+        transition: background-color 0.15s ease, color 0.15s ease;
 
-        .left-content{
-            display: flex;
-            align-items: center;
-            width: 20%;
-            height: 100%;
-
-            .header-logo{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                transform: scale(0.9, 0.9);
-            }
-            i{
-                font-size: 25px;
-                color: gray;
-                cursor: pointer;
-            }
+        &:hover {
+          background-color: #d9f5f1;
+          color: #38b5ce;
         }
-        .center-content{
-            width: 55%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
-
-            .child-content{
-
-                .subs-desc{
-                    font-size: 14px;
-                    font-weight: 400;
-                    margin: 0;
-                }
-            }
-        }
-        .right-content{
-            width: 25%;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            .support{
-                padding-right: 50px;
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                
-
-                i{
-                    font-size: 18px;
-                    margin-right: 5px;
-                }
-            }
-
-            .language-vi{
-                cursor: pointer;
-                opacity: 0.3;
-
-                &.active{
-                    opacity: 1;
-                    color: orange;
-                }
-                &:hover{
-                    color: orange;
-                    opacity: 1;
-                }
-            }
-            .language-en{
-                margin: 0 10px;
-                cursor: pointer;
-                opacity: 0.3; 
-
-                &.active{
-                    color: blue;
-                    opacity: 1;
-                }
-                &:hover{
-                    color: blue;
-                    opacity: 1;
-                }
-            }
-        }
+      }
     }
+
+    // GIỮA . navigation
+    .center-content {
+      flex: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;        // cho nav đúng nghĩa nằm giữa
+      gap: 26px;                      // khoảng cách giữa các mục
+      padding: 0 12px;
+
+      .child-content {
+        cursor: pointer;
+        padding: 10px 22px;           // pill gọn . không quá dày
+        border-radius: 999px;
+        background-color: transparent;
+        white-space: nowrap;
+        transition: background-color 0.15s ease, color 0.15s ease,
+          box-shadow 0.15s ease;
+
+        h4 {
+          margin: 0;
+          font-size: 17px;            // chữ tiêu đề to hơn
+          font-weight: 600;
+          color: #202020;
+        }
+
+        .subs-desc {
+          font-size: 13px;            // phụ đề to hơn chút
+          font-weight: 400;
+          margin: 0px !important;
+          color: #676767;
+        }
+
+        &:hover {
+          background-color: rgba(56, 181, 206, 0.38);
+        }
+
+        &:hover h4,
+        &:hover .subs-desc {
+          color: #111;
+        }
+      }
+
+      // item đang active
+      .child-content.active {
+        background-color: #f7df48;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+
+        h4 {
+          color: #111;
+        }
+
+        .subs-desc {
+          color: #5a4a00;
+          font-weight: 500;
+        }
+      }
+    }
+
+    // PHẢI . hỗ trợ + ngôn ngữ
+    .right-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+
+      .support {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: #199bb1;
+        font-size: 18px;
+
+        i {
+          font-size: 18px;
+          margin-right: 6px;
+          color: #199bb1;
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      .language-vi,
+      .language-en {
+        cursor: pointer;
+        opacity: 0.5;
+        font-weight: 500;
+        transition: color 0.15s ease, opacity 0.15s ease;
+        font-size: 18px;
+      }
+
+      .language-vi.active {
+        opacity: 1;
+        color: #f59e0b;
+      }
+
+      .language-en.active {
+        opacity: 1;
+        color: #2563eb;
+      }
+
+      .language-vi:hover,
+      .language-en:hover {
+        opacity: 1;
+      }
+    }
+  }
 }
 
-//home-header-banner
-.home-header-banner{
-    background-image: url(../../assets/banner.jpg) ;
-    
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    height: 700px;
+// ======================================================
+// BANNER . giữ style gốc . chỉ chỉnh nhẹ cho đồng bộ
+// ======================================================
+
+.home-header-banner {
+  background-image: url(../../assets/banner.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+
+  .content-up {
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.25),
+      rgba(255, 255, 255, 0.1)
+    );
+    padding-top: 40px;
+    height: 65%;
+
+    .title1 {
+      text-align: center;
+      font-size: 30px;
+      color: #fff;
+      text-shadow: 1px 1px 1px #333;
+      margin-bottom: 5px;
+      margin-top: 30px;
+    }
+
+    .title2 {
+      text-align: center;
+      font-size: 30px;
+      color: #fff;
+      text-shadow: 1px 1px 1px #333;
+      margin-bottom: 15px;
+    }
+
+    .search {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      margin: 0 auto;
+      padding: 10px 16px;
+      margin-top: 50px;
+      border-radius: 999px;
+      background-color: #f7d800;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+
+      i {
+        margin: 0 8px 0 4px;
+      }
+
+      input {
+        height: 32px;
+        width: 360px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .content-down {
+    height: 35%;
     display: flex;
-    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 1)
+    );
 
-    .content-up{
-        background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1));
-        padding-top: 40px;
-        height: 65%;
+    .options {
+      text-align: center;
+      display: flex;
+      gap: 50px;
+      justify-content: center;
 
-        .title1{
-            text-align: center;
-            font-size: 30PX;
-            color: white;
-            text-shadow: 1px 1px 1px #333;
-            margin-bottom: 5px;
-            margin-top: 30px;
-            
+      .option-child {
+        width: 120px;
+
+        .icon-child {
+          background: #fff;
+          width: 40px;
+          height: 40px;
+          padding: 10px;
+          border-radius: 50%;
+          margin: 0 auto;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+          i {
+            color: #49bce2;
+            font-size: 20px;
+          }
         }
-        .title2{
-            text-align: center;
-            font-size: 30PX;
-            color: white;
-            text-shadow: 1px 1px 1px #333;
-            margin-bottom: 15px;
-        }
-        .search{
-            width: fit-content;
-            display: flex;
-            // justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-            padding: 10px;
-            margin-top: 50px;
-            border-radius: 25px;
-            background-color: #f7d800;
 
-            i{
-                margin: 0 5px;
-            }
-            input{
-                height: 30px;
-                width: 360px;
-                background: transparent;
-                border: none;
-                outline: none;
-                
-            }
+        .text-child {
+          font-size: 17px;
+          font-weight: 500;
+          cursor: pointer;
+          margin-top: 10px;
 
+          &:hover {
+            color: #49bce2;
+          }
         }
+      }
     }
-
-    .content-down{
-        height: 35%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        padding-bottom: 10px;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
-
-        .options{
-            text-align: center;
-            display: flex;
-            gap: 50px;
-            justify-content: center;
-
-
-            .option-child{
-                width: 120px;
-
-                .icon-child{
-                    background: #fff;
-                    width:  40px;
-                    height: 40px;
-                    padding: 10px;
-                    border-radius: 50%;
-                    margin: 0 auto;
-
-                    i{
-                        color: #49bce2;
-                        font-size: 20px;
-                    }
-                }
-
-                .text-child{
-                    font-size: 19px;
-                    font-weight: 500;
-                    cursor: pointer;
-
-                    &:hover{
-                        color: #49bce2;
-                    }
-                }
-            }
-        }
-    }
+  }
 }

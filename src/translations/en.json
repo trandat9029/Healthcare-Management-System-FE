@@ -7,6 +7,7 @@
         "doctor": "Doctor",
         "select-doctor": "Choose a good doctor",
         "fee": "Checkup package",
+        "handbook": "Handbook",
         "check-health":"General health check",
         "support": "Support",
         "welcome": "Welcome, "
@@ -15,12 +16,11 @@
     "banner":{
         "title1": "MEDICAL PLATFORM",
         "title2": "COMPREHENSIVE HEALTH CARE",
-        "child1": "Specialized examination",
-        "child2": "Remote examination",
-        "child3": "General examination",
-        "child4": "Medical testing",
-        "child5": "Mental health",
-        "child6": "Dental examination"
+        "child2": "Specialty",
+        "child3": "Clinic",
+        "child4": "Handbook",
+        "child5": "Outstanding Doctor",
+        "child6": "About us"
     },
 
     "menu": {

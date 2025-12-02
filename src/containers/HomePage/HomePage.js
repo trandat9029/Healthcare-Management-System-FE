@@ -1,21 +1,17 @@
+// HomePage.jsx
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import HomeHeader from "./HomeHeader";
 import Specialty from "./Section/Specialty";
 import MedicalFacility from "./Section/MedicalFacility";
-import './HomePage.scss'
+import "./HomePage.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import OutstandingDoctor from "./Section/OutstandingDoctor";
 import Handbook from "./Section/Handbook";
 import About from "./Section/About";
-import HomeFooter from "./HomeFooter";
 
 class HomePage extends Component {
-
-  handleAfterChange = () =>{
-    
-  }
+  handleAfterChange = () => {};
 
   render() {
     let settings = {
@@ -26,17 +22,16 @@ class HomePage extends Component {
       slidesToScroll: 1,
       afterChange: this.handleAfterChange,
     };
+
     return (
-        <div>
-            <HomeHeader isShowBanner={true} />
-            <Specialty settings={settings} />
-            <MedicalFacility settings={settings} />
-            <OutstandingDoctor settings={settings} />
-            <Handbook settings={settings}/>
-            <About />
-            <HomeFooter />
-        </div>
-    )
+      <div>
+        <Specialty settings={settings} />
+        <MedicalFacility settings={settings} />
+        <OutstandingDoctor settings={settings} />
+        <Handbook settings={settings} />
+        <About />
+      </div>
+    );
   }
 }
 
@@ -46,8 +41,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps)(HomePage);

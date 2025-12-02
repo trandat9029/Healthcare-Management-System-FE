@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
+import './Clinics.scss'
 
-class DefaultClass extends Component {
+
+class Clinics extends Component {
     
     constructor(props){
         super(props);
@@ -27,7 +29,7 @@ class DefaultClass extends Component {
         return (
             <>
                 <div className='container'>
-                    
+                    Clinics
                 </div>
             </>
             
@@ -47,4 +49,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultClass);
+export default connect(mapStateToProps, mapDispatchToProps)(Clinics);
