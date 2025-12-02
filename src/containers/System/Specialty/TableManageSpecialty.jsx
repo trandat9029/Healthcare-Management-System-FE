@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import './TableManageSpecialty.scss';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
-import ManageSpecialty from './ManageSpecialty';
+import ManageSpecialty from './ManageSpecialty';     // modal tạo mới
+import UpdateSpecialty from './UpdateSpecialty';     // modal sửa
 
 class TableManageSpecialty extends Component {
   constructor(props) {
@@ -16,8 +17,9 @@ class TableManageSpecialty extends Component {
       sortBy: 'name',
       sortOrder: 'ASC',
 
-      // state để mở modal
-      showSpecialtyModal: false,
+      showCreateModal: false,      // modal tạo
+      showUpdateModal: false,      // modal sửa
+      selectedSpecialty: null,     // chuyên khoa đang sửa
     };
   }
 
@@ -98,28 +100,58 @@ class TableManageSpecialty extends Component {
   };
 
   // mở modal tạo mới
-  openSpecialtyModal = () => {
+  openCreateSpecialtyModal = () => {
     this.setState({
-      showSpecialtyModal: true,
+      showCreateModal: true,
+      showUpdateModal: false,
+      selectedSpecialty: null,
     });
   };
 
-  // đóng modal
-  closeSpecialtyModal = () => {
+  // mở modal sửa
+  openEditSpecialtyModal = (specialty) => {
     this.setState({
-      showSpecialtyModal: false,
+      showUpdateModal: true,
+      showCreateModal: false,
+      selectedSpecialty: specialty,
     });
   };
 
-  // sau khi save xong thì reload list và đóng modal
+  // đóng modal tạo
+  closeCreateModal = () => {
+    this.setState({
+      showCreateModal: false,
+    });
+  };
+
+  // đóng modal sửa
+  closeUpdateModal = () => {
+    this.setState({
+      showUpdateModal: false,
+      selectedSpecialty: null,
+    });
+  };
+
+  // sau khi save xong thì reload list và đóng mọi modal
   handleSpecialtySaved = async () => {
     const { page, limit, sortBy, sortOrder } = this.state;
     await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder);
-    this.closeSpecialtyModal();
+    this.setState({
+      showCreateModal: false,
+      showUpdateModal: false,
+      selectedSpecialty: null,
+    });
   };
 
   render() {
-    const { specialties, page, limit, showSpecialtyModal } = this.state;
+    const {
+      specialties,
+      page,
+      limit,
+      showCreateModal,
+      showUpdateModal,
+      selectedSpecialty,
+    } = this.state;
     const { totalSpecialties } = this.props;
 
     const arrSpecialties = specialties || [];
@@ -148,7 +180,7 @@ class TableManageSpecialty extends Component {
             <div className="user-create">
               <button
                 className="btn-create-user"
-                onClick={this.openSpecialtyModal}
+                onClick={this.openCreateSpecialtyModal}
               >
                 Thêm chuyên khoa
               </button>
@@ -201,7 +233,10 @@ class TableManageSpecialty extends Component {
                           )}
                         </td>
                         <td>
-                          <button className="btn-edit">
+                          <button
+                            className="btn-edit"
+                            onClick={() => this.openEditSpecialtyModal(item)}
+                          >
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>
                           <button className="btn-delete">
@@ -244,10 +279,21 @@ class TableManageSpecialty extends Component {
           </div>
         </div>
 
-        {showSpecialtyModal && (
+        {/* Modal tạo mới */}
+        {showCreateModal && (
           <ManageSpecialty
-            isOpen={showSpecialtyModal}
-            onClose={this.closeSpecialtyModal}
+            isOpen={showCreateModal}
+            onClose={this.closeCreateModal}
+            onSaved={this.handleSpecialtySaved}
+          />
+        )}
+
+        {/* Modal sửa, dùng UpdateSpecialty và fill currentSpecialty */}
+        {showUpdateModal && (
+          <UpdateSpecialty
+            isOpen={showUpdateModal}
+            currentSpecialty={selectedSpecialty}
+            onClose={this.closeUpdateModal}
             onSaved={this.handleSpecialtySaved}
           />
         )}

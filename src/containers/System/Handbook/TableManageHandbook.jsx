@@ -14,7 +14,7 @@ class TableManageHandbook extends Component {
     this.state = {
       handbooks: [],
       page: 1,
-      limit: 8,
+      limit: 7,
       sortBy: 'datePublish',
       sortOrder: 'DESC',
       search: '',

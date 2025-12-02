@@ -163,7 +163,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-user-doctor" />
             </div>
             <div className="metric-label">Tổng bác sĩ</div>
-            <div className="metric-value">18</div>
+            <div className="metric-value">32</div>
             <div className="metric-desc">Đang hoạt động trong hệ thống</div>
           </div>
 
@@ -172,7 +172,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-users" />
             </div>
             <div className="metric-label">Tổng bệnh nhân</div>
-            <div className="metric-value">16</div>
+            <div className="metric-value">40</div>
             <div className="metric-desc">Tài khoản bệnh nhân đã đăng ký</div>
           </div>
 

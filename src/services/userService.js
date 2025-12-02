@@ -103,6 +103,9 @@ const postSendRemedy = (data) =>{
 }
 
 
+const handleUpdateClinic = (inputData) =>{
+    return axios.put(`/api/clinics/`, inputData)
+}
 
 export { 
     handleLoginApi,
@@ -129,4 +132,5 @@ export {
     getAllDetailClinicByIdService,
     getAllPatientForDoctorService,
     postSendRemedy,
+    handleUpdateClinic,
 }

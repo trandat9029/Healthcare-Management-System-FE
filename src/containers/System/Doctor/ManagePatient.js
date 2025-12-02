@@ -86,11 +86,18 @@ class ManagePatient extends Component {
     let { currentDate } = this.state;
     let formatedDate = new Date(currentDate).getTime();
 
+    console.log('FE call get-list-patient-for-doctor with:', {
+      doctorId: user?.id,
+      date: formatedDate,
+  });
+
     let res = await getAllPatientForDoctorService({
       doctorId: user.id,
       date: formatedDate,
       // tạm thời chưa filter theo time, status, keyword ở BE
     });
+
+    console.log('check res: ', res);
 
     if (res && res.errCode === 0) {
       this.setState({

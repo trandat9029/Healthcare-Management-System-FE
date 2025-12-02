@@ -1,0 +1,247 @@
+// src/containers/System/Clinic/UpdateClinic.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import './UpdateClinic.scss';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import CommonUtils from '../../../utils/CommonUtils';
+import { handleUpdateClinic } from '../../../services/userService';
+import { toast } from 'react-toastify';
+
+const mdParser = new MarkdownIt();
+
+class UpdateClinic extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: null,
+      name: '',
+      address: '',
+      imageBase64: '',
+      descriptionHTML: '',
+      descriptionMarkdown: '',
+      loadedId: null,
+    };
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { isOpen, currentClinic } = nextProps;
+
+    if (isOpen && currentClinic && currentClinic.id !== prevState.loadedId) {
+      return {
+        id: currentClinic.id,
+        name: currentClinic.name || '',
+        address: currentClinic.address || '',
+        imageBase64:
+          currentClinic.imageBase64 ||
+          currentClinic.image ||
+          '',
+        descriptionHTML: currentClinic.descriptionHTML || '',
+        descriptionMarkdown: currentClinic.descriptionMarkdown || '',
+        loadedId: currentClinic.id,
+      };
+    }
+
+    if (isOpen && !currentClinic && prevState.loadedId !== null) {
+      return {
+        id: null,
+        name: '',
+        address: '',
+        imageBase64: '',
+        descriptionHTML: '',
+        descriptionMarkdown: '',
+        loadedId: null,
+      };
+    }
+
+    return null;
+  }
+
+  handleOnChangeInput = (event, field) => {
+    this.setState({
+      [field]: event.target.value,
+    });
+  };
+
+  handleEditorChange = ({ html, text }) => {
+    this.setState({
+      descriptionMarkdown: text,
+      descriptionHTML: html,
+    });
+  };
+
+  handleOnChangeImage = async (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      const base64 = await CommonUtils.getBase64(file);
+      this.setState({
+        imageBase64: base64,
+      });
+    }
+  };
+
+  handleUpdateClinic = async () => {
+    const {
+      id,
+      name,
+      address,
+      imageBase64,
+      descriptionHTML,
+      descriptionMarkdown,
+    } = this.state;
+
+    if (!id) {
+      toast.error('Thiếu id phòng khám');
+      return;
+    }
+
+    try {
+      const inputData = {
+        id,
+        name,
+        address,
+        imageBase64,
+        descriptionHTML,
+        descriptionMarkdown,
+      };
+
+      const res = await handleUpdateClinic(inputData);
+      const data = res && res.data ? res.data : res;
+
+      if (data && data.errCode === 0) {
+        toast.success('Cập nhật phòng khám thành công');
+        if (this.props.onUpdated) {
+          this.props.onUpdated();
+        }
+      } else {
+        toast.error(data.errMessage || 'Cập nhật phòng khám thất bại');
+      }
+    } catch (err) {
+      console.log('handleUpdateClinic error', err);
+      toast.error('Có lỗi xảy ra khi cập nhật');
+    }
+  };
+
+  render() {
+    const { isOpen, onClose } = this.props;
+    const {
+      name,
+      address,
+      imageBase64,
+      descriptionMarkdown,
+    } = this.state;
+
+    if (!isOpen) return null;
+
+    return (
+      <div className="specialty-modal-overlay" onClick={onClose}>
+        <div
+          className="specialty-modal-container"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="specialty-modal-header">
+            <div className="specialty-modal-title">Cập nhật phòng khám</div>
+            <button className="specialty-modal-close" onClick={onClose}>
+              ×
+            </button>
+          </div>
+
+          <div className="specialty-modal-body">
+            <div className="add-new-specialty row">
+              <div className="col-6 form-group mb-3">
+                <label className="mb-2">Tên phòng khám</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={name}
+                  onChange={(event) =>
+                    this.handleOnChangeInput(event, 'name')
+                  }
+                />
+              </div>
+
+              <div className="col-6 form-group mb-3">
+                <label className="mb-2">Địa chỉ</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  value={address}
+                  onChange={(event) =>
+                    this.handleOnChangeInput(event, 'address')
+                  }
+                />
+              </div>
+
+              <div className="img-upload col-6 form-group mb-3">
+                <label className="mb-2">Ảnh phòng khám</label>
+                <div className="upload-wrapper">
+                  <label
+                    htmlFor="clinicImage"
+                    className="upload-button"
+                  >
+                    <i className="fas fa-upload"></i>
+                    <span>Chọn ảnh</span>
+                  </label>
+
+                  <span className="upload-file-name">
+                    {imageBase64
+                      ? 'Đã chọn ảnh'
+                      : 'Chưa có tệp nào được chọn'}
+                  </span>
+
+                  {imageBase64 && (
+                    <div className="upload-preview">
+                      <img src={imageBase64} alt="Ảnh phòng khám" />
+                    </div>
+                  )}
+
+                  <input
+                    id="clinicImage"
+                    className="form-control-file"
+                    type="file"
+                    accept="image/*"
+                    onChange={this.handleOnChangeImage}
+                    hidden
+                  />
+                </div>
+              </div>
+
+              <div className="col-12 form-group">
+                <MdEditor
+                  style={{ height: '400px' }}
+                  renderHTML={(text) => mdParser.render(text)}
+                  onChange={this.handleEditorChange}
+                  value={descriptionMarkdown}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="specialty-modal-footer">
+            <button
+              className="btn-save-specialty"
+              onClick={this.handleUpdateClinic}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    language: state.app.language,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UpdateClinic);

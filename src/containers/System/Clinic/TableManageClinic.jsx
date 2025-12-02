@@ -1,9 +1,11 @@
+// src/containers/System/Clinic/TableManageClinic.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './TableManageClinic.scss';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import ManageClinic from './ManageClinic';
+import UpdateClinic from './UpdateClinic';
 import { getAllCodeService } from '../../../services/userService';
 
 class TableManageClinic extends Component {
@@ -12,15 +14,16 @@ class TableManageClinic extends Component {
     this.state = {
       clinics: [],
       page: 1,
-      limit: 8,
+      limit: 7,
       sortBy: 'name',
       sortOrder: 'ASC',
 
-      showClinicModal: false,
+      showClinicModal: false,       // modal tạo mới
+      showUpdateModal: false,       // modal sửa
+      selectedClinic: null,         // phòng khám đang sửa
 
-      // filter tỉnh thành
       addressFilter: 'ALL',
-      addressOptions: [], // { value, label }
+      addressOptions: [],
     };
   }
 
@@ -38,20 +41,16 @@ class TableManageClinic extends Component {
     }
   }
 
-  // lấy danh sách tỉnh thành từ allCode type PROVINCE
   loadProvinceOptions = async () => {
     try {
-      const res = await getAllCodeService('PROVINCE'); // đúng type
-      console.log('check adrresOp: ', res)
-      // tùy vào config axios, nếu res.data mới là payload thì sửa lại
+      const res = await getAllCodeService('PROVINCE');
       const payload = res ? res : [];
-      console.log('check payload: ', payload)
       if (payload && payload.errCode === 0 && Array.isArray(payload.data)) {
         const options = [
           { value: 'ALL', label: 'Tất cả địa chỉ' },
           ...payload.data.map((item) => ({
-            value: item.keyMap,   // PRO1, PRO2
-            label: item.valueVi,  // Hà Nội, Đà Nẵng
+            value: item.keyMap,
+            label: item.valueVi,
           })),
         ];
 
@@ -115,18 +114,44 @@ class TableManageClinic extends Component {
     return sortOrder === 'ASC' ? ' ↑' : ' ↓';
   };
 
+  // tạo mới
   openClinicModal = () => {
-    this.setState({ showClinicModal: true });
+    this.setState({
+      showClinicModal: true,
+    });
   };
 
   closeClinicModal = () => {
-    this.setState({ showClinicModal: false });
+    this.setState({
+      showClinicModal: false,
+    });
+  };
+
+  // sửa
+  openUpdateClinicModal = (clinic) => {
+    this.setState({
+      showUpdateModal: true,
+      selectedClinic: clinic,
+    });
+  };
+
+  closeUpdateClinicModal = () => {
+    this.setState({
+      showUpdateModal: false,
+      selectedClinic: null,
+    });
   };
 
   handleClinicSaved = async () => {
     const { page, limit, sortBy, sortOrder } = this.state;
     await this.props.fetchAllClinicRedux(page, limit, sortBy, sortOrder);
     this.closeClinicModal();
+  };
+
+  handleClinicUpdated = async () => {
+    const { page, limit, sortBy, sortOrder } = this.state;
+    await this.props.fetchAllClinicRedux(page, limit, sortBy, sortOrder);
+    this.closeUpdateClinicModal();
   };
 
   handleChangeAddressFilter = (event) => {
@@ -141,16 +166,15 @@ class TableManageClinic extends Component {
       page,
       limit,
       showClinicModal,
+      showUpdateModal,
+      selectedClinic,
       addressFilter,
       addressOptions,
     } = this.state;
     const { totalClinics } = this.props;
 
-    console.log('check adrres: ', addressOptions)
-
     const totalPages = Math.ceil((totalClinics || 0) / limit) || 1;
 
-    // filter theo provinceId
     const filteredClinics = (clinics || []).filter((clinic) => {
       if (addressFilter === 'ALL') return true;
       return clinic.provinceId === addressFilter;
@@ -246,7 +270,10 @@ class TableManageClinic extends Component {
                         )}
                       </td>
                       <td>
-                        <button className="btn-edit">
+                        <button
+                          className="btn-edit"
+                          onClick={() => this.openUpdateClinicModal(item)}
+                        >
                           <i className="fa-solid fa-pen-to-square" />
                         </button>
                         <button className="btn-delete">
@@ -292,6 +319,15 @@ class TableManageClinic extends Component {
             isOpen={showClinicModal}
             onClose={this.closeClinicModal}
             onSaved={this.handleClinicSaved}
+          />
+        )}
+
+        {showUpdateModal && (
+          <UpdateClinic
+            isOpen={showUpdateModal}
+            currentClinic={selectedClinic}
+            onClose={this.closeUpdateClinicModal}
+            onUpdated={this.handleClinicUpdated}
           />
         )}
       </>
