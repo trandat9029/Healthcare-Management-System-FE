@@ -155,7 +155,6 @@ class ManageDoctor extends Component {
 
     try {
       let res = await getDetailInfoDoctorService(doctor.id);
-
       if (res && res.errCode === 0 && res.data && res.data.Markdown) {
         let detail = res.data;
         let markdown = detail.Markdown;
@@ -241,7 +240,7 @@ class ManageDoctor extends Component {
     const { hasOldData } = this.state;
     const doctor = this.props.currentDoctor;
 
-    if (!doctor || !doctor.id) return;
+    if (!doctor || !doctor.id) return;    
 
     this.props.saveDetailDoctorRedux({
       doctorId: doctor.id,
@@ -253,8 +252,8 @@ class ManageDoctor extends Component {
       selectedPrice: this.state.selectedPrice?.value || '',
       selectedPayment: this.state.selectedPayment?.value || '',
       selectedProvince: this.state.selectedProvince?.value || '',
-      selectedSpecialty: this.state.selectedSpecialty?.value || '',
-      selectedClinic: this.state.selectedClinic?.value || '',
+      specialtyId: this.state.selectedSpecialty?.value || '',
+      clinicId: this.state.selectedClinic?.value || '',
       nameClinic: this.state.nameClinic,
       addressClinic: this.state.addressClinic,
       note: this.state.note,

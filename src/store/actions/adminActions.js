@@ -409,9 +409,12 @@ export const getRequiredDoctorInfo=  () => {
                     resPrice: resPrice.data,
                     resPayment: resPayment.data,
                     resProvince: resProvince.data,
-                    resSpecialty: resSpecialty.data,
+                    resSpecialty: resSpecialty.specialties,
                     resClinic: resClinic.data,
                 }
+
+                // console.log('check data requid: ', resClinic);
+                
                 dispatch(fetchRequiredDoctorInfoSuccess(data));
             }else {
                 dispatch(fetchRequiredDoctorInfoFailed());

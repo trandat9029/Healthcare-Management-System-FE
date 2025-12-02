@@ -5,29 +5,35 @@ import Slider from "react-slick";
 import { getAllSpecialtyService } from "../../../services/userService";
 import { FormattedMessage } from "react-intl";
 import { withRouter } from "react-router";
+
 class Specialty extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       dataSpecialty: [],
-    }
+    };
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     let res = await getAllSpecialtyService();
-    if(res && res.errCode === 0){
+    if (res && res.errCode === 0) {
       this.setState({
-        dataSpecialty: res.data ? res.data : [],
-      })
-          console.log('check data: ', this.state);
+        dataSpecialty: res.specialties ? res.specialties : [],
+      });
     }
   }
 
-  handleViewDetailSpecialty = (item) =>{
-    if(this.props.history){
-            this.props.history.push(`/detail-specialty/${item.id}`);
-        }
-  }
+  handleViewDetailSpecialty = (item) => {
+    if (this.props.history) {
+      this.props.history.push(`/detail-specialty/${item.id}`);
+    }
+  };
+
+  handleViewMoreSpecialties = () => {
+    if (this.props.history) {
+      this.props.history.push(`/specialties`);
+    }
+  };
 
   render() {
     let { dataSpecialty } = this.state;
@@ -40,31 +46,34 @@ class Specialty extends Component {
               <span className="title-section">
                 <FormattedMessage id="homepage.specialty-popular" />
               </span>
-              <button className="btn-section">
+              <button
+                className="btn-section"
+                onClick={this.handleViewMoreSpecialties}
+              >
                 <FormattedMessage id="homepage.more-info" />
               </button>
             </div>
             <div className="section-body">
-              <Slider {...this.props.settings} >
-                {dataSpecialty && dataSpecialty.length > 0 &&
-                  dataSpecialty.map((item, index) =>{
+              <Slider {...this.props.settings}>
+                {dataSpecialty &&
+                  dataSpecialty.length > 0 &&
+                  dataSpecialty.map((item, index) => {
                     return (
-                        <div 
-                        
-                          className="section-customize specialty-child" 
-                          key={index}
-                          onClick={() => this.handleViewDetailSpecialty(item)}
-                        >
-                          <div 
+                      <div
+                        className="section-customize specialty-child"
+                        key={index}
+                        onClick={() => this.handleViewDetailSpecialty(item)}
+                      >
+                        <div className="specialty-card">
+                          <div
                             className="bg-image section-specialty"
                             style={{ backgroundImage: `url(${item.image})` }}
                           ></div>
                           <h3 className="specialty-name">{item.name}</h3>
+                        </div>
                       </div>
-                    )
-                  })
-                }
-
+                    );
+                  })}
               </Slider>
             </div>
           </div>
@@ -77,14 +86,12 @@ class Specialty extends Component {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.user.isLoggedIn,
-    language: state.app.language
-
+    language: state.app.language,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-  };
+  return {};
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Specialty));

@@ -1,0 +1,63 @@
+.section-outstanding-doctor {
+  background: #f9fbff; /* có thể đổi cho hợp mắt hơn */
+
+  .doctor-child {
+    padding: 10px;
+    cursor: pointer;
+
+    .doctor-card {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      border: 1px solid #ece4e4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
+    }
+
+    .doctor-avatar-wrapper {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .doctor-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .doctor-info {
+      text-align: center;
+    }
+
+    .doctor-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+
+    .doctor-specialty {
+      font-size: 14px;
+      color: #888;
+      margin: 0;
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .doctor-card:hover .doctor-name {
+      color: #45c3d2;
+    }
+  }
+}

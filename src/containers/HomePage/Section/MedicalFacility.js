@@ -2,79 +2,92 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./MedicalFacility.scss";
 import Slider from "react-slick";
-import { getAllClinicService } from '../../../services/userService'
+import { getAllClinicService } from "../../../services/userService";
 import { withRouter } from "react-router";
 
 class MedicalFacility extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      dataClinics: []
-    }
+      dataClinics: [],
+    };
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     let res = await getAllClinicService();
-    if(res && res.errCode === 0 ){
+    if (res && res.errCode === 0) {
       this.setState({
-        dataClinics: res.data ? res.data : []
-      })
+        dataClinics: res.data ? res.data : [],
+      });
     }
   }
 
-  handleViewDetailClinic = (clinic) =>{
-    if(this.props.history){
-      this.props.history.push(`/detail-clinic/${clinic.id}`)
+  handleViewDetailClinic = (clinic) => {
+    if (this.props.history) {
+      this.props.history.push(`/detail-clinic/${clinic.id}`);
     }
-  }
+  };
+
+  handleViewMoreClinics = () => {
+    if (this.props.history) {
+      this.props.history.push(`/clinics`);
+    }
+  };
 
   render() {
     let { dataClinics } = this.state;
-    // console.log('check state: ', this.state);
-    
 
     return (
-        <>
-          <div className="section-share section-medical-facility">
-            <div className="section-container">
-              <div className="section-header">
-                <span className="title-section">Cơ sở y tế nổi bật</span>
-                <button className="btn-section">xem thêm</button>
-              </div>
-              <div className="section-body">
-                <Slider {...this.props.settings} >
-                  {dataClinics && dataClinics.length > 0 &&
-                  dataClinics.map((item, index) =>{
+      <>
+        <div className="section-share section-medical-facility">
+          <div className="section-container">
+            <div className="section-header">
+              <span className="title-section">Cơ sở y tế nổi bật</span>
+              <button
+                className="btn-section"
+                onClick={this.handleViewMoreClinics}
+              >
+                xem thêm
+              </button>
+            </div>
+            <div className="section-body">
+              <Slider {...this.props.settings}>
+                {dataClinics &&
+                  dataClinics.length > 0 &&
+                  dataClinics.map((item, index) => {
                     return (
-                      <div 
-                        className="section-customize clinic-child" 
+                      <div
+                        className="section-customize clinic-child"
                         key={index}
-                        onClick={() => this.handleViewDetailClinic(item)}  
+                        onClick={() => this.handleViewDetailClinic(item)}
                       >
-                        <div className="bg-image section-medical-facility"
-                          style={{ backgroundImage: `url(${item.image})` }}
-                        ></div>
-                        <h3 className="clinic-name">{item.name}</h3>
+                        <div className="clinic-card">
+                          <div className="clinic-img-wrapper">
+                            <img src={item.image} alt={item.name} />
+                          </div>
+
+                          <h3 className="clinic-name">{item.name}</h3>
+                        </div>
                       </div>
-                    )
-                  })
-                  }
-                </Slider>
-              </div>
+                    );
+                  })}
+              </Slider>
             </div>
           </div>
-        </>
-    )
+        </div>
+      </>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
-  return {
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MedicalFacility));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MedicalFacility)
+);
