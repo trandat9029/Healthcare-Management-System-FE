@@ -481,6 +481,7 @@ export const fetchAllSpecialty = (
 // get all clinic
 
 // FETCH ALL CLINIC
+// action
 export const fetchAllClinic = (
   page = 1,
   limit = 8,
@@ -489,7 +490,12 @@ export const fetchAllClinic = (
 ) => {
   return async (dispatch) => {
     try {
-      let res = await getAllClinicService(page, limit, sortBy, sortOrder);
+      const res = await getAllClinicService({
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+      }); // chú ý truyền object
 
       if (res && res.errCode === 0) {
         dispatch({
@@ -502,18 +508,15 @@ export const fetchAllClinic = (
           },
         });
       } else {
-        dispatch({
-          type: actionTypes.FETCH_ALL_CLINIC_FAILED,
-        });
+        dispatch({ type: actionTypes.FETCH_ALL_CLINIC_FAILED });
       }
     } catch (error) {
       console.log('FETCH_ALL_CLINIC_FAILED:', error);
-      dispatch({
-        type: actionTypes.FETCH_ALL_CLINIC_FAILED,
-      });
+      dispatch({ type: actionTypes.FETCH_ALL_CLINIC_FAILED });
     }
   };
 };
+
 
 
 

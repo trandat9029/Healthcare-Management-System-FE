@@ -32,12 +32,16 @@ class HomeHeader extends Component {
 
     const currentPath = location.pathname;
 
-    // nếu ở trang home thì không active các mục này
-    if (currentPath === "/" || currentPath === "/home") return false;
+    // Trang chủ chỉ active khi đúng / hoặc /home
+    if (link.key === "home") {
+      return currentPath === "/" || currentPath === "/home";
+    }
 
-    // check xem path hiện tại có bắt đầu bằng 1 trong các matchPaths
-    return link.matchPaths.some((p) => currentPath.indexOf(p) === 0);
+    // Các mục khác dùng startsWith cho /specialties, /detail-specialty...
+    return link.matchPaths.some((p) => currentPath.startsWith(p));
   };
+
+
 
   render() {
     const language = this.props.language;

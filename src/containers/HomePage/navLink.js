@@ -1,33 +1,30 @@
-// mainNavLinks.js
-import { path } from "../../utils";
-
 export const MAIN_NAV_LINKS = [
   {
+    key: "home",
+    to: "/home",
+    titleId: "homeHeader.homepage",
+    subId: "homeHeader.select-doctor",
+    matchPaths: ["/", "/home"],        // ✅ thêm "/" vào đây
+  },
+  {
     key: "specialty",
-    to: "/specialties",              // hoặc path.SPECIALTIES nếu bạn đã khai báo
+    to: "/specialties",
     titleId: "homeHeader.specialty",
     subId: "homeHeader.search-doctor",
     matchPaths: ["/specialties", "/detail-specialty"],
   },
   {
     key: "clinic",
-    to: "/clinics",                 // hoặc path.CLINICS
+    to: "/clinics",
     titleId: "homeHeader.health-facility",
     subId: "homeHeader.select-room",
     matchPaths: ["/clinics", "/detail-clinic"],
   },
   {
-    key: "doctor",
-    to: "/doctors",                 // hoặc path.DOCTORS
-    titleId: "homeHeader.doctor",
-    subId: "homeHeader.select-doctor",
-    matchPaths: ["/doctors", "/detail-doctor"],
-  },
-  {
-    key: "handbook",
-    to: "/handbooks",               // hoặc path.HANDBOOKS
-    titleId: "homeHeader.handbook",
-    subId: "homeHeader.check-health",
-    matchPaths: ["/handbooks", "/detail-handbook"],
+    key: "history",
+    to: "/histories",
+    titleId: "homeHeader.history",
+    subId: "homeHeader.check-history",
+    matchPaths: ["/histories"],
   },
 ];

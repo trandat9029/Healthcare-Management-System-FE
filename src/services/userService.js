@@ -84,10 +84,8 @@ const createNewClinicService = (data) =>{
     return axios.post(`/api/create-new-clinic`, data)
 }
 
-const getAllClinicService = (page, limit, sortBy, sortOrder) => {
-  return axios.get('/api/get-clinic', {
-    params: { page, limit, sortBy, sortOrder },
-  });
+const getAllClinicService = (params) => {
+  return axios.get('/api/get-clinic', {params });
 };
 
 const getAllDetailClinicByIdService = (data) =>{

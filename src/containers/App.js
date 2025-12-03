@@ -30,6 +30,8 @@ import Doctors from "./Patient/Doctor/Doctors";
 import Handbooks from "./Patient/Handbook/Handbooks";
 
 import ClientLayout from "./Patient/ClientLayout";
+import Histories from "./Patient/History/Histories";
+import HandbookDetail from "./Patient/Handbook/HandbookDetail";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -119,6 +121,14 @@ class App extends Component {
                       </ClientLayout>
                     )}
                   />
+                  <Route
+                    path="/histories"
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <Histories {...props} />
+                      </ClientLayout>
+                    )}
+                  />
 
                   <Route
                     path={path.DETAIL_DOCTOR}
@@ -143,6 +153,15 @@ class App extends Component {
                     render={(props) => (
                       <ClientLayout showBanner={false}>
                         <DetailClinic {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path={path.DETAIL_HANDBOOK}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <HandbookDetail {...props} />
                       </ClientLayout>
                     )}
                   />

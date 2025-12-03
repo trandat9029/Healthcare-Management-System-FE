@@ -10,6 +10,7 @@ export const path = {
     CLINICS: '/clinics',
     DOCTORS: '/doctors',
     HANDBOOK: '/handbooks',
+    HISTORY: '/histories',
 
     DETAIL_DOCTOR: '/detail-doctor/:id',
     DETAIL_SPECIALTY: '/detail-specialty/:id',

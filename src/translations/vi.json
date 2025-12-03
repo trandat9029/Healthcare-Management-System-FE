@@ -10,7 +10,10 @@
         "handbook": "Cẩm nang",
         "check-health":"Khám sức khỏe tổng quát",
         "support": "Hỗ trợ",
-        "welcome": "Xin chào, "
+        "welcome": "Xin chào, ",
+        "homepage": "Trang chủ" ,
+        "history": "Lịch sử khám",
+        "check-history": "Tìm lịch khám đã đặt"
     },
 
     "banner":{

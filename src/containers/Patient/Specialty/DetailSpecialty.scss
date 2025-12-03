@@ -1,77 +1,274 @@
-.detail-specialty-container{
+.detail-specialty-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  padding: 24px 0;
 
-    .description-specialty{
-        background-color:  white !important;
-        padding: 10px;
-        margin: 15px 0;
+  /* WRAPPER CĂN GIỮA */
+  .detail-specialty-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
 
-        h1,h2,h3 {
-            // font-size: 16px;
-            font-weight: 600;
+  /* BREADCRUMB */
+  .breadcrumb {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+
+    i {
+      color: #0abde3;
+      margin-right: 6px;
+      font-size: 18px;
+    }
+
+    span {
+      line-height: 1;
+    }
+
+    .breadcrumb-current {
+      font-weight: 700;
+      margin-left: 4px;
+      color: #111827;
+    }
+  }
+
+  /* KHUNG CHÍNH */
+  .detail-specialty-body {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 24px 28px 28px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* HEADER CHUYÊN KHOA: layout 8 - 4 */
+  .specialty-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 8 - 4 */
+    align-items: center;
+    gap: 32px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: #f7fbff;
+    border: 1px solid #e5e7eb;
+
+    .specialty-header-text {
+      max-width: 100%;
+    }
+
+    .specialty-title {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .specialty-subtitle {
+      margin: 0;
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .specialty-header-image {
+      justify-self: end;
+      width: 150px;
+      height:150px;
+      border-radius: 14px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    }
+  }
+
+  /* MÔ TẢ + XEM THÊM */
+  .description-specialty {
+  position: relative;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 18px 84px 46px 20px;  /* tăng padding-right để chừa chỗ cho nút */
+  border: 1px solid #e5e7eb;
+  transition: max-height 0.2s ease;
+
+  &.collapsed {
+    max-height: 240px;
+    overflow: hidden;
+  }
+
+  &.collapsed::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 46px;                 /* giữ như cũ. gradient không che nút */
+    height: 70px;
+    
+    pointer-events: none;
+  }
+
+  &.expanded {
+    max-height: none;
+  }
+
+  .specialty-description-html {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #111827;
+  }
+
+  /* ĐẶT NÚT Ở GÓC PHẢI DƯỚI */
+  .toggle-description {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .toggle-description-btn {
+    border: none;
+    outline: none;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #0ea5e9;
+      color: #ffffff;
+    }
+  }
+}
+
+
+  /* FILTER TỈNH */
+  .search-sp-doctor {
+    display: flex;
+    justify-content: flex-start;
+
+    select {
+      min-width: 200px;
+      height: 40px;
+      padding: 6px 14px;
+      // border-radius: 999px;
+      border: 1px solid #c7d2e3;
+      outline: none;
+      cursor: pointer;
+      background-color: #f9fafb;
+      font-size: 15px;
+      color: #111827;
+      transition: 0.2s;
+
+      &:hover {
+        border-color: #0abde3;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      }
+    }
+  }
+
+  /* MỖI BÁC SĨ */
+  .each-doctor {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    padding: 18px 20px;
+    margin: 8px 0;
+    background-color: #f9fafb;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    transition: 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: #0abde3;
+      box-shadow: 0 6px 22px rgba(15, 23, 42, 0.1);
+    }
+
+    .dt-content-left {
+      width: 40%;
+      border-right: 1px solid #e5e7eb;
+      padding-right: 20px;
+    }
+
+    .dt-content-right {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-left: 10px;
+
+      .doctor-schedule {
+        .doctor-schedule-container {
+          border-right: none !important;
         }
-       
-    }
+      }
 
-    .search-sp-doctor{
-        select{
-            height: 30px;
-            padding: 5px 8px;
-            border: none;
-            outline: none;
-            border-radius: 3px;
-            cursor: pointer;
+      .doctor-extra-info {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 10px;
+
+        .doctor-extra-info-container {
+          padding-left: 0 !important;
         }
+      }
+    }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1200px) {
+    .detail-specialty-wrapper {
+      padding: 0 20px;
     }
 
-    .detail-specialty-body{
-        padding: 0 100px;
-        background-color: #eee;
-        display: flex;
-        flex-direction: column;
+    .specialty-header {
+      grid-template-columns: 3fr 2fr;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .specialty-header {
+      grid-template-columns: 1fr;
+      text-align: left;
+
+      .specialty-header-image {
+        justify-self: flex-start;
+      }
     }
 
-    .each-doctor{
-        display: flex;
+    .each-doctor {
+      flex-direction: column;
+
+      .dt-content-left,
+      .dt-content-right {
         width: 100%;
-        min-height: 300px;
-        margin: 15px 0;
-        background-color: #fff;
-        box-shadow: 0 1px 6px #20212447;
-        border-radius: 8px;
-        padding: 10px;
+        border-right: none;
+        padding: 0;
+      }
 
-        .dt-content-left{
-            width: 50%;
-            border-right: 1px solid #ddd;
-            
-            .profile-doctor-container{
-                .down{
-                    padding: 8px;
-                }
-            }
-        }
-
-        .dt-content-right{
-            width: 50%;
-            padding: 5px;
-
-            .doctor-schedule{
-                .doctor-schedule-container{
-                    border-right: unset !important;
-                }
-            }
-
-            .doctor-extra-info{
-                border-top: 1px solid #ddd;
-                margin-top: 10px;
-                padding-top: 10px;
-
-                .doctor-extra-info-container{
-                    padding-left: 0 !important;
-                }
-            }
-
-            
-        }
+      .dt-content-right {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 12px;
+      }
     }
+  }
+
+  @media (max-width: 640px) {
+    .breadcrumb {
+      font-size: 14px;
+    }
+  }
 }

@@ -1,80 +1,109 @@
-.doctor-schedule-container{
-    border-right: 1px solid #ddd;
-    height: 100%;
+.doctor-schedule-container {
+  border-right: 1px solid #e5e7eb;
+  padding-right: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-    .all-schedule{
+  .all-schedule {
+    select {
+      width: 50%;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      outline: none;
+      cursor: pointer;
+      color: #0f766e;
+      font-weight: 600;
+      font-size: 14px;
+      background-color: #ecfeff;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
 
-        select{
-            border-bottom: 1px solid #ddd;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            outline: none;
-            cursor: pointer;
-            padding: 10px 0;
-            color: #337ab7;
-            font-weight: 600;
+      &:hover {
+        border-color: #0abde3;
+        box-shadow: 0 0 0 3px rgba(34, 197, 235, 0.18);
+      }
 
-            option{
-                cursor: pointer;
-            }
-        }
+      option {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .all-available-time {
+    .text-calendar {
+      color: #111827;
+      display: flex;
+      align-items: center;
+      margin: 8px 0 6px;
+
+      i {
+        color: #0abde3;
+        margin-right: 6px;
+      }
+
+      span {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+      }
     }
 
-    .all-available-time{
-        .text-calendar{
-            color: #333;
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
+    .time-content {
+      .time-content-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
 
-            span{
-                font-weight: 600;
-                display: block;
-                width: 100px;
-                margin-left: 5px;
-                text-transform: uppercase;
-            }
+        button {
+          padding: 8px 10px;
+          border: none;
+          outline: none;
+          background-color: #facc15;
+          min-width: 118px;
+          border-radius: 8px;
+          font-weight: 600;
+          color: #1f2933;
+          font-size: 13px;
+          cursor: pointer;
+          box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+          transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+
+          &:hover {
+            background-color: #22c1d6;
+            color: #ffffff;
+            transform: translateY(-1px);
+          }
         }
 
-        .time-content{
-            
-            .time-content-btns{
-                display: flex;
-                gap: 15px;
-                flex-wrap: wrap;
-            
-
-                button{
-                    padding: 10px;
-                    border: none;
-                    outline: none;
-                    background-color: #fff04b;
-                    min-width: 120px;
-                    border-radius: 5px;
-                    font-weight: 600;
-                    color: #333;
-
-                    &:hover{
-                        background-color: #45c3d2;
-                        color: white;
-                    }
-                }
-                .btn-time-vi{
-                    min-width: 120px;
-                }
-                .btn-time-en{
-                    min-width: 170px;
-                }
-                .no-schedule{
-                    font-style: italic;
-                    font-size: 14px;
-                }
-            }
-
-            .book-free{
-                margin-top: 10px;
-            }
+        .btn-time-vi {
+          min-width: 118px;
         }
+
+        .btn-time-en {
+          min-width: 160px;
+        }
+      }
+
+      .book-free {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #4b5563;
+
+        span i {
+          margin: 0 4px;
+          color: #f97316;
+        }
+      }
+
+      .no-schedule {
+        margin-top: 6px;
+        font-size: 14px;
+        font-style: italic;
+        color: #6b7280;
+      }
     }
+  }
 }

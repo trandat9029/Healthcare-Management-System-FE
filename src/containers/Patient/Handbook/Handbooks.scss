@@ -1,0 +1,139 @@
+.handbooks-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px 200px 60px 200px;
+}
+
+/* breadcrumb */
+
+.handbooks-page .breadcrumb {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: #444;
+
+  i {
+    color: #0abde3;
+    margin-right: 6px;
+    font-size: 18px;
+  }
+}
+
+/* ô search */
+
+.handbooks-page .search-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 32px;
+
+  input {
+    width: 380px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #fff;
+
+    &:focus {
+      border-color: #0abde3;
+      box-shadow: 0 0 6px rgba(10, 189, 227, 0.25);
+    }
+  }
+
+  i {
+    font-size: 18px;
+    margin-left: -35px;
+    margin-top: 12px;
+    color: #666;
+  }
+}
+
+/* lưới bài viết */
+
+.handbooks-page .handbook-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 28px;
+}
+
+/* item */
+
+.handbooks-page .handbook-item {
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.handbooks-page .handbook-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+}
+
+.handbooks-page .handbook-image {
+  width: 100%;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.handbooks-page .handbook-body {
+  padding: 14px 16px 16px 16px;
+}
+
+.handbooks-page .handbook-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.handbooks-page .handbook-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.handbooks-page .no-result {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+/* responsive */
+
+@media (max-width: 1200px) {
+  .handbooks-page {
+    padding: 20px 40px 50px 40px;
+  }
+
+  .handbooks-page .handbook-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .handbooks-page {
+    padding: 20px 16px 40px 16px;
+  }
+
+  .handbooks-page .handbook-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .handbooks-page .handbook-grid {
+    grid-template-columns: 1fr;
+  }
+}

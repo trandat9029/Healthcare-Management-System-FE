@@ -40,8 +40,8 @@ const handleGetListPostHandbook = (page, limit, sortBy, sortOrder) => {
     });
 };
 
-const handleGetDetailHandbookById = () => {
-    return axios.get('/api/handbook/detail');
+const handleGetDetailHandbookById = (inputId) => {
+    return axios.get(`/api/handbook/detail?id=${inputId}`);
 };
 
 

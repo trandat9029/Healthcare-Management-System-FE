@@ -10,7 +10,10 @@
         "handbook": "Handbook",
         "check-health":"General health check",
         "support": "Support",
-        "welcome": "Welcome, "
+        "welcome": "Welcome, ",
+        "homepage": "Homepage" ,
+        "history": "Medical history",
+        "check-history": "Find a booked appointment"
         
     },
     "banner":{
