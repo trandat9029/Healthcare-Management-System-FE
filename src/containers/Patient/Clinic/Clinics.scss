@@ -10,36 +10,36 @@
     padding: 0 32px;
   }
 
-  /* breadcrumb */
-  .breadcrumb {
-    font-size: 16px;
-    margin: 0 auto 24px;
-    max-width: 1440px;
+/* breadcrumb */
+.breadcrumb {
+  font-size: 16px;
+  margin: 0 auto 24px;
+  max-width: 1440px;
     padding: 0 32px;
-    color: #444;
-    display: flex;
-    align-items: center;
+  color: #444;
+  display: flex;
+  align-items: center;
 
-    i {
-      color: #0abde3;
-      margin-right: 6px;
-      font-size: 18px;
-    }
+  i {
+    color: #0abde3;
+    margin-right: 6px;
+    font-size: 18px;
   }
+}
 
   /* ô tìm kiếm */
   .search-box {
-    max-width: 1440px;
+  max-width: 1440px;
     margin: 0 auto 32px;
-    padding: 0 32px;
+  padding: 0 32px;
 
-    display: flex;
+  display: flex;
     justify-content: flex-end;
 
-    input {
+  input {
       width: 380px;
       padding: 12px 20px;
-      border-radius: 999px;
+    border-radius: 999px;
       border: 1px solid #d1d5db;
       outline: none;
       font-size: 16px;
@@ -75,16 +75,16 @@
       text-align: center;
       padding: 14px 12px 18px;
       border-radius: 14px;
-      background-color: #ffffff;
+  background-color: #ffffff;
       border: 1px solid #e5e7eb;
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
       transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease,
         background-color 0.15s ease;
 
       .clinic-image {
-        width: 100%;
+  width: 100%;
         aspect-ratio: 4 / 3; /* luôn cùng tỉ lệ, card không bị lệch */
-        border-radius: 10px;
+  border-radius: 10px;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -95,14 +95,14 @@
       .clinic-name {
         min-height: 44px;
         display: flex;
-        align-items: center;
-        justify-content: center;
+  align-items: center;
+  justify-content: center;
 
         font-size: 17px;
         font-weight: 700;
         color: #111827;
         line-height: 1.3;
-      }
+}
 
       &:hover {
         transform: translateY(-3px);
@@ -112,7 +112,7 @@
 
         .clinic-name {
           color: #0abde3;
-        }
+}
       }
     }
 
@@ -148,16 +148,16 @@
 
   @media (max-width: 640px) {
     .breadcrumb {
-      font-size: 14px;
-    }
+  font-size: 14px;
+  }
 
     .search-box {
       justify-content: center;
 
       input {
-        width: 100%;
-      }
+      width: 100%;
     }
+  }
 
     .clinic-grid {
       grid-template-columns: 1fr;

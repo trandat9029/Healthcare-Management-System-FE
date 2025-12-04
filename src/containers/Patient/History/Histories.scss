@@ -1,0 +1,241 @@
+/* breadcrumb */
+.breadcrumb {
+  font-size: 16px;
+  margin: 0 auto 24px;
+  max-width: 1200px;
+  padding: 0 24px;
+  color: #444;
+  display: flex;
+  align-items: center;
+
+  i {
+    color: #0abde3;
+    margin-right: 6px;
+    font-size: 18px;
+  }
+}
+
+/* nền trang */
+.histories-page {
+  width: 100%;
+  background-color: #f5f7fb;
+  padding: 24px 0 48px;
+  /* cho phần body đủ cao để footer tụt xuống dưới */
+  min-height: calc(100vh - 220px);
+}
+
+/* khung chính */
+.histories-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* header */
+.histories-header {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.histories-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #111827;
+}
+
+.histories-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* card tìm kiếm */
+.histories-search-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  margin-bottom: 18px;
+}
+
+.histories-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  input {
+    flex: 1;
+    padding: 11px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    font-size: 15px;
+    background-color: #f9fafb;
+
+    &:focus {
+      border-color: #0ea5e9;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.18);
+      background-color: #ffffff;
+    }
+  }
+
+  button {
+    padding: 11px 24px;
+    font-size: 15px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    transition: 0.12s;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.45);
+      filter: brightness(1.03);
+    }
+
+    &:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}
+
+.histories-error {
+  color: #ef4444;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* card kết quả */
+.histories-result-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 18px 20px 22px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  min-height: 220px; /* cho card nhìn dày dặn hơn */
+}
+
+/* bảng */
+.histories-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+
+  thead {
+    background-color: #f3f4f6;
+  }
+
+  th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+}
+
+/* badge trạng thái */
+.status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-new {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-confirmed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-other {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* nút hủy */
+.btn-cancel {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.1s;
+
+  &.active {
+    background-color: #ef4444;
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
+
+  &.disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+}
+
+/* trạng thái trống */
+.histories-empty {
+  text-align: center;
+  padding: 30px 0 10px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  .histories-container {
+    padding: 0 12px;
+  }
+
+  .histories-search {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .histories-table {
+    font-size: 13px;
+
+    th,
+    td {
+      padding: 8px 8px;
+    }
+  }
+}

@@ -32,6 +32,7 @@ import Handbooks from "./Patient/Handbook/Handbooks";
 import ClientLayout from "./Patient/ClientLayout";
 import Histories from "./Patient/History/Histories";
 import HandbookDetail from "./Patient/Handbook/HandbookDetail";
+import VerifyEmailCancel from "./Patient/VerifyEmailCancel";
 
 class App extends Component {
   handlePersistorState = () => {
@@ -171,6 +172,15 @@ class App extends Component {
                     render={(props) => (
                       <ClientLayout showBanner={false}>
                         <VerifyEmail {...props} />
+                      </ClientLayout>
+                    )}
+                  />
+
+                  <Route
+                    path={path.VERIFY_EMAIL_CANCEL_BOOKING}
+                    render={(props) => (
+                      <ClientLayout showBanner={false}>
+                        <VerifyEmailCancel {...props} />
                       </ClientLayout>
                     )}
                   />

@@ -1,74 +1,203 @@
-.doctor-detail-container{
-    
-    margin: 20px 0;
+// src/containers/Patient/Doctor/DetailDoctor.scss
 
-    .intro-doctor{
-        margin: 0 100px;
-        display: flex;
-        .content-left{
-            width: 20%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 10px 20px;
-        }
+.doctor-detail-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  padding: 24px 0;
 
-        .content-right{
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
+  .doctor-detail-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
 
-            .up{
-                font-size: 20px;
-                font-weight: 600;
-                padding-top: 10px;
-            }
+  /* breadcrumb */
+  .breadcrumb {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
 
-            .down{
-                padding-top: 10px;
-
-                .like-share-plugin{
-                    margin: 10px 0 20px 0;
-                }
-            }
-        }
+    i {
+      color: #0abde3;
+      margin-right: 6px;
+      font-size: 18px;
     }
 
-    .schedule-doctor{
-        margin: 0 100px;
-        display: flex;
-        padding: 10px 0;
-        min-height: 200px;
-
-        .content-left{
-            width: 50%;
-        }
-        .content-right{
-             width: 50%;
-        }
+    span {
+      line-height: 1;
     }
 
-    .detail-info-doctor{
-        padding: 20px 100px;
-        background-color: #f9f9f9;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        
-        h1,h2,
-        h3{
-            font-size: 17px;
-        }
-        
-        img{
-            width: 60%;
-        }
+    .breadcrumb-current {
+      font-weight: 700;
+      margin-left: 4px;
+      color: #111827;
+    }
+  }
+
+  /* card header bác sĩ */
+  .doctor-header-card {
+    display: flex;
+    align-items: stretch;
+    gap: 32px;
+    padding: 24px 26px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+    margin-bottom: 24px;
+  }
+
+  /* thông tin cơ bản */
+  .intro-doctor {
+    flex: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #e5e7eb;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
     }
 
-    .comment-doctor{
-        padding: 10px 100px;
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .name {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+      }
+
+      .short-desc {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #4b5563;
+        max-width: 520px;
+      }
     }
+  }
+
+  /* cột lịch khám + địa chỉ */
+  .doctor-header-right {
+    flex: 1.4;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .schedule-block,
+    .extra-block {
+      flex: 1;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background-color: #f9fafb;
+      padding: 12px 14px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    /* bỏ đường kẻ dọc mặc định trong DoctorSchedule */
+    .schedule-block {
+      .doctor-schedule-container {
+        border-right: none;
+      }
+    }
+
+    /* tinh chỉnh khoảng cách trong extra info */
+    .extra-block {
+      .doctor-extra-info-container {
+        padding-left: 0;
+      }
+    }
+  }
+
+  /* nội dung chi tiết phía dưới */
+  .detail-info-doctor {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    padding: 24px 26px 28px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    border: 1px solid #e5e7eb;
+
+    .detail-content-html {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #111827;
+
+      h1,
+      h2,
+      h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 16px 0 8px;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 12px auto;
+        border-radius: 8px;
+      }
+
+      ul,
+      ol {
+        padding-left: 22px;
+      }
+    }
+  }
+
+  .comment-doctor {
+    padding: 10px 0 40px;
+  }
+
+  /* responsive */
+  @media (max-width: 1024px) {
+    .doctor-detail-wrapper {
+      padding: 0 20px;
+    }
+
+    .doctor-header-card {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .intro-doctor {
+      .short-desc {
+        max-width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .breadcrumb {
+      font-size: 14px;
+    }
+
+    .doctor-header-card {
+      padding: 18px;
+    }
+
+    .intro-doctor {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .info {
+        align-items: center;
+      }
+    }
+  }
 }

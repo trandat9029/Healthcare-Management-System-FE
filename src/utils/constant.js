@@ -18,7 +18,8 @@ export const path = {
     DETAIL_HANDBOOK: '/detail-handbook/:id',
 
 
-    VERIFY_EMAIL_BOOKING: '/verify-booking'
+    VERIFY_EMAIL_BOOKING: '/verify-booking',
+    VERIFY_EMAIL_CANCEL_BOOKING: '/verify-cancel-booking'
 };
 
 export const LANGUAGES = {

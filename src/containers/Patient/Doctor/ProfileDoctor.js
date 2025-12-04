@@ -121,19 +121,19 @@ class ProfileDoctor extends Component {
                     {isShowPrice === true &&
                         <div className='price'>
                             <FormattedMessage id="patient.booking-modal.price" />: 
-                            {dataProfile && dataProfile.Doctor_info && language === LANGUAGES.VI &&
+                            {dataProfile && dataProfile.doctorInfoData && language === LANGUAGES.VI &&
                                 <NumberFormat 
                                     className='currency'
-                                    value={dataProfile.Doctor_info.priceTypeData.valueVi } 
+                                    value={dataProfile.doctorInfoData.priceTypeData.valueVi } 
                                     displayType='text' 
                                     thousandSeparator={true} 
                                     suffix={'VND'} 
                                 />
                             }
-                            {dataProfile && dataProfile.Doctor_info && language === LANGUAGES.EN &&
+                            {dataProfile && dataProfile.doctorInfoData && language === LANGUAGES.EN &&
                                 <NumberFormat 
                                     className='currency'
-                                    value={dataProfile.Doctor_info.priceTypeData.valueEn} 
+                                    value={dataProfile.doctorInfoData.priceTypeData.valueEn} 
                                     displayType='text' 
                                     thousandSeparator={true} 
                                     suffix={'$'} 
