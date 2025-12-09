@@ -7,7 +7,7 @@
     rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(4px);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding-top: 36px;
   z-index: 1200;
@@ -155,6 +155,24 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .preview-image {
+    margin-top: 10px;
+    width: 140px;
+    height: 90px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.25);
+    border: 1px solid #bbf7d0;
+    background-color: #f0fdf4;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
 }
 
 /* Editor markdown */
@@ -191,19 +209,16 @@
   font-size: 13px;
   letter-spacing: 0.06em;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.4);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .btn-save-specialty:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 26px rgba(22, 163, 74, 0.5);
-  filter: brightness(1.03);
+
 }
 
 .btn-save-specialty:active {
   transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.4);
 }
 
 /* Responsive nhẹ */

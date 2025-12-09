@@ -5,7 +5,7 @@ import './ManageSpecialty.scss';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import CommonUtils from '../../../utils/CommonUtils';
-import { createNewSpecialtyService } from '../../../services/userService';
+import { createNewSpecialtyService } from '../../../services/specialtyService';
 import { toast } from 'react-toastify';
 
 const mdParser = new MarkdownIt();
@@ -16,6 +16,7 @@ class ManageSpecialty extends Component {
     this.state = {
       name: '',
       imageBase64: '',
+      imagePreview: '',          // ảnh xem trước
       descriptionHTML: '',
       descriptionMarkdown: '',
     };
@@ -47,10 +48,20 @@ class ManageSpecialty extends Component {
   handleOnChangeImage = async (event) => {
     let data = event.target.files;
     let file = data[0];
+
     if (file) {
       let base64 = await CommonUtils.getBase64(file);
+
+      // nếu đã có preview cũ thì giải phóng
+      if (this.state.imagePreview) {
+        URL.revokeObjectURL(this.state.imagePreview);
+      }
+
+      let previewUrl = URL.createObjectURL(file);
+
       this.setState({
         imageBase64: base64,
+        imagePreview: previewUrl,   // lưu url để hiển thị preview
       });
     }
   };
@@ -58,10 +69,15 @@ class ManageSpecialty extends Component {
   handleSaveNewSpecialty = async () => {
     let res = await createNewSpecialtyService(this.state);
     if (res && res.errCode === 0) {
-      toast.success('Add new specialty succeed!');
+      toast.success('Thêm chuyên khoa mới thành công!');
+      // reset form
+      if (this.state.imagePreview) {
+        URL.revokeObjectURL(this.state.imagePreview);
+      }
       this.setState({
         name: '',
         imageBase64: '',
+        imagePreview: '',
         descriptionHTML: '',
         descriptionMarkdown: '',
       });
@@ -71,21 +87,17 @@ class ManageSpecialty extends Component {
       }
     } else {
       toast.error(res.errMessage || 'Error!');
-      console.log('check state specialty: ', this.state);
     }
   };
 
   render() {
-    const { language, isOpen, onClose } = this.props;
+    const { isOpen, onClose } = this.props;
 
     if (!isOpen) return null;
 
     return (
-      <div className="specialty-modal-overlay" onClick={onClose}>
-        <div
-          className="specialty-modal-container"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div className="specialty-modal-overlay">
+        <div className="specialty-modal-container">
           <div className="specialty-modal-header">
             <div className="specialty-modal-title">Quản lý chuyên khoa</div>
             <button className="specialty-modal-close" onClick={onClose}>
@@ -106,33 +118,44 @@ class ManageSpecialty extends Component {
                   }
                 />
               </div>
+
               <div className="img-upload col-6 form-group mb-3">
                 <label className="mb-2">Ảnh chuyên khoa</label>
                 <div className="upload-wrapper">
-                    <label
+                  <label
                     htmlFor="specialtyImage"
                     className="upload-button"
-                    >
+                  >
                     <i className="fas fa-upload"></i>
                     <span>Chọn ảnh</span>
-                    </label>
+                  </label>
 
-                    <span className="upload-file-name">
+                  <span className="upload-file-name">
                     {this.state.imageBase64
-                        ? 'Đã chọn ảnh'
-                        : 'Chưa có tệp nào được chọn'}
-                    </span>
+                      ? 'Đã chọn ảnh'
+                      : 'Chưa có tệp nào được chọn'}
+                  </span>
 
-                    <input
+                  <input
                     id="specialtyImage"
                     className="form-control-file"
                     type="file"
                     accept="image/*"
                     onChange={(event) => this.handleOnChangeImage(event)}
                     hidden
+                  />
+                </div>
+
+                {/* Preview ảnh ngay dưới nút chọn ảnh */}
+                {this.state.imagePreview && (
+                  <div className="preview-image">
+                    <img
+                      src={this.state.imagePreview}
+                      alt="Xem trước ảnh chuyên khoa"
                     />
-                </div>
-                </div>
+                  </div>
+                )}
+              </div>
 
               <div className="col-12 form-group">
                 <MdEditor

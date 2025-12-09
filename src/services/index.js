@@ -2,3 +2,4 @@ export { default as adminService } from './adminService';
 export { default as doctorService } from './doctorService';
 export { default as handbookService } from './handbookService';
 export { default as userService } from './userService';
+export { default as specialtyService } from './specialtyService';

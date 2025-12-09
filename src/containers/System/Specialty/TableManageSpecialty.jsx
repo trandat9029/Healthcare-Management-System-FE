@@ -6,6 +6,7 @@ import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import ManageSpecialty from './ManageSpecialty';     // modal tạo mới
 import UpdateSpecialty from './UpdateSpecialty';     // modal sửa
+import { handleDeleteSpecialty } from '../../../services/specialtyService';
 
 class TableManageSpecialty extends Component {
   constructor(props) {
@@ -17,6 +18,8 @@ class TableManageSpecialty extends Component {
       sortBy: 'name',
       sortOrder: 'ASC',
 
+      keyword: '',
+
       showCreateModal: false,      // modal tạo
       showUpdateModal: false,      // modal sửa
       selectedSpecialty: null,     // chuyên khoa đang sửa
@@ -24,8 +27,8 @@ class TableManageSpecialty extends Component {
   }
 
   async componentDidMount() {
-    const { page, limit, sortBy, sortOrder } = this.state;
-    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder);
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
+    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
   }
 
   componentDidUpdate(prevProps) {
@@ -36,8 +39,19 @@ class TableManageSpecialty extends Component {
     }
   }
 
+   handleChangeSearch = (e) =>{
+    const keyword = e.target.value;
+    this.setState({
+      keyword,
+      page: 1,
+    }, ()=>{
+      const { page, limit, sortBy, sortOrder } = this.state;
+      this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
+    })
+  }
+
   handleChangePage = (type) => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
     const { totalSpecialties } = this.props;
 
     const totalPages = Math.ceil((totalSpecialties || 0) / limit) || 1;
@@ -61,7 +75,8 @@ class TableManageSpecialty extends Component {
             this.state.page,
             this.state.limit,
             this.state.sortBy,
-            this.state.sortOrder
+            this.state.sortOrder,
+            this.state.keyword,
           );
         }
       );
@@ -69,7 +84,7 @@ class TableManageSpecialty extends Component {
   };
 
   handleSort = (field) => {
-    const { sortBy, sortOrder } = this.state;
+    const { sortBy, sortOrder, keyword } = this.state;
     let newSortOrder = 'ASC';
 
     if (sortBy === field && sortOrder === 'ASC') {
@@ -87,7 +102,8 @@ class TableManageSpecialty extends Component {
           this.state.page,
           this.state.limit,
           this.state.sortBy,
-          this.state.sortOrder
+          this.state.sortOrder,
+          keyword,
         );
       }
     );
@@ -134,8 +150,8 @@ class TableManageSpecialty extends Component {
 
   // sau khi save xong thì reload list và đóng mọi modal
   handleSpecialtySaved = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
-    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder);
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
+    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
     this.setState({
       showCreateModal: false,
       showUpdateModal: false,
@@ -143,6 +159,12 @@ class TableManageSpecialty extends Component {
     });
   };
 
+  handleDeleteSpecialty = async (specialty) => {
+    if (window.confirm('Bạn có chắc muốn xóa chuyên khoa này không?')) {
+      await handleDeleteSpecialty(specialty.id);
+    }
+  };
+  
   render() {
     const {
       specialties,
@@ -151,6 +173,7 @@ class TableManageSpecialty extends Component {
       showCreateModal,
       showUpdateModal,
       selectedSpecialty,
+      keyword,
     } = this.state;
     const { totalSpecialties } = this.props;
 
@@ -159,7 +182,7 @@ class TableManageSpecialty extends Component {
 
     return (
       <>
-        <div className="users-container">
+        <div className="specialtys-container">
           <div className="title text-center">
             <FormattedMessage
               id="admin.manage-specialty.title"
@@ -167,19 +190,21 @@ class TableManageSpecialty extends Component {
             />
           </div>
 
-          <div className="user-function">
+          <div className="specialty-function">
             <button className="btn-search">
               <input
                 className="input-search"
                 type="text"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm theo tên chuyên khoa"
+                value={keyword}
+                onChange={this.handleChangeSearch}
               />
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
 
-            <div className="user-create">
+            <div className="specialty-create">
               <button
-                className="btn-create-user"
+                className="btn-create-specialty"
                 onClick={this.openCreateSpecialtyModal}
               >
                 Thêm chuyên khoa
@@ -187,7 +212,7 @@ class TableManageSpecialty extends Component {
             </div>
           </div>
 
-          <div className="users-table mt-3 mx-1">
+          <div className="specialtys-table mt-3 mx-1">
             <table>
               <tbody>
                 <tr>
@@ -239,7 +264,10 @@ class TableManageSpecialty extends Component {
                           >
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>
-                          <button className="btn-delete">
+                          <button 
+                            className="btn-delete"
+                            onClick={() => this.handleDeleteSpecialty(item)}
+                          >
                             <i className="fa-solid fa-trash"></i>
                           </button>
                         </td>
@@ -313,8 +341,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchAllSpecialtyRedux: (page, limit, sortBy, sortOrder) =>
-      dispatch(actions.fetchAllSpecialty(page, limit, sortBy, sortOrder)),
+    fetchAllSpecialtyRedux: (page, limit, sortBy, sortOrder, keyword) =>
+      dispatch(actions.fetchAllSpecialty(page, limit, sortBy, sortOrder, keyword)),
   };
 };
 

@@ -1,12 +1,12 @@
 // src/containers/System/Specialty/ManageSpecialty.js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './UpdateSpecialty.scss';
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
-import CommonUtils from '../../../utils/CommonUtils';
-import { createNewSpecialtyService } from '../../../services/userService';
-import { toast } from 'react-toastify';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./UpdateSpecialty.scss";
+import MarkdownIt from "markdown-it";
+import MdEditor from "react-markdown-editor-lite";
+import CommonUtils from "../../../utils/CommonUtils";
+import { handleEditSpecialty } from "../../../services/specialtyService";
+import { toast } from "react-toastify";
 
 const mdParser = new MarkdownIt();
 
@@ -14,39 +14,41 @@ class UpdateSpecialty extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      imageBase64: '',
-      descriptionHTML: '',
-      descriptionMarkdown: '',
-      loadedId: null, // dùng để biết đang load specialty nào
+      name: "",
+      imageBase64: "",
+      descriptionHTML: "",
+      descriptionMarkdown: "",
+      loadedId: null, // specialty đang load vào modal
     };
   }
 
-  // Đồng bộ state từ props mỗi khi mở modal hoặc đổi currentSpecialty
+  // đồng bộ dữ liệu từ props vào state khi mở modal
   static getDerivedStateFromProps(nextProps, prevState) {
     const { isOpen, currentSpecialty } = nextProps;
 
-    // Modal đang mở và có specialty để edit
-    if (isOpen && currentSpecialty && currentSpecialty.id !== prevState.loadedId) {
+    // modal mở và có specialty khác id trước đó
+    if (
+      isOpen &&
+      currentSpecialty &&
+      currentSpecialty.id !== prevState.loadedId
+    ) {
       return {
-        name: currentSpecialty.name || '',
+        name: currentSpecialty.name || "",
         imageBase64:
-          currentSpecialty.imageBase64 ||
-          currentSpecialty.image ||
-          '',
-        descriptionHTML: currentSpecialty.descriptionHTML || '',
-        descriptionMarkdown: currentSpecialty.descriptionMarkdown || '',
+          currentSpecialty.imageBase64 || currentSpecialty.image || "",
+        descriptionHTML: currentSpecialty.descriptionHTML || "",
+        descriptionMarkdown: currentSpecialty.descriptionMarkdown || "",
         loadedId: currentSpecialty.id || null,
       };
     }
 
-    // Modal đang mở nhưng ở chế độ tạo mới
+    // modal mở nhưng không có specialty, reset state
     if (isOpen && !currentSpecialty && prevState.loadedId !== null) {
       return {
-        name: '',
-        imageBase64: '',
-        descriptionHTML: '',
-        descriptionMarkdown: '',
+        name: "",
+        imageBase64: "",
+        descriptionHTML: "",
+        descriptionMarkdown: "",
         loadedId: null,
       };
     }
@@ -77,32 +79,35 @@ class UpdateSpecialty extends Component {
     }
   };
 
-  handleSaveNewSpecialty = async () => {
-    const { currentSpecialty } = this.props;
+  handleSaveSpecialty = async () => {
+    const { currentSpecialty, onSaved } = this.props;
+    const { name, imageBase64, descriptionHTML, descriptionMarkdown } =
+      this.state;
 
-    // Nếu đang ở chế độ edit thì chưa làm API update
-    if (currentSpecialty) {
-      toast.info('Chức năng cập nhật chuyên khoa sẽ được bổ sung sau');
+    if (!currentSpecialty || !currentSpecialty.id) {
+      toast.error("Không có chuyên khoa để cập nhật");
       return;
     }
 
-    const res = await createNewSpecialtyService(this.state);
-    if (res && res.errCode === 0) {
-      toast.success('Add new specialty succeed!');
-      this.setState({
-        name: '',
-        imageBase64: '',
-        descriptionHTML: '',
-        descriptionMarkdown: '',
-        loadedId: null,
-      });
+    const payload = {
+      id: currentSpecialty.id,
+      name,
+      imageBase64,
+      descriptionHTML,
+      descriptionMarkdown,
+    };
 
-      if (this.props.onSaved) {
-        this.props.onSaved();
+    try {
+      const res = await handleEditSpecialty(payload);
+      if (res && res.errCode === 0) {
+        toast.success("Cập nhật chuyên khoa thành công");
+        if (onSaved) onSaved();
+      } else {
+        toast.error(res.errMessage || "Cập nhật chuyên khoa thất bại");
       }
-    } else {
-      toast.error(res.errMessage || 'Error!');
-      console.log('check state specialty: ', this.state);
+    } catch (error) {
+      console.error("Update specialty error", error);
+      toast.error("Có lỗi xảy ra khi cập nhật chuyên khoa");
     }
   };
 
@@ -119,7 +124,7 @@ class UpdateSpecialty extends Component {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="specialty-modal-header">
-            <div className="specialty-modal-title">Quản lý chuyên khoa</div>
+            <div className="specialty-modal-title">Chỉnh sửa chuyên khoa</div>
             <button className="specialty-modal-close" onClick={onClose}>
               ×
             </button>
@@ -133,51 +138,42 @@ class UpdateSpecialty extends Component {
                   className="form-control"
                   type="text"
                   value={name}
-                  onChange={(event) =>
-                    this.handleOnChangeInput(event, 'name')
-                  }
+                  onChange={(event) => this.handleOnChangeInput(event, "name")}
                 />
               </div>
 
               <div className="img-upload col-6 form-group mb-3">
                 <label className="mb-2">Ảnh chuyên khoa</label>
                 <div className="upload-wrapper">
-                    <label
-                    htmlFor="specialtyImage"
-                    className="upload-button"
-                    >
+                  <label htmlFor="specialtyImage" className="upload-button">
                     <i className="fas fa-upload"></i>
                     <span>Chọn ảnh</span>
-                    </label>
+                  </label>
 
-                    <span className="upload-file-name">
-                    {imageBase64
-                        ? 'Đã chọn ảnh'
-                        : 'Chưa có tệp nào được chọn'}
-                    </span>
+                  <span className="upload-file-name">
+                    {imageBase64 ? "Đã chọn ảnh" : "Chưa có tệp nào được chọn"}
+                  </span>
 
-                    {/* Preview ảnh */}
-                    {imageBase64 && (
+                  {imageBase64 && (
                     <div className="upload-preview">
-                        <img src={imageBase64} alt="Ảnh chuyên khoa" />
+                      <img src={imageBase64} alt="Ảnh chuyên khoa" />
                     </div>
-                    )}
+                  )}
 
-                    <input
+                  <input
                     id="specialtyImage"
                     className="form-control-file"
                     type="file"
                     accept="image/*"
                     onChange={this.handleOnChangeImage}
                     hidden
-                    />
+                  />
                 </div>
-                </div>
-
+              </div>
 
               <div className="col-12 form-group">
                 <MdEditor
-                  style={{ height: '400px' }}
+                  style={{ height: "400px" }}
                   renderHTML={(text) => mdParser.render(text)}
                   onChange={this.handleEditorChange}
                   value={descriptionMarkdown}
@@ -189,9 +185,9 @@ class UpdateSpecialty extends Component {
           <div className="specialty-modal-footer">
             <button
               className="btn-save-specialty"
-              onClick={this.handleSaveNewSpecialty}
+              onClick={this.handleSaveSpecialty}
             >
-              Save
+              Update
             </button>
           </div>
         </div>
@@ -210,7 +206,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpdateSpecialty);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateSpecialty);

@@ -134,20 +134,20 @@ class UpdateClinic extends Component {
     if (!isOpen) return null;
 
     return (
-      <div className="specialty-modal-overlay" onClick={onClose}>
+      <div className="clinic-modal-overlay" onClick={onClose}>
         <div
-          className="specialty-modal-container"
+          className="clinic-modal-container"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="specialty-modal-header">
-            <div className="specialty-modal-title">Cập nhật phòng khám</div>
-            <button className="specialty-modal-close" onClick={onClose}>
+          <div className="clinic-modal-header">
+            <div className="clinic-modal-title">Cập nhật phòng khám</div>
+            <button className="clinic-modal-close" onClick={onClose}>
               ×
             </button>
           </div>
 
-          <div className="specialty-modal-body">
-            <div className="add-new-specialty row">
+          <div className="clinic-modal-body">
+            <div className="add-new-clinic row">
               <div className="col-6 form-group mb-3">
                 <label className="mb-2">Tên phòng khám</label>
                 <input
@@ -217,9 +217,9 @@ class UpdateClinic extends Component {
             </div>
           </div>
 
-          <div className="specialty-modal-footer">
+          <div className="clinic-modal-footer">
             <button
-              className="btn-save-specialty"
+              className="btn-save-clinic"
               onClick={this.handleUpdateClinic}
             >
               Save

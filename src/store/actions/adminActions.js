@@ -11,6 +11,7 @@ import { getAllCodeService, createNewUserService,
         } from '../../services/userService';
 import { toast } from 'react-toastify';
 import { handleCreateHandbook, handleDeleteHandbook, handleGetAllHandbook } from '../../services/handbookService';
+import { getAllDetailSpecialtyByIdService } from '../../services/specialtyService';
 
 // Gender
 // export const fetchGenderStart = () => ({
@@ -441,7 +442,8 @@ export const fetchAllSpecialty = (
     page = 1,
     limit = 8,
     sortBy = 'name',
-    sortOrder = 'ASC'
+    sortOrder = 'ASC',
+    keyword = '',
 ) => {
     return async (dispatch, getState) => {
         try {
@@ -450,10 +452,8 @@ export const fetchAllSpecialty = (
                 limit,
                 sortBy,
                 sortOrder,
+                keyword,
             });
-
-            console.log('fetchAllSpecialty res: ', res);
-
             if (res && res.errCode === 0) {
                 dispatch({
                     type: actionTypes.FETCH_ALL_SPECIALTY_SUCCESS,
@@ -464,6 +464,7 @@ export const fetchAllSpecialty = (
                         limit: res.limit,
                     },
                 });
+                console.log('check rres :', res)
             } else {
                 dispatch({
                     type: actionTypes.FETCH_ALL_SPECIALTY_FAILED,
@@ -477,6 +478,7 @@ export const fetchAllSpecialty = (
         }
     };
 };
+
 
 // get all clinic
 
