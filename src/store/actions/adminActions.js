@@ -6,12 +6,14 @@ import { getAllCodeService, createNewUserService,
          saveDetailDoctorService,
          getDetailInfoDoctorService,
          getAllSpecialtyService,
-         getAllClinicService
+
         
         } from '../../services/userService';
 import { toast } from 'react-toastify';
 import { handleCreateHandbook, handleDeleteHandbook, handleGetAllHandbook } from '../../services/handbookService';
 import { getAllDetailSpecialtyByIdService } from '../../services/specialtyService';
+import { getAllClinicService } from '../../services/clinicService';
+
 
 // Gender
 // export const fetchGenderStart = () => ({
@@ -488,7 +490,8 @@ export const fetchAllClinic = (
   page = 1,
   limit = 8,
   sortBy = 'name',
-  sortOrder = 'ASC'
+  sortOrder = 'ASC',
+  keyword,
 ) => {
   return async (dispatch) => {
     try {
@@ -497,7 +500,8 @@ export const fetchAllClinic = (
         limit,
         sortBy,
         sortOrder,
-      }); // chú ý truyền object
+        keyword,
+      }); 
 
       if (res && res.errCode === 0) {
         dispatch({

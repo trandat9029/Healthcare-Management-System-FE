@@ -6,7 +6,7 @@ import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
 import ManageClinic from './ManageClinic';
 import UpdateClinic from './UpdateClinic';
-import { getAllCodeService } from '../../../services/userService';
+import { handleDeleteClinic } from '../../../services/clinicService';
 
 class TableManageClinic extends Component {
   constructor(props) {
@@ -18,20 +18,23 @@ class TableManageClinic extends Component {
       sortBy: 'name',
       sortOrder: 'ASC',
 
-      showClinicModal: false,       // modal tạo mới
-      showUpdateModal: false,       // modal sửa
-      selectedClinic: null,         // phòng khám đang sửa
+      showClinicModal: false,
+      showUpdateModal: false,
+      selectedClinic: null,
 
-      addressFilter: 'ALL',
-      addressOptions: [],
+      keyword: '',
     };
   }
 
   async componentDidMount() {
-    const { page, limit, sortBy, sortOrder } = this.state;
-
-    await this.props.fetchAllClinicRedux(page, limit, sortBy, sortOrder);
-    await this.loadProvinceOptions();
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
+    await this.props.fetchAllClinicRedux(
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keyword
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -41,28 +44,8 @@ class TableManageClinic extends Component {
     }
   }
 
-  loadProvinceOptions = async () => {
-    try {
-      const res = await getAllCodeService('PROVINCE');
-      const payload = res ? res : [];
-      if (payload && payload.errCode === 0 && Array.isArray(payload.data)) {
-        const options = [
-          { value: 'ALL', label: 'Tất cả địa chỉ' },
-          ...payload.data.map((item) => ({
-            value: item.keyMap,
-            label: item.valueVi,
-          })),
-        ];
-
-        this.setState({ addressOptions: options });
-      }
-    } catch (err) {
-      console.log('loadProvinceOptions error', err);
-    }
-  };
-
   handleChangePage = (type) => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
     const { totalClinics } = this.props;
 
     const totalPages = Math.ceil((totalClinics || 0) / limit) || 1;
@@ -77,7 +60,8 @@ class TableManageClinic extends Component {
           this.state.page,
           this.state.limit,
           this.state.sortBy,
-          this.state.sortOrder
+          this.state.sortOrder,
+          this.state.keyword
         );
       });
     }
@@ -102,7 +86,8 @@ class TableManageClinic extends Component {
           this.state.page,
           this.state.limit,
           this.state.sortBy,
-          this.state.sortOrder
+          this.state.sortOrder,
+          this.state.keyword
         );
       }
     );
@@ -114,7 +99,25 @@ class TableManageClinic extends Component {
     return sortOrder === 'ASC' ? ' ↑' : ' ↓';
   };
 
-  // tạo mới
+  handleChangeKeyword = (event) => {
+    const value = event.target.value;
+    this.setState(
+      {
+        keyword: value,
+        page: 1,
+      },
+      () => {
+        this.props.fetchAllClinicRedux(
+          this.state.page,
+          this.state.limit,
+          this.state.sortBy,
+          this.state.sortOrder,
+          this.state.keyword
+        );
+      }
+    );
+  };
+
   openClinicModal = () => {
     this.setState({
       showClinicModal: true,
@@ -127,7 +130,6 @@ class TableManageClinic extends Component {
     });
   };
 
-  // sửa
   openUpdateClinicModal = (clinic) => {
     this.setState({
       showUpdateModal: true,
@@ -143,21 +145,41 @@ class TableManageClinic extends Component {
   };
 
   handleClinicSaved = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
-    await this.props.fetchAllClinicRedux(page, limit, sortBy, sortOrder);
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
+    await this.props.fetchAllClinicRedux(
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keyword
+    );
     this.closeClinicModal();
   };
 
   handleClinicUpdated = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
-    await this.props.fetchAllClinicRedux(page, limit, sortBy, sortOrder);
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
+    await this.props.fetchAllClinicRedux(
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keyword
+    );
     this.closeUpdateClinicModal();
   };
 
-  handleChangeAddressFilter = (event) => {
-    this.setState({
-      addressFilter: event.target.value,
-    });
+  handleDeleteClinic = async (clinic) => {
+    if (window.confirm('Bạn có chắc muốn xóa phòng khám không?')) {
+      await handleDeleteClinic(clinic.id);
+      const { page, limit, sortBy, sortOrder, keyword } = this.state;
+      await this.props.fetchAllClinicRedux(
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        keyword
+      );
+    }
   };
 
   render() {
@@ -168,21 +190,15 @@ class TableManageClinic extends Component {
       showClinicModal,
       showUpdateModal,
       selectedClinic,
-      addressFilter,
-      addressOptions,
+      keyword,
     } = this.state;
     const { totalClinics } = this.props;
 
     const totalPages = Math.ceil((totalClinics || 0) / limit) || 1;
 
-    const filteredClinics = (clinics || []).filter((clinic) => {
-      if (addressFilter === 'ALL') return true;
-      return clinic.provinceId === addressFilter;
-    });
-
     return (
       <>
-        <div className="users-container">
+        <div className="clinics-container">
           <div className="title text-center">
             <FormattedMessage
               id="admin.manage-clinic.title"
@@ -190,35 +206,22 @@ class TableManageClinic extends Component {
             />
           </div>
 
-          <div className="user-function">
+          <div className="clinic-function">
             <button className="btn-search">
               <input
                 className="input-search"
                 type="text"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm theo địa chỉ "
+                value={keyword}
+                onChange={this.handleChangeKeyword}
               />
               <i className="fa-solid fa-magnifying-glass" />
             </button>
 
             <div className="clinic-right-tools">
-              <div className="filter-group">
-                <label className="filter-label">Lọc theo địa chỉ</label>
-                <select
-                  className="address-select"
-                  value={addressFilter}
-                  onChange={this.handleChangeAddressFilter}
-                >
-                  {addressOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="user-create">
+              <div className="clinic-create">
                 <button
-                  className="btn-create-user"
+                  className="btn-create-clinic"
                   onClick={this.openClinicModal}
                 >
                   Thêm phòng khám
@@ -240,8 +243,8 @@ class TableManageClinic extends Component {
                   <th>Actions</th>
                 </tr>
 
-                {filteredClinics && filteredClinics.length > 0 ? (
-                  filteredClinics.map((item, index) => (
+                {clinics && clinics.length > 0 ? (
+                  clinics.map((item, index) => (
                     <tr key={item.id || index}>
                       <td>{(page - 1) * limit + index + 1}</td>
                       <td>{item.name}</td>
@@ -276,7 +279,10 @@ class TableManageClinic extends Component {
                         >
                           <i className="fa-solid fa-pen-to-square" />
                         </button>
-                        <button className="btn-delete">
+                        <button
+                          className="btn-delete"
+                          onClick={() => this.handleDeleteClinic(item)}
+                        >
                           <i className="fa-solid fa-trash" />
                         </button>
                       </td>
@@ -346,8 +352,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchAllClinicRedux: (page, limit, sortBy, sortOrder) =>
-      dispatch(actions.fetchAllClinic(page, limit, sortBy, sortOrder)),
+    fetchAllClinicRedux: (page, limit, sortBy, sortOrder, keyword) =>
+      dispatch(actions.fetchAllClinic(page, limit, sortBy, sortOrder, keyword)),
   };
 };
 

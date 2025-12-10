@@ -36,7 +36,7 @@
   justify-content: space-between;
   padding: 14px 22px 10px 22px;
   border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(90deg, #16a34a, #22c55e);
+  background: #16a34a;
   color: #ecfdf5;
 }
 
@@ -192,19 +192,16 @@
   font-size: 13px;
   letter-spacing: 0.06em;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.4);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  transition: transform 0.12s ease;
 }
 
 .btn-save-clinic:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 26px rgba(22, 163, 74, 0.5);
-  filter: brightness(1.03);
 }
 
 .btn-save-clinic:active {
   transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.4);
+
 }
 
 /* Responsive nhẹ */

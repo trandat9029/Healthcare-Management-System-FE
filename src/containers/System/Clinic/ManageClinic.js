@@ -89,11 +89,9 @@ class ManageClinic extends Component {
     if (!isOpen) return null;
 
     return (
-      <div className="clinic-modal-overlay" onClick={onClose}>
+      <div className="clinic-modal-overlay" >
         <div
-          className="clinic-modal-container"
-          onClick={(e) => e.stopPropagation()}
-        >
+          className="clinic-modal-container">
           <div className="clinic-modal-header">
             <div className="clinic-modal-title">Quản lý phòng khám</div>
             <button className="clinic-modal-close" onClick={onClose}>
