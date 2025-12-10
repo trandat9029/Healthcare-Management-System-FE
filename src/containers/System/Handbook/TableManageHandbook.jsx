@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { handlePostHandbook } from '../../../services/handbookService';
 import { getAllCodeService } from '../../../services/userService';
 import HandbookModal from './HandbookModal';
+import DatePicker from '../../../components/Input/DatePicker';
 
 class TableManageHandbook extends Component {
   constructor(props) {
@@ -17,11 +18,12 @@ class TableManageHandbook extends Component {
       limit: 7,
       sortBy: 'datePublish',
       sortOrder: 'DESC',
-      search: '',
 
-      // filter trạng thái
+      search: '',
       statusFilter: 'ALL',
       statusOptions: [],
+
+      dateFilter: null,
 
       showModal: false,
       selectedHandbook: null,
@@ -42,22 +44,20 @@ class TableManageHandbook extends Component {
     }
   }
 
-  // lấy list STATUS từ allCode
   loadStatusOptions = async () => {
     try {
-      const res = await getAllCodeService('STATUS'); // axios.get
+      const res = await getAllCodeService('STATUS');
       if (res && res.data && res.data.errCode === 0) {
         const codes = res.data.data || [];
         const statusOptions = [
           { value: 'ALL', label: 'Tất cả trạng thái' },
           ...codes.map((item) => ({
-            value: item.keyMap,   // ví dụ S1. S0
-            label: item.valueVi,  // ví dụ Đăng. Ẩn
+            value: item.keyMap,
+            label: item.valueVi,
           })),
         ];
         this.setState({ statusOptions });
       } else {
-        // fallback nếu chưa cấu hình allCode STATUS
         this.setState({
           statusOptions: [
             { value: 'ALL', label: 'Tất cả trạng thái' },
@@ -66,9 +66,7 @@ class TableManageHandbook extends Component {
           ],
         });
       }
-    } catch (error) {
-      console.log('loadStatusOptions error', error);
-      // fallback mặc định
+    } catch {
       this.setState({
         statusOptions: [
           { value: 'ALL', label: 'Tất cả trạng thái' },
@@ -79,7 +77,6 @@ class TableManageHandbook extends Component {
     }
   };
 
-  // mở modal tạo mới
   openCreateModal = () => {
     this.setState({
       showModal: true,
@@ -87,7 +84,6 @@ class TableManageHandbook extends Component {
     });
   };
 
-  // mở modal edit
   openEditModal = (handbook) => {
     this.setState({
       showModal: true,
@@ -95,7 +91,6 @@ class TableManageHandbook extends Component {
     });
   };
 
-  // đóng modal
   closeModal = () => {
     this.setState({
       showModal: false,
@@ -103,7 +98,6 @@ class TableManageHandbook extends Component {
     });
   };
 
-  // gọi lại list sau khi tạo hoặc sửa xong
   refreshHandbookList = async () => {
     const { page, limit, sortBy, sortOrder } = this.state;
     await this.props.fetchAllHandbookRedux(page, limit, sortBy, sortOrder);
@@ -119,41 +113,29 @@ class TableManageHandbook extends Component {
     const { page, limit, sortBy, sortOrder } = this.state;
     const { totalHandbooks } = this.props;
 
-    const totalPages = Math.ceil((totalHandbooks || 0) / limit) || 1;
+    const totalPages = Math.ceil((totalHandbooks || 0) / limit);
     let newPage = page;
 
     if (type === 'prev' && page > 1) newPage = page - 1;
     if (type === 'next' && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
-      this.setState(
-        { page: newPage },
-        () => {
-          this.props.fetchAllHandbookRedux(
-            this.state.page,
-            this.state.limit,
-            this.state.sortBy,
-            this.state.sortOrder
-          );
-        }
-      );
+      this.setState({ page: newPage }, () => {
+        this.props.fetchAllHandbookRedux(newPage, limit, sortBy, sortOrder);
+      });
     }
   };
 
   handleSort = (field) => {
     const { sortBy, sortOrder } = this.state;
-    let newSortOrder = 'ASC';
+    let newSort = 'ASC';
 
     if (sortBy === field && sortOrder === 'ASC') {
-      newSortOrder = 'DESC';
+      newSort = 'DESC';
     }
 
     this.setState(
-      {
-        sortBy: field,
-        sortOrder: newSortOrder,
-        page: 1,
-      },
+      { sortBy: field, sortOrder: newSort, page: 1 },
       () => {
         this.props.fetchAllHandbookRedux(
           this.state.page,
@@ -172,41 +154,45 @@ class TableManageHandbook extends Component {
   };
 
   handleChangeSearch = (e) => {
-    this.setState({
-      search: e.target.value,
-    });
+    this.setState({ search: e.target.value });
   };
 
   handleChangeStatusFilter = (e) => {
+    this.setState({ statusFilter: e.target.value });
+  };
+
+  handleChangeDateFilter = (dateArr) => {
+    if (!dateArr || !dateArr[0]) {
+      this.setState({ dateFilter: null });
+      return;
+    }
+    this.setState({ dateFilter: dateArr[0] });
+  };
+
+  /** ⭐ NÚT BỎ LỌC */
+  handleClearFilters = () => {
     this.setState({
-      statusFilter: e.target.value,
+      search: '',
+      statusFilter: 'ALL',
+      dateFilter: null,
     });
   };
 
-  // toggle status
   handleToggleStatus = async (handbook) => {
     try {
       const newStatus = !handbook.status;
-
-      const payload = {
-        id: handbook.id,
-        status: newStatus,
-      };
+      const payload = { id: handbook.id, status: newStatus };
 
       const res = await handlePostHandbook(payload);
-
       if (res && res.errCode === 0) {
-        this.setState((prevState) => ({
-          handbooks: prevState.handbooks.map((item) =>
+        this.setState((prev) => ({
+          handbooks: prev.handbooks.map((item) =>
             item.id === handbook.id ? { ...item, status: newStatus } : item
           ),
         }));
-      } else {
-        alert(res?.errMessage || 'Cập nhật trạng thái bài viết thất bại');
       }
     } catch (error) {
-      console.log('handleToggleStatus error: ', error);
-      alert('Có lỗi xảy ra khi cập nhật trạng thái bài viết');
+      alert('Lỗi khi cập nhật trạng thái');
     }
   };
 
@@ -218,57 +204,53 @@ class TableManageHandbook extends Component {
       search,
       statusFilter,
       statusOptions,
+      dateFilter,
       showModal,
-      selectedHandbook,
+      selectedHandbook
     } = this.state;
+
     const { totalHandbooks } = this.props;
 
-    const totalPages = Math.ceil((totalHandbooks || 0) / limit) || 1;
+    const totalPages = Math.ceil((totalHandbooks || 0) / limit);
+    const lowerSearch = search.toLowerCase();
 
-    const filteredHandbooks = (handbooks || []).filter((item) => {
-      const matchesSearch = item.name
-        ?.toLowerCase()
-        .includes(search.toLowerCase());
+    const filteredHandbooks = handbooks.filter((item) => {
+      const matchesSearch =
+        item.name?.toLowerCase().includes(lowerSearch) ||
+        item.author?.toLowerCase().includes(lowerSearch);
 
-      if (statusFilter === 'ALL') {
-        return matchesSearch;
+      let matchesDate = true;
+      if (dateFilter && item.datePublish) {
+        const p = new Date(item.datePublish);
+        const f = new Date(dateFilter);
+        matchesDate =
+          p.getFullYear() === f.getFullYear() &&
+          p.getMonth() === f.getMonth() &&
+          p.getDate() === f.getDate();
       }
 
-      const isPublished = !!item.status;
+      if (!matchesSearch || !matchesDate) return false;
 
-      // hỗ trợ cả key allCode S1. S0 lẫn value custom PUBLISHED. HIDDEN
-      const wantPublished =
-        statusFilter === 'PUBLISHED' || statusFilter === 'S1';
-      const wantHidden =
-        statusFilter === 'HIDDEN' || statusFilter === 'S0';
+      if (statusFilter === 'PUBLISHED') return item.status === true;
+      if (statusFilter === 'HIDDEN') return item.status === false;
 
-      if (wantPublished) {
-        return matchesSearch && isPublished;
-      }
-
-      if (wantHidden) {
-        return matchesSearch && !isPublished;
-      }
-
-      return matchesSearch;
+      return true;
     });
 
     return (
       <>
-        <div className="users-container">
+        <div className="handbooks-container">
+
           <div className="title text-center">
-            <FormattedMessage
-              id="admin.manage-handbook.title"
-              defaultMessage="Manage Handbooks"
-            />
+            QUẢN LÍ CẨM NANG
           </div>
 
-          <div className="user-function">
+          <div className="handbook-function">
             <button className="btn-search">
               <input
                 className="input-search"
                 type="text"
-                placeholder="Tìm kiếm theo tiêu đề"
+                placeholder="Tìm kiếm theo tiêu đề hoặc tác giả"
                 value={search}
                 onChange={this.handleChangeSearch}
               />
@@ -276,6 +258,7 @@ class TableManageHandbook extends Component {
             </button>
 
             <div className="handbook-right-tools">
+
               <div className="filter-group">
                 <label className="filter-label">Lọc theo trạng thái</label>
                 <select
@@ -291,36 +274,49 @@ class TableManageHandbook extends Component {
                 </select>
               </div>
 
-              <div className="user-create">
-                <button
-                  className="btn-create-user"
-                  onClick={this.openCreateModal}
-                >
-                  Thêm bài viết
-                </button>
+              <div className="filter-group">
+                <label className="filter-label">Lọc theo ngày đăng</label>
+                <DatePicker
+                  className="date-filter-input"
+                  value={dateFilter}
+                  placeholder="Lọc theo ngày đăng"
+                  onChange={this.handleChangeDateFilter}
+                />
               </div>
+
+              {/* ⭐ NÚT BỎ LỌC */}
+              <button
+                className="btn-clear-filter"
+                onClick={this.handleClearFilters}
+              >
+                Bỏ lọc
+              </button>
+
             </div>
           </div>
 
-          <div className="users-table mt-3 mx-1">
+          {/* TABLE */}
+          <div className="handbooks-table mt-3 mx-1">
             <table>
               <tbody>
                 <tr>
+                  <th>STT</th>
                   <th onClick={() => this.handleSort('name')}>
-                    Title{this.renderSortLabel('name')}
+                    TITLE {this.renderSortLabel('name')}
                   </th>
-                  <th>Image</th>
-                  <th>Author</th>
+                  <th>IMAGE</th>
+                  <th>AUTHOR</th>
                   <th onClick={() => this.handleSort('datePublish')}>
-                    Date public{this.renderSortLabel('datePublish')}
+                    DATE PUBLIC {this.renderSortLabel('datePublish')}
                   </th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
                 </tr>
 
-                {filteredHandbooks && filteredHandbooks.length > 0 ? (
+                {filteredHandbooks.length > 0 ? (
                   filteredHandbooks.map((item, index) => (
-                    <tr key={index}>
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
                       <td>{item.name}</td>
 
                       <td>
@@ -329,69 +325,55 @@ class TableManageHandbook extends Component {
                             <img src={item.image} alt={item.name} />
                           </div>
                         ) : (
-                          <span className="thumb-placeholder">No image</span>
+                          <span>No image</span>
                         )}
                       </td>
 
                       <td>{item.author}</td>
+
                       <td>
                         {item.datePublish
                           ? new Date(item.datePublish).toLocaleString()
                           : ''}
                       </td>
+
                       <td>
                         <div
-                          className={`toggle-switch ${
-                            item.status ? 'on' : ''
-                          }`}
+                          className={`toggle-switch ${item.status ? 'on' : ''}`}
                           onClick={() => this.handleToggleStatus(item)}
                         >
                           <div className="toggle-circle" />
                         </div>
                       </td>
+
                       <td>
-                        <button
-                          className="btn-edit"
-                          onClick={() => this.openEditModal(item)}
-                        >
+                        <button className="btn-edit" onClick={() => this.openEditModal(item)}>
                           <i className="fa-solid fa-pen-to-square" />
                         </button>
-                        <button
-                          className="btn-delete"
-                          onClick={() => this.handleDeleteHandbook(item)}
-                        >
+                        <button className="btn-delete" onClick={() => this.handleDeleteHandbook(item)}>
                           <i className="fa-solid fa-trash" />
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
-                  <tr>
-                    <td colSpan="6" style={{ textAlign: 'center' }}>
-                      No handbooks found
-                    </td>
-                  </tr>
+                  <tr><td colSpan="7" style={{ textAlign: 'center' }}>No handbooks found</td></tr>
                 )}
               </tbody>
             </table>
           </div>
 
+          {/* PAGINATION */}
           <div className="pagination mt-3 d-flex justify-content-center align-items-center">
-            <button
-              className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('prev')}
-              disabled={page <= 1}
-            >
+            <button className="btn btn-light mx-2" onClick={() => this.handleChangePage('prev')} disabled={page <= 1}>
               Prev
             </button>
+
             <span>
               Page {page} of {totalPages}. Total {totalHandbooks || 0} handbooks
             </span>
-            <button
-              className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('next')}
-              disabled={page >= totalPages}
-            >
+
+            <button className="btn btn-light mx-2" onClick={() => this.handleChangePage('next')} disabled={page >= totalPages}>
               Next
             </button>
           </div>
@@ -410,24 +392,15 @@ class TableManageHandbook extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    listHandbooks: state.admin.handbooks,
-    totalHandbooks: state.admin.handbookTotal,
-    handbookPageFromStore: state.admin.handbookPage,
-    handbookLimitFromStore: state.admin.handbookLimit,
-  };
-};
+const mapStateToProps = (state) => ({
+  listHandbooks: state.admin.handbooks,
+  totalHandbooks: state.admin.handbookTotal,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchAllHandbookRedux: (page, limit, sortBy, sortOrder) =>
-      dispatch(actions.fetchAllHandbook(page, limit, sortBy, sortOrder)),
-    deleteHandbookRedux: (id) => dispatch(actions.deleteHandbook(id)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  fetchAllHandbookRedux: (p, l, s, o) =>
+    dispatch(actions.fetchAllHandbook(p, l, s, o)),
+  deleteHandbookRedux: (id) => dispatch(actions.deleteHandbook(id)),
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TableManageHandbook);
+export default connect(mapStateToProps, mapDispatchToProps)(TableManageHandbook);

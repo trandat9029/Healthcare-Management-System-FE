@@ -1,25 +1,26 @@
-.users-container {
+.handbooks-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 /* Tiêu đề */
-.users-container .title {
+.handbooks-container .title {
+  margin-top: 20px;
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #065f46;
-  margin: 0;
 }
 
 /* Thanh chức năng phía trên */
-.user-function {
+.handbook-function {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  padding: 0 25px;
   gap: 16px;
 
   .btn-search {
@@ -52,7 +53,7 @@
   }
 }
 
-/* Nhóm filter phải: trạng thái và nút thêm */
+/* Nhóm filter phải: trạng thái, ngày và nút thêm */
 .handbook-right-tools {
   display: flex;
   align-items: flex-end;
@@ -75,7 +76,7 @@
   margin-bottom: 4px;
 }
 
-/* Style filter trạng thái giống hoàn toàn filter địa chỉ của bạn */
+/* Filter trạng thái */
 .status-select {
   height: 36px;
   border-radius: 6px;
@@ -93,8 +94,26 @@
   }
 }
 
+/* Filter ngày đăng */
+.date-filter-input {
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #d1fae5;
+  padding: 0 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+  outline: none;
+  color: #065f46;
+  font-size: 14px;
+
+  &:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+  }
+}
+
 /* Bảng */
-.users-table {
+.handbooks-table {
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
@@ -102,13 +121,13 @@
   overflow-x: auto;
 }
 
-.users-table table {
+.handbooks-table table {
   width: 100%;
   border-collapse: collapse;
   min-width: 900px;
 }
 
-.users-table th {
+.handbooks-table th {
   padding: 10px 12px;
   text-align: left;
   font-size: 13px;
@@ -120,26 +139,26 @@
   letter-spacing: 0.04em;
 }
 
-.users-table th:last-child {
+.handbooks-table th:last-child {
   text-align: center;
 }
 
-.users-table td {
+.handbooks-table td {
   padding: 10px 12px;
   font-size: 14px;
   border-bottom: 1px solid #e5e7eb;
   color: #111827;
 }
 
-.users-table tr:nth-child(even) td {
+.handbooks-table tr:nth-child(even) td {
   background-color: #f9fafb;
 }
 
-.users-table tr:hover td {
+.handbooks-table tr:hover td {
   background-color: #ecfdf3;
 }
 
-.users-table td:last-child {
+.handbooks-table td:last-child {
   text-align: center;
 }
 
@@ -244,4 +263,71 @@
 .thumb-placeholder {
   font-size: 12px;
   color: #9ca3af;
+}
+
+.btn-create-handbook {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #22c55e;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+
+  i {
+    font-size: 14px;
+  }
+}
+
+.btn-create-handbook:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.btn-create-handbook:active {
+  transform: translateY(0);
+}
+
+/* Nút Bỏ lọc */
+.btn-clear-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 8px 16px;
+  height: 36px;
+
+  background-color: #fef2f2; /* nhạt giống màu delete */
+  color: #b91c1c; /* đỏ chính */
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.btn-clear-filter:hover {
+  background-color: #fee2e2;
+  transform: translateY(-1px);
+}
+
+.btn-clear-filter:active {
+  transform: translateY(0);
+}
+
+.btn-clear-filter i {
+  font-size: 13px;
+  color: inherit;
 }

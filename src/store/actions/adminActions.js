@@ -483,81 +483,85 @@ export const fetchAllSpecialty = (
 
 
 // get all clinic
-
-// FETCH ALL CLINIC
-// action
 export const fetchAllClinic = (
-  page = 1,
-  limit = 8,
-  sortBy = 'name',
-  sortOrder = 'ASC',
-  keyword,
+    page = 1,
+    limit = 8,
+    sortBy = 'name',
+    sortOrder = 'ASC',
+    keyword,
 ) => {
-  return async (dispatch) => {
-    try {
-      const res = await getAllClinicService({
-        page,
-        limit,
-        sortBy,
-        sortOrder,
-        keyword,
-      }); 
+    return async (dispatch) => {
+        try {
+        const res = await getAllClinicService({
+            page,
+            limit,
+            sortBy,
+            sortOrder,
+            keyword,
+        }); 
 
-      if (res && res.errCode === 0) {
-        dispatch({
-          type: actionTypes.FETCH_ALL_CLINIC_SUCCESS,
-          payload: {
-            clinics: res.data,
-            total: res.total,
-            page: res.page,
-            limit: res.limit,
-          },
-        });
-      } else {
+        if (res && res.errCode === 0) {
+            dispatch({
+            type: actionTypes.FETCH_ALL_CLINIC_SUCCESS,
+            payload: {
+                clinics: res.data,
+                total: res.total,
+                page: res.page,
+                limit: res.limit,
+            },
+            });
+        } else {
+            dispatch({ type: actionTypes.FETCH_ALL_CLINIC_FAILED });
+        }
+        } catch (error) {
+        console.log('FETCH_ALL_CLINIC_FAILED:', error);
         dispatch({ type: actionTypes.FETCH_ALL_CLINIC_FAILED });
-      }
-    } catch (error) {
-      console.log('FETCH_ALL_CLINIC_FAILED:', error);
-      dispatch({ type: actionTypes.FETCH_ALL_CLINIC_FAILED });
-    }
-  };
+        }
+    };
 };
-
-
-
 
 // FETCH ALL HANDBOOK
 export const fetchAllHandbook = (
     page = 1,
     limit = 8,
     sortBy = 'name',
-    sortOrder = 'ASC'
-    ) => {
+    sortOrder = 'ASC',
+    keyword = '',
+    datePublish = ''
+) => {
     return async (dispatch) => {
         try {
-        let res = await handleGetAllHandbook(page, limit, sortBy, sortOrder);
-        if (res && res.errCode === 0) {
-            const { data, total, page, limit } = res;
-
-            dispatch({
-            type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,
-            payload: {
-                handbooks: data,
-                total,
+            const res = await handleGetAllHandbook({
                 page,
                 limit,
-            },
+                sortBy,
+                sortOrder,
+                keyword,
+                datePublish,
             });
-        } else {
-            dispatch({
-            type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
-            });
-        }
+
+            if (res && res.errCode === 0) {
+                const { data, total, page: currentPage, limit: currentLimit } = res;
+
+                dispatch({
+                type: actionTypes.FETCH_ALL_HANDBOOK_SUCCESS,
+                payload: {
+                    handbooks: data,
+                    total,
+                    page: currentPage,
+                    limit: currentLimit,
+                },
+                });
+            } else {
+                dispatch({
+                type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
+                });
+            }
         } catch (error) {
-        console.log('FETCH_ALL_HANDBOOK_FAILED:', error);
-        dispatch({
-            type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
-        });
+            console.log('FETCH_ALL_HANDBOOK_FAILED:', error);
+            dispatch({
+                type: actionTypes.FETCH_ALL_HANDBOOK_FAILED,
+            });
         }
     };
 };

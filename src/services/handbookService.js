@@ -4,15 +4,8 @@ const handleCreateHandbook =(data) =>{
     return axios.post(`/api/handbook/`, data)
 }
 
-const handleGetAllHandbook = (page, limit, sortBy, sortOrder) => {
-    return axios.get('/api/handbook/all', {
-        params: {
-            page,
-            limit,
-            sortBy,
-            sortOrder,
-        },
-    });
+const handleGetAllHandbook = (params) => {
+    return axios.get('/api/handbook/all', { params });
 };
 
 const handleDeleteHandbook = (id) => {
