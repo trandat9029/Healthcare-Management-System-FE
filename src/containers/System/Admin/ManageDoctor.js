@@ -41,6 +41,7 @@ class ManageDoctor extends Component {
       nameClinic: '',
       addressClinic: '',
       note: '',
+      avatarUrl: '',
     };
   }
 
@@ -61,8 +62,19 @@ class ManageDoctor extends Component {
 
     // khi chọn bác sĩ khác ở TableManageDoctor
     if (prevProps.currentDoctor !== this.props.currentDoctor) {
-      if (this.props.currentDoctor) {
-        this.loadDoctorDetail(this.props.currentDoctor);
+      const { currentDoctor, allRequiredDoctorInfo } = this.props;
+      const { listPrice, listPayment, listProvince, listSpecialty, listClinic } = this.state;
+
+      const optionsReady =
+        allRequiredDoctorInfo &&
+        listPrice.length &&
+        listPayment.length &&
+        listProvince.length &&
+        listSpecialty.length &&
+        listClinic.length;
+
+      if (currentDoctor && optionsReady) {
+        this.loadDoctorDetail(currentDoctor);
       }
     }
 
@@ -155,18 +167,33 @@ class ManageDoctor extends Component {
 
     try {
       let res = await getDetailInfoDoctorService(doctor.id);
+      console.log('check res info doctor', res)
       if (res && res.errCode === 0 && res.data && res.data.Markdown) {
         let detail = res.data;
+        let avatarUrl = '';
+        if (detail?.image) {
+          // trường hợp BE trả về sẵn dạng data URL: "data:image/png;base64,..."
+          if (typeof detail.image === 'string' && detail.image.startsWith('data:image')) {
+            avatarUrl = detail.image;
+          } else {
+            // trường hợp chỉ là base64 thuần
+            avatarUrl = `data:image/jpeg;base64,${detail.image}`;
+          }
+        }
+
         let markdown = detail.Markdown;
 
-        let priceId = detail.Doctor_info?.priceId || '';
-        let paymentId = detail.Doctor_info?.paymentId || '';
-        let provinceId = detail.Doctor_info?.provinceId || '';
-        let specialtyId = detail.Doctor_info?.specialtyId || '';
-        let clinicId = detail.Doctor_info?.clinicId || '';
-        let nameClinic = detail.Doctor_info?.nameClinic || '';
-        let addressClinic = detail.Doctor_info?.addressClinic || '';
-        let note = detail.Doctor_info?.note || '';
+        let doctorInfo =
+          detail.Doctor_info || detail.doctorInfoData || detail.DoctorInfo || null;
+
+        let priceId = doctorInfo?.priceId || '';
+        let paymentId = doctorInfo?.paymentId || '';
+        let provinceId = doctorInfo?.provinceId || '';
+        let specialtyId = doctorInfo?.specialtyId || '';
+        let clinicId = doctorInfo?.clinicId || '';
+        let nameClinic = doctorInfo?.nameClinic || '';
+        let addressClinic = doctorInfo?.addressClinic || '';
+        let note = doctorInfo?.note || '';
 
         const {
           listPrice,
@@ -192,15 +219,18 @@ class ManageDoctor extends Component {
           nameClinic,
           addressClinic,
           note,
+          avatarUrl,
         });
+
       } else {
         // chưa có thông tin, reset form
         this.setState({
           contentHTML: '',
           contentMarkdown: '',
           description: '',
+          
           hasOldData: false,
-
+          avatarUrl: '',
           selectedPrice: '',
           selectedPayment: '',
           selectedProvince: '',
@@ -287,6 +317,7 @@ class ManageDoctor extends Component {
       note,
       contentMarkdown,
       hasOldData,
+      avatarUrl,
     } = this.state;
 
     return (
@@ -311,19 +342,32 @@ class ManageDoctor extends Component {
           </div>
 
           <div className="doctor-modal-body">
-            <div className="mb-3">
-              <strong>Bác sĩ. </strong>
-              {currentDoctor.firstName} {currentDoctor.lastName}
-            </div>
+            <div className='doctor-info-header'>
+              <div className='doctor-info-about'>
+                <div className="mb-3 doctor-info-title">
+                  <strong>Bác sĩ. </strong>
+                  {currentDoctor.firstName} {currentDoctor.lastName}
+                </div>
 
-            <div className="more-info">
-              <div className="content-right">
-                <label>Thông tin giới thiệu</label>
-                <textarea
-                  className="form-control"
-                  value={description}
-                  onChange={(e) => this.handleChangeText(e, 'description')}
-                ></textarea>
+                <div className="more-info">
+                  <div className="content-right">
+                    <label>Thông tin giới thiệu</label>
+                    <textarea
+                      className="form-control"
+                      value={description}
+                      onChange={(e) => this.handleChangeText(e, 'description')}
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="doctor-basic mb-3">
+                <div
+                  className="doctor-avatar"
+                  style={{
+                    backgroundImage: `url(${avatarUrl || ''})`,
+                  }}
+                />
               </div>
             </div>
 

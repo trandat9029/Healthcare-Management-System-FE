@@ -1,11 +1,14 @@
-.users-container {
+/* src/containers/System/Admin/TableManageDoctor.scss */
+
+/* Wrapper */
+.doctors-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Tiêu đề */
-.users-container .title {
+/* Title */
+.doctors-container .title {
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
@@ -14,60 +17,65 @@
   margin: 0;
 }
 
-/* Thanh chức năng: search bên trái. filter bên phải */
-.user-function {
+/* Row tools: trái (search + filter + clear) và phải (create) */
+.doctor-function {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 10px;
-  gap: 24px;
+  padding: 0 25px;
+  gap: 18px;
+  flex-wrap: wrap;
+}
 
-  /* Ô tìm kiếm */
-  .btn-search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    border: 1px solid #d1fae5;
-    background-color: #ecfdf5;
-    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
-    cursor: text;
+/* Cụm filter bên trái, cân đều theo hàng */
+.doctor-left-tools {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
-    .input-search {
-      outline: none;
-      border: none;
-      background: transparent;
-      font-size: 14px;
-      min-width: 260px;
-      color: #065f46;
+/* Search */
+.doctor-btn-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #d1fae5;
+  background-color: #ecfdf5;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
+  cursor: text;
+  min-height: 40px;
+}
 
-      &::placeholder {
-        color: #9ca3af;
-      }
-    }
+.doctor-input-search {
+  outline: none;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  min-width: 260px;
+  color: #065f46;
 
-    i {
-      font-size: 14px;
-      color: #16a34a;
-    }
+  &::placeholder {
+    color: #9ca3af;
   }
 }
 
-/* Hàng filter bên phải. tất cả nằm trên một dòng */
-.doctor-filters-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 20px;
+.doctor-btn-search i {
+  font-size: 14px;
+  color: #16a34a;
 }
 
-.filter-group {
+/* Filter item */
+.doctor-filter-item {
   display: flex;
   flex-direction: column;
-  min-width: 220px;
+  min-width: 240px;
 }
 
-.filter-label {
+.doctor-filter-label {
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -76,22 +84,55 @@
   color: #166534;
 }
 
-/* Select địa chỉ */
-.address-select {
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid #d1fae5;
-  padding: 0 14px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
-  outline: none;
-  color: #065f46;
-  font-size: 14px;
+/* Clear button */
+.doctor-btn-clear {
+  padding: 8px 16px;
+  background-color: #fef2f2; /* nhạt giống màu delete */
+  color: #b91c1c; /* đỏ chính */
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  min-width: 90px;
+
+  &:hover {
+    background-color: #ecfdf5;
+  }
 }
 
-/* React Select cho chức danh. prefix doctor-select */
+/* Create button */
+.doctor-create {
+  display: flex;
+  align-items: flex-end;
+}
+
+.btn-create-doctor {
+  border: none;
+  outline: none;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.18);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(22, 163, 74, 0.22);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* react-select prefix: doctor-select */
 .doctor-select__control {
-  min-height: 36px;
+  min-height: 40px;
   border-radius: 999px;
   border-color: #d1fae5;
   background-color: #ffffff;
@@ -104,7 +145,7 @@
 }
 
 .doctor-select__value-container {
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 .doctor-select__single-value {
@@ -119,20 +160,36 @@
 
 .doctor-select__menu {
   font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* Card chứa bảng */
-.users-table {
+/* Table card */
+.doctors-table {
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
   padding: 16px 18px 10px 18px;
   overflow-x: auto;
   margin-top: 16px;
+  position: relative;
 }
 
-/* Bảng */
-.users-table table {
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #065f46;
+  font-weight: 700;
+  z-index: 2;
+}
+
+/* Table */
+.doctors-table table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, Helvetica, sans-serif;
@@ -140,7 +197,7 @@
 }
 
 /* Header */
-.users-table th {
+.doctors-table th {
   padding: 10px 12px;
   text-align: left;
   font-size: 13px;
@@ -153,34 +210,29 @@
   white-space: nowrap;
 }
 
-.users-table th:last-child {
+.doctors-table th:last-child {
   text-align: center;
 }
 
 /* Cell */
-.users-table td {
+.doctors-table td {
   padding: 10px 12px;
   font-size: 14px;
   border-bottom: 1px solid #e5e7eb;
   color: #111827;
 }
 
-/* Hàng chẵn lẻ */
-.users-table tr:nth-child(even) td {
+/* Zebra */
+.doctors-table tr:nth-child(even) td {
   background-color: #f9fafb;
 }
 
-/* Hover trên hàng */
-.users-table tr:hover td {
+/* Hover */
+.doctors-table tr:hover td {
   background-color: #ecfdf3;
 }
 
-/* Cột actions */
-.users-table td:last-child {
-  text-align: center;
-}
-
-/* Nút edit và delete */
+/* Actions buttons */
 .btn-edit,
 .btn-delete {
   border: none;
@@ -196,7 +248,6 @@
   transition: all 0.15s ease;
 }
 
-/* Edit */
 .btn-edit {
   background-color: #ecfdf3;
   color: #16a34a;
@@ -206,7 +257,6 @@
   background-color: #bbf7d0;
 }
 
-/* Delete. nếu dùng lại */
 .btn-delete {
   background-color: #fef2f2;
   color: #b91c1c;
@@ -216,7 +266,7 @@
   background-color: #fee2e2;
 }
 
-/* Pagination */
+/* Pagination giữ nguyên class bootstrap */
 .pagination {
   font-size: 14px;
   color: #064e3b;
@@ -247,15 +297,27 @@
   cursor: default;
 }
 
-/* Responsive nhẹ cho filter hàng ngang */
+/* Responsive */
 @media (max-width: 992px) {
-  .user-function {
+  .doctor-function {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .doctor-filters-row {
+  .doctor-create {
     justify-content: flex-start;
-    flex-wrap: wrap;
+  }
+
+  .doctor-btn-search {
+    width: 100%;
+  }
+
+  .doctor-input-search {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .doctor-filter-item {
+    min-width: 260px;
   }
 }

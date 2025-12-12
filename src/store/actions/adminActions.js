@@ -264,46 +264,49 @@ export const fetchTopDoctor = () =>{
     }
 }
 
-
-// get all doctors  
+// get all doctors
 export const fetchAllDoctor = (
-    page = 1,
-    limit = 10,
-    sortBy = 'firstName',
-    sortOrder = 'DESC'
-    ) => {
-    return async (dispatch, getState) => {
-        try {
-        let res = await getAllDoctorsService({
-            page,
-            limit,
-            sortBy,
-            sortOrder,
-        });
+  page = 1,
+  limit = 8,
+  sortBy = 'firstName',
+  sortOrder = 'DESC',
+  keyword = '',
+  positionId = '' // thêm
+) => {
+  return async (dispatch) => {
+    try {
+      const res = await getAllDoctorsService({
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        keyword,
+        positionId, // thêm
+      });
 
-        if (res && res.errCode === 0) {
-            dispatch({
-            type: actionTypes.FETCH_All_DOCTORS_SUCCESS,
-            payload: {
-                doctors: res.doctors,
-                total: res.total,
-                page: res.page,
-                limit: res.limit,
-            },
-            });
-        } else {
-            dispatch({
-            type: actionTypes.FETCH_All_DOCTORS_FAILED,
-            });
-        }
-        } catch (error) {
-        console.log('FETCH_ALL_DOCTORS_FAILED: ', error);
+      // lưu ý axios trả về res.data
+      const data = res?.data || res;
+
+      if (data && data.errCode === 0) {
         dispatch({
-            type: actionTypes.FETCH_All_DOCTORS_FAILED,
+          type: actionTypes.FETCH_All_DOCTORS_SUCCESS,
+          payload: {
+            doctors: data.doctors,
+            total: data.total,
+            page: data.page,
+            limit: data.limit,
+          },
         });
-        }
-    };
+      } else {
+        dispatch({ type: actionTypes.FETCH_All_DOCTORS_FAILED });
+      }
+    } catch (error) {
+      console.log('FETCH_ALL_DOCTORS_FAILED: ', error);
+      dispatch({ type: actionTypes.FETCH_All_DOCTORS_FAILED });
+    }
+  };
 };
+
 
 
 // save info doctor
@@ -400,8 +403,8 @@ export const getRequiredDoctorInfo=  () => {
             let resPrice = await getAllCodeService("PRICE");
             let resPayment = await getAllCodeService("PAYMENT");
             let resProvince = await getAllCodeService("PROVINCE");
-            let resSpecialty = await getAllSpecialtyService();
-            let resClinic = await getAllClinicService();
+            let resSpecialty = await getAllSpecialtyService({limit: 'ALL',});
+            let resClinic = await getAllClinicService({limit: 'ALL'});
             if(resPrice && resPrice.errCode === 0 &&
                 resPayment && resPayment.errCode === 0 &&
                 resProvince && resProvince.errCode === 0 &&

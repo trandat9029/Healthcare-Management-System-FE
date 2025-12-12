@@ -1,31 +1,31 @@
-// src/containers/System/Admin/TableManageDoctor.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './TableManageDoctor.scss';
 import * as actions from '../../../store/actions';
 import { FormattedMessage } from 'react-intl';
-import ManageDoctor from './ManageDoctor';
 import { LANGUAGES } from '../../../utils/constant';
 import Select from 'react-select';
+import ManageDoctor from './ManageDoctor';
 
 class TableManageDoctor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       doctors: [],
+
       page: 1,
       limit: 9,
       sortBy: 'createdAt',
       sortOrder: 'DESC',
 
-      showDoctorModal: false,
-      selectedDoctor: null,
+      keyword: '',
+      searchTimer: null,
 
-      // filter bằng Select
       listPosition: [],
       selectedPosition: null,
 
-      addressFilter: 'ALL',
+      showDoctorModal: false,
+      selectedDoctor: null,
     };
   }
 
@@ -37,12 +37,8 @@ class TableManageDoctor extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.listDoctors !== this.props.listDoctors) {
       this.setState(
-        {
-          doctors: this.props.listDoctors,
-        },
-        () => {
-          this.buildPositionOptions();
-        }
+        { doctors: this.props.listDoctors },
+        this.buildPositionOptions
       );
     }
 
@@ -51,10 +47,16 @@ class TableManageDoctor extends Component {
     }
   }
 
-  // build options cho Select chức danh
+  componentWillUnmount() {
+    if (this.state.searchTimer) {
+      clearTimeout(this.state.searchTimer);
+    }
+  }
+
   buildPositionOptions = () => {
     const { doctors } = this.state;
     const { language } = this.props;
+
     if (!doctors || doctors.length === 0) {
       this.setState({ listPosition: [] });
       return;
@@ -92,8 +94,56 @@ class TableManageDoctor extends Component {
     });
   };
 
+  handleSearchDoctor = (e) => {
+    const value = e.target.value;
+    const { limit, sortBy, sortOrder } = this.state;
+
+    this.setState({ keyword: value, page: 1 }, () => {
+      if (this.state.searchTimer) {
+        clearTimeout(this.state.searchTimer);
+      }
+
+      const timer = setTimeout(() => {
+        this.props.fetchAllDoctorRedux(
+          1,
+          limit,
+          sortBy,
+          sortOrder,
+          this.state.keyword
+        );
+      }, 400);
+
+      this.setState({ searchTimer: timer });
+    });
+  };
+
+  handleChangePosition = (selectedPosition) => {
+    this.setState({ selectedPosition });
+  };
+
+  handleClearFilter = () => {
+    const { limit, sortBy, sortOrder } = this.state;
+
+    this.setState(
+      {
+        keyword: '',
+        selectedPosition: null,
+        page: 1,
+      },
+      () => {
+        this.props.fetchAllDoctorRedux(
+          1,
+          limit,
+          sortBy,
+          sortOrder,
+          ''
+        );
+      }
+    );
+  };
+
   handleChangePage = (type) => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const { page, limit, sortBy, sortOrder, keyword } = this.state;
     const { totalDoctors } = this.props;
 
     const totalPages = Math.ceil((totalDoctors || 0) / limit) || 1;
@@ -103,24 +153,20 @@ class TableManageDoctor extends Component {
     if (type === 'next' && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
-      this.setState(
-        {
-          page: newPage,
-        },
-        () => {
-          this.props.fetchAllDoctorRedux(
-            this.state.page,
-            this.state.limit,
-            this.state.sortBy,
-            this.state.sortOrder
-          );
-        }
-      );
+      this.setState({ page: newPage }, () => {
+        this.props.fetchAllDoctorRedux(
+          this.state.page,
+          limit,
+          sortBy,
+          sortOrder,
+          keyword
+        );
+      });
     }
   };
 
   handleSort = (field) => {
-    const { sortBy, sortOrder } = this.state;
+    const { sortBy, sortOrder, limit, keyword } = this.state;
     let newSortOrder = 'ASC';
 
     if (sortBy === field && sortOrder === 'ASC') {
@@ -135,10 +181,11 @@ class TableManageDoctor extends Component {
       },
       () => {
         this.props.fetchAllDoctorRedux(
-          this.state.page,
-          this.state.limit,
-          this.state.sortBy,
-          this.state.sortOrder
+          1,
+          limit,
+          field,
+          newSortOrder,
+          keyword
         );
       }
     );
@@ -150,176 +197,152 @@ class TableManageDoctor extends Component {
     return sortOrder === 'ASC' ? ' ↑' : ' ↓';
   };
 
-  handleChangePosition = (selectedPosition) => {
-    this.setState({ selectedPosition });
-  };
-
-  handleAddressFilter = (e) => {
-    this.setState({
-      addressFilter: e.target.value,
-      page: 1,
-    });
-  };
-
   render() {
     const {
       doctors,
       page,
       limit,
-      showDoctorModal,
-      selectedDoctor,
+      keyword,
       listPosition,
       selectedPosition,
-      addressFilter,
+      showDoctorModal,
+      selectedDoctor,
     } = this.state;
-    const { totalDoctors, language } = this.props;
 
-    const allDoctors = doctors || [];
+    const { language, totalDoctors } = this.props;
 
-    // danh sách địa chỉ duy nhất
-    const addressSet = new Set();
-    allDoctors.forEach((d) => {
-      if (d.address) addressSet.add(d.address);
-    });
-    const addressOptions = Array.from(addressSet.values());
+    let filteredDoctors = doctors || [];
 
-    // filter theo chức danh và địa chỉ
-    const positionFilterValue =
-      selectedPosition && selectedPosition.value
-        ? selectedPosition.value
-        : 'ALL';
-
-    let arrDoctors = allDoctors;
-
-    if (positionFilterValue !== 'ALL') {
-      arrDoctors = arrDoctors.filter(
-        (d) => d.positionId === positionFilterValue
+    if (selectedPosition && selectedPosition.value !== 'ALL') {
+      filteredDoctors = filteredDoctors.filter(
+        (d) => d.positionId === selectedPosition.value
       );
-    }
-
-    if (addressFilter !== 'ALL') {
-      arrDoctors = arrDoctors.filter((d) => d.address === addressFilter);
     }
 
     const totalPages = Math.ceil((totalDoctors || 0) / limit) || 1;
 
     return (
       <>
-        <div className="doctor-page">
-          <div className="users-container">
-            <div className="title text-center">
-              <FormattedMessage id="admin.manage-doctor.title" />
+        <div className="users-container">
+          <div className="title text-center">
+            <FormattedMessage id="admin.manage-doctor.title" />
+          </div>
+
+          <div className="user-function">
+            <div className="btn-search">
+              <i className="fa-solid fa-magnifying-glass"></i>
+              <input
+                className="input-search"
+                type="text"
+                placeholder="Tìm theo tên bác sĩ"
+                value={keyword}
+                onChange={this.handleSearchDoctor}
+              />
             </div>
 
-            <div className="user-function">
-              <button className="btn-search">
-                <i className="fa-solid fa-magnifying-glass"></i>
-                <input
-                  className="input-search"
-                  type="text"
-                  placeholder="Tìm kiếm theo email hoặc tên"
-                />
-              </button>
-
-              <div className="doctor-filters-row">
-              <div className="filter-group">
-                <label className="filter-label">Lọc theo chức danh</label>
-                <Select
-                  value={selectedPosition}
-                  onChange={this.handleChangePosition}
-                  options={listPosition}
-                  name="selectedPosition"
-                  placeholder="Tất cả chức danh"
-                  classNamePrefix="doctor-select"
-                  isClearable
-                />
-              </div>
+            <div className="filter-item">
+              <label className="filter-label">Chức danh</label>
+              <Select
+                value={selectedPosition}
+                onChange={this.handleChangePosition}
+                options={listPosition}
+                placeholder="Tất cả chức danh"
+                classNamePrefix="schedule-select"
+                isClearable
+              />
             </div>
 
-            </div>
+            <button
+              className="btn-clear-filter"
+              onClick={this.handleClearFilter}
+            >
+              Bỏ lọc
+            </button>
+          </div>
 
-            <div className="users-table mt-3 mx-1">
-              <table>
-                <tbody>
-                  <tr>
-                    <th onClick={() => this.handleSort('email')}>
-                      Email{this.renderSortLabel('email')}
-                    </th>
-                    <th onClick={() => this.handleSort('firstName')}>
-                      First name{this.renderSortLabel('firstName')}
-                    </th>
-                    <th onClick={() => this.handleSort('lastName')}>
-                      Last name{this.renderSortLabel('lastName')}
-                    </th>
-                    <th>Address</th>
-                    <th>Chức danh</th>
-                    <th onClick={() => this.handleSort('createdAt')}>
-                      Created at{this.renderSortLabel('createdAt')}
-                    </th>
-                    <th>Actions</th>
-                  </tr>
+          <div className="users-table mt-3 mx-1">
+            <table>
+              <tbody>
+                <tr>
+                  <th>Email</th>
 
-                  {arrDoctors && arrDoctors.length > 0 ? (
-                    arrDoctors.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{item.email}</td>
-                          <td>{item.firstName}</td>
-                          <td>{item.lastName}</td>
-                          <td>{item.address}</td>
-                          <td>
-                            {item.positionData
-                              ? language === LANGUAGES.VI
-                                ? item.positionData.valueVi
-                                : item.positionData.valueEn
-                              : ''}
-                          </td>
-                          <td>
-                            {item.createdAt
-                              ? new Date(item.createdAt).toLocaleString()
-                              : ''}
-                          </td>
-                          <td>
-                            <button
-                              className="btn-edit"
-                              onClick={() => this.openDoctorModal(item)}
-                            >
-                              <i className="fa-solid fa-pen-to-square"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan="7" style={{ textAlign: 'center' }}>
-                        No doctors found
+                  <th onClick={() => this.handleSort('firstName')}>
+                    Họ tên{this.renderSortLabel('firstName')}
+                  </th>
+
+                  <th>Chức danh</th>
+
+                  <th onClick={() => this.handleSort('createdAt')}>
+                    Created at{this.renderSortLabel('createdAt')}
+                  </th>
+
+                  <th>Actions</th>
+                </tr>
+
+                {filteredDoctors.length > 0 ? (
+                  filteredDoctors.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.email}</td>
+
+                      <td>
+                        {item.firstName} {item.lastName}
+                      </td>
+
+                      <td>
+                        {item.positionData
+                          ? language === LANGUAGES.VI
+                            ? item.positionData.valueVi
+                            : item.positionData.valueEn
+                          : ''}
+                      </td>
+
+                      <td>
+                        {item.createdAt
+                          ? new Date(item.createdAt).toLocaleString()
+                          : ''}
+                      </td>
+
+                      <td>
+                        <button
+                          className="btn-edit"
+                          onClick={() => this.openDoctorModal(item)}
+                        >
+                          <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: 'center' }}>
+                      No doctors found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
 
-            <div className="pagination mt-3 d-flex justify-content-center align-items-center">
-              <button
-                className="btn btn-light mx-2"
-                onClick={() => this.handleChangePage('prev')}
-                disabled={page <= 1}
-              >
-                Prev
-              </button>
-              <span>
-                Page {page} of {totalPages}. Total {totalDoctors || 0} doctors
-              </span>
-              <button
-                className="btn btn-light mx-2"
-                onClick={() => this.handleChangePage('next')}
-                disabled={page >= totalPages}
-              >
-                Next
-              </button>
-            </div>
+          <div className="pagination mt-3 d-flex justify-content-center align-items-center">
+            <button
+              className="btn btn-light mx-2"
+              onClick={() => this.handleChangePage('prev')}
+              disabled={page <= 1}
+            >
+              Prev
+            </button>
+
+            <span>
+              Page {page} of {totalPages}. Total {totalDoctors || 0} doctors
+            </span>
+
+            <button
+              className="btn btn-light mx-2"
+              onClick={() => this.handleChangePage('next')}
+              disabled={page >= totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
 
@@ -345,8 +368,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchAllDoctorRedux: (page, limit, sortBy, sortOrder) =>
-      dispatch(actions.fetchAllDoctor(page, limit, sortBy, sortOrder)),
+    fetchAllDoctorRedux: (page, limit, sortBy, sortOrder, keyword) =>
+      dispatch(
+        actions.fetchAllDoctor(page, limit, sortBy, sortOrder, keyword)
+      ),
   };
 };
 
