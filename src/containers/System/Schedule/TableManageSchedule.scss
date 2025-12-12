@@ -1,40 +1,37 @@
-.users-container {
+.schedules-container {
   display: flex;
   flex-direction: column;
   gap: 10x;
 }
 
 /* Tiêu đề */
-.users-container .title {
+.schedules-container .title {
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #065f46;
-  margin: 0;
+  margin-top: 25px;
+  margin-bottom: 15px;
 }
 
-.user-function{
-  display: flex; 
+.schedule-function {
+  display: flex;
   gap: 10px;
 
-  .btn-search{
+  .btn-search {
     border-radius: 50px;
     background-color: white;
-    .input-search{
-      
+
+    .input-search {
       outline: none;
       border: none;
-    }
-
-    i{
-      // background-color: white;
     }
   }
 }
 
 /* Card chứa bảng */
-.users-table {
+.schedules-table {
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
@@ -43,7 +40,7 @@
 }
 
 /* Bảng */
-.users-table table {
+.schedules-table table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, Helvetica, sans-serif;
@@ -51,7 +48,7 @@
 }
 
 /* Header */
-.users-table th {
+.schedules-table th {
   padding: 10px 12px;
   text-align: left;
   font-size: 13px;
@@ -64,12 +61,12 @@
   white-space: nowrap;
 }
 
-.users-table th:last-child {
+.schedules-table th:last-child {
   text-align: center;
 }
 
 /* Cell */
-.users-table td {
+.schedules-table td {
   padding: 10px 12px;
   font-size: 14px;
   border-bottom: 1px solid #e5e7eb;
@@ -77,17 +74,17 @@
 }
 
 /* Hàng chẵn lẻ */
-.users-table tr:nth-child(even) td {
+.schedules-table tr:nth-child(even) td {
   background-color: #f9fafb;
 }
 
 /* Hover trên hàng */
-.users-table tr:hover td {
+.schedules-table tr:hover td {
   background-color: #ecfdf3;
 }
 
 /* Cột actions */
-.users-table td:last-child {
+.schedules-table td:last-child {
   text-align: center;
 }
 
@@ -158,12 +155,13 @@
   cursor: default;
 }
 
-.user-function {
+.schedule-function {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-top: 8px;
   gap: 16px;
+  padding: 0 25px;
 
   .btn-search {
     display: flex;
@@ -195,8 +193,8 @@
     }
   }
 
-  .user-create {
-    .btn-create-user {
+  .schedule-create {
+    .btn-create-schedule {
       padding: 8px 18px;
       border-radius: 999px;
       border: none;

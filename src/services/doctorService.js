@@ -58,6 +58,11 @@ const handleGetScheduleByDoctor = (params) => {
     return axios.get('/api/schedule/', { params });
 }
 
+// const getSchedules = (params) => {
+//   return axios.get('/api/schedule', { params });
+// };
+
+
 export { 
     getTopDoctorHomeService,
     getAllDoctorsService,
@@ -73,5 +78,6 @@ export {
     postSendRemedy,
     handleGetAllSchedule,
     handleGetAllBooking,
+    // getSchedules,
     handleGetScheduleByDoctor,
 }

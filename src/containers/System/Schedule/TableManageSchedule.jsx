@@ -1,14 +1,17 @@
-// src/containers/System/Admin/TableManageDoctor.js
+// src/containers/System/Admin/TableManageSchedule.jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './TableManageSchedule.scss';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../../utils/constant';
-import { handleGetAllSchedule } from '../../../services/doctorService';
-
-import Select from 'react-select';
 import { getAllCodeService } from '../../../services/userService';
+import {
+  getAllDoctorsService,
+  handleGetAllSchedule,
+  handleGetScheduleByDoctor,
+} from '../../../services/doctorService';
 import DatePicker from '../../../components/Input/DatePicker';
+import Select from 'react-select';
 
 class TableManageSchedule extends Component {
   constructor(props) {
@@ -16,31 +19,37 @@ class TableManageSchedule extends Component {
     this.state = {
       schedules: [],
       totalSchedules: 0,
+
       page: 1,
       limit: 10,
       sortBy: 'createdAt',
       sortOrder: 'DESC',
-      loading: false,
+
+      listDoctor: [],
+      selectedDoctor: null,
 
       listTime: [],
       selectedTime: null,
-      selectedDate: new Date(),
+
+      selectedDate: null,
+
+      loading: false,
     };
   }
 
   async componentDidMount() {
+    await this.fetchDoctorOptions();
     await this.fetchTimeOptions();
     this.fetchSchedules();
   }
 
   async componentDidUpdate(prevProps) {
-    // đổi ngôn ngữ thì cập nhật lại label của Select
     if (prevProps.language !== this.props.language) {
+      await this.fetchDoctorOptions();
       await this.fetchTimeOptions();
     }
   }
 
-  // lấy list TIME cho Select
   fetchTimeOptions = async () => {
     try {
       const res = await getAllCodeService('TIME');
@@ -49,7 +58,7 @@ class TableManageSchedule extends Component {
         this.setState({ listTime });
       }
     } catch (error) {
-      console.log('fetchTimeOptions error:', error);
+      console.log('fetchTimeOptions error', error);
     }
   };
 
@@ -62,98 +71,158 @@ class TableManageSchedule extends Component {
     }));
   };
 
-  // gọi API lấy lịch khám
+  fetchDoctorOptions = async () => {
+    try {
+      const { language } = this.props;
+      const res = await getAllDoctorsService({
+        page: 1,
+        limit: 1000,
+        sortBy: 'firstName',
+        sortOrder: 'ASC',
+      });
+
+      const data = res && res.data ? res.data : res;
+
+      if (data && data.errCode === 0) {
+        const doctors = data.doctors || [];
+        const listDoctor = doctors.map((doc) => ({
+          value: doc.id,
+          label:
+            language === LANGUAGES.EN
+              ? `${doc.firstName} ${doc.lastName}`
+              : `${doc.firstName} ${doc.lastName}`,
+        }));
+        this.setState({ listDoctor });
+      } else {
+        this.setState({ listDoctor: [] });
+      }
+    } catch (error) {
+      console.log('fetchDoctorOptions error', error);
+      this.setState({ listDoctor: [] });
+    }
+  };
+
+  normalizeDateToTimestamp = (value) => {
+    if (!value) return '';
+    if (typeof value === 'number') return value;
+
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '';
+
+    const normalized = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate(),
+      0,
+      0,
+      0,
+      0,
+    );
+    return normalized.getTime();
+  };
+
   fetchSchedules = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const {
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      selectedDoctor,
+      selectedTime,
+      selectedDate,
+    } = this.state;
 
     try {
       this.setState({ loading: true });
 
-      const res = await handleGetAllSchedule({
+      const dateParam = this.normalizeDateToTimestamp(selectedDate);
+
+      const baseParams = {
         page,
         limit,
         sortBy,
         sortOrder,
-      });
+      };
 
-      const data = res && res.data ? res.data : res; // đề phòng bạn đổi lại service
-      if (data && data.errCode === 0) {
-        const {
-          schedules,
-          total,
-          page: resPage,
-          limit: resLimit,
-        } = data;
+      if (selectedTime && selectedTime.value) {
+        baseParams.timeType = selectedTime.value;
+      }
 
-        this.setState({
-          schedules: schedules || [],
-          totalSchedules: total || 0,
-          page: resPage || page,
-          limit: resLimit || limit,
+      if (dateParam) {
+        baseParams.date = dateParam;
+      }
+
+      let res;
+
+      if (selectedDoctor && selectedDoctor.value) {
+        res = await handleGetScheduleByDoctor({
+          ...baseParams,
+          doctorId: selectedDoctor.value,
         });
       } else {
-        console.log('Fetch schedule failed:', data);
+        res = await handleGetAllSchedule(baseParams);
+      }
+
+      const data = res && res.data ? res.data : res;
+
+      if (data && data.errCode === 0) {
+        this.setState({
+          schedules: data.schedules || [],
+          totalSchedules: data.total || 0,
+          page: data.page || page,
+          limit: data.limit || limit,
+        });
+      } else {
+        this.setState({
+          schedules: [],
+          totalSchedules: 0,
+        });
       }
     } catch (error) {
-      console.log('Fetch schedule error:', error);
+      console.log('fetchSchedules error', error);
+      this.setState({
+        schedules: [],
+        totalSchedules: 0,
+      });
     } finally {
       this.setState({ loading: false });
     }
   };
 
-  // format date thành ngày theo ngôn ngữ
   formatDate = (value, language) => {
     if (!value) return '';
-    const timestamp = Number(value);
-    const d = new Date(timestamp);
-
-    if (Number.isNaN(timestamp) || isNaN(d.getTime())) {
-      const d2 = new Date(value);
-      if (isNaN(d2.getTime())) return '';
-      return language === LANGUAGES.EN
-        ? d2.toLocaleDateString('en-US')
-        : d2.toLocaleDateString('vi-VN');
+    const num = Number(value);
+    let d = new Date(num);
+    if (Number.isNaN(num) || isNaN(d.getTime())) {
+      d = new Date(value);
     }
-
+    if (isNaN(d.getTime())) return '';
     return language === LANGUAGES.EN
       ? d.toLocaleDateString('en-US')
       : d.toLocaleDateString('vi-VN');
   };
 
   handleChangePage = (type) => {
-    const { page, limit, sortBy, sortOrder, totalSchedules } = this.state;
-
+    const { page, limit, totalSchedules } = this.state;
     const totalPages = Math.ceil((totalSchedules || 0) / limit) || 1;
     let newPage = page;
 
-    if (type === 'prev' && page > 1) {
-      newPage = page - 1;
-    }
-
-    if (type === 'next' && page < totalPages) {
-      newPage = page + 1;
-    }
+    if (type === 'prev' && page > 1) newPage = page - 1;
+    if (type === 'next' && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
-      this.setState(
-        {
-          page: newPage,
-        },
-        () => {
-          this.fetchSchedules();
-        }
-      );
+      this.setState({ page: newPage }, () => {
+        this.fetchSchedules();
+      });
     }
   };
 
   handleSort = (field) => {
     const { sortBy, sortOrder } = this.state;
     let newSortOrder = 'ASC';
-
     if (sortBy === field && sortOrder === 'ASC') {
       newSortOrder = 'DESC';
     }
-
     this.setState(
       {
         sortBy: field,
@@ -162,7 +231,7 @@ class TableManageSchedule extends Component {
       },
       () => {
         this.fetchSchedules();
-      }
+      },
     );
   };
 
@@ -172,154 +241,202 @@ class TableManageSchedule extends Component {
     return sortOrder === 'ASC' ? ' ↑' : ' ↓';
   };
 
-  // chọn timeType
-  handleChangeTime = (selectedTime) => {
-    this.setState({ selectedTime });
-    // sau này bạn gọi lại fetchSchedules với filter cũng từ đây
+  handleChangeDoctor = (selectedDoctor) => {
+    this.setState(
+      {
+        selectedDoctor,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      },
+    );
   };
 
-  // chọn ngày
+  handleChangeTime = (selectedTime) => {
+    this.setState(
+      {
+        selectedTime,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      },
+    );
+  };
+
   handleOnchangeDatePicker = (dateArr) => {
-    const date = dateArr && dateArr[0] ? dateArr[0] : new Date();
-    this.setState({
-      selectedDate: date,
-    });
-    // sau này bạn gửi date này lên API filter
+    let date = null;
+    if (dateArr && Array.isArray(dateArr) && dateArr[0]) {
+      date = dateArr[0];
+    }
+    this.setState(
+      {
+        selectedDate: date,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      },
+    );
+  };
+
+  handleClearFilter = () => {
+    this.setState(
+      {
+        selectedDoctor: null,
+        selectedTime: null,
+        selectedDate: null,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      },
+    );
   };
 
   render() {
     const {
       schedules,
+      totalSchedules,
       page,
       limit,
-      totalSchedules,
-      loading,
+      listDoctor,
+      selectedDoctor,
       listTime,
       selectedTime,
       selectedDate,
+      loading,
     } = this.state;
     const { language } = this.props;
 
-    const arrSchedules = schedules || [];
     const totalPages = Math.ceil((totalSchedules || 0) / limit) || 1;
 
     return (
-      <>
-        <div className="users-container">
-          <div className="title text-center">
-            <FormattedMessage id="admin.manage-doctor.title" />
-          </div>
+      <div className="schedules-container">
+        <div className="title text-center">QUẢN LÍ LỊCH KHÁM</div>
 
-          <div className="user-function">
-            <button className="btn-search">
-              <input
-                className="input-search"
-                type="text"
-                placeholder="Tìm kiếm"
+        <div className="schedule-function">
+          <div className="filter-schedule">
+            <div className="filter-item">
+              <label className="filter-label">BÁC SĨ</label>
+              <Select
+                value={selectedDoctor}
+                onChange={this.handleChangeDoctor}
+                options={listDoctor}
+                name="selectedDoctor"
+                placeholder="Tất cả bác sĩ"
+                classNamePrefix="doctor-select"
+                isClearable
               />
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
-
-            <div className="filter-schedule">
-              <div className="filter-item">
-                <label className="filter-label">Thời gian khám</label>
-                <Select
-                  value={selectedTime}
-                  onChange={this.handleChangeTime}
-                  options={listTime}
-                  name="selectedTime"
-                  placeholder="Chọn khoảng thời gian"
-                  classNamePrefix="schedule-select"
-                />
-              </div>
-
-              <div className="filter-item">
-                <label className="filter-label">Ngày</label>
-                <DatePicker
-                  className="form-control"
-                  onChange={this.handleOnchangeDatePicker}
-                  value={selectedDate}
-                />
-              </div>
             </div>
-          </div>
 
-          <div className="users-table mt-3 mx-1">
-            {loading && <div className="loading-overlay">Loading...</div>}
+            <div className="filter-item">
+              <label className="filter-label">THỜI GIAN KHÁM</label>
+              <Select
+                value={selectedTime}
+                onChange={this.handleChangeTime}
+                options={listTime}
+                name="selectedTime"
+                placeholder="Tất cả thời gian"
+                classNamePrefix="time-select"
+                isClearable
+              />
+            </div>
 
-            <table>
-              <tbody>
-                <tr>
-                  <th>STT</th>
-                  <th onClick={() => this.handleSort('doctorId')}>
-                    Doctor{this.renderSortLabel('doctorId')}
-                  </th>
-                  <th onClick={() => this.handleSort('timeType')}>
-                    TimeType{this.renderSortLabel('timeType')}
-                  </th>
-                  <th onClick={() => this.handleSort('date')}>
-                    Date{this.renderSortLabel('date')}
-                  </th>
-                  <th onClick={() => this.handleSort('createdAt')}>
-                    Created at{this.renderSortLabel('createdAt')}
-                  </th>
-                </tr>
+            <div className="filter-item">
+              <label className="filter-label">NGÀY</label>
+              <DatePicker
+                className="form-control"
+                onChange={this.handleOnchangeDatePicker}
+                value={selectedDate}
+              />
+            </div>
 
-                {arrSchedules && arrSchedules.length > 0 ? (
-                  arrSchedules.map((item, index) => {
-                    return (
-                      <tr key={item.id || index}>
-                        <td>{(page - 1) * limit + index + 1}</td>
-                        <td>
-                          {item.doctorData?.firstName}{' '}
-                          {item.doctorData?.lastName}
-                        </td>
-                        <td>
-                          {language === LANGUAGES.EN
-                            ? item.timeTypeData?.valueEn
-                            : item.timeTypeData?.valueVi}
-                        </td>
-                        <td>{this.formatDate(item.date, language)}</td>
-                        <td>
-                          {item.createdAt
-                            ? new Date(item.createdAt).toLocaleString()
-                            : ''}
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan="7" style={{ textAlign: 'center' }}>
-                      No schedules found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="pagination mt-3 d-flex justify-content-center align-items-center">
             <button
-              className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('prev')}
-              disabled={page <= 1}
+              type="button"
+              className="btn-clear-filter"
+              onClick={this.handleClearFilter}
             >
-              Prev
-            </button>
-            <span>
-              Page {page} of {totalPages}. Total {totalSchedules || 0} schedules
-            </span>
-            <button
-              className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('next')}
-              disabled={page >= totalPages}
-            >
-              Next
+              Bỏ lọc
             </button>
           </div>
         </div>
-      </>
+
+        <div className="schedules-table mt-3 mx-1">
+          {loading && <div className="loading-overlay">Loading...</div>}
+
+          <table>
+            <tbody>
+              <tr>
+                <th>STT</th>
+                <th onClick={() => this.handleSort('doctorId')}>
+                  DOCTOR{this.renderSortLabel('doctorId')}
+                </th>
+                <th onClick={() => this.handleSort('timeType')}>
+                  TIMETYPE{this.renderSortLabel('timeType')}
+                </th>
+                <th onClick={() => this.handleSort('date')}>
+                  DATE{this.renderSortLabel('date')}
+                </th>
+                <th onClick={() => this.handleSort('createdAt')}>
+                  CREATED AT{this.renderSortLabel('createdAt')}
+                </th>
+              </tr>
+
+              {schedules && schedules.length > 0 ? (
+                schedules.map((item, index) => (
+                  <tr key={item.id || index}>
+                    <td>{(page - 1) * limit + index + 1}</td>
+                    <td>
+                      {item.doctorData?.firstName} {item.doctorData?.lastName}
+                    </td>
+                    <td>
+                      {language === LANGUAGES.EN
+                        ? item.timeTypeData?.valueEn
+                        : item.timeTypeData?.valueVi}
+                    </td>
+                    <td>{this.formatDate(item.date, language)}</td>
+                    <td>
+                      {item.createdAt
+                        ? new Date(item.createdAt).toLocaleString(
+                            language === LANGUAGES.EN ? 'en-US' : 'vi-VN',
+                          )
+                        : ''}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: 'center' }}>
+                    Không có lịch khám
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="pagination mt-3 d-flex justify-content-center align-items-center">
+          <button
+            className="btn btn-light mx-2"
+            onClick={() => this.handleChangePage('prev')}
+            disabled={page <= 1}
+          >
+            Prev
+          </button>
+          <span>
+            Page {page} of {totalPages}. Total {totalSchedules || 0} schedules
+          </span>
+          <button
+            className="btn btn-light mx-2"
+            onClick={() => this.handleChangePage('next')}
+            disabled={page >= totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     );
   }
 }
