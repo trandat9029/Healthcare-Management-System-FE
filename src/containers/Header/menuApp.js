@@ -23,11 +23,11 @@ export const adminMenu = [
         name: 'menu.admin.manage-schedule', 
         link: '/system/manage-schedule',
         icon: 'fa-solid fa-calendar', 
-        menus: [
-            {
-                name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
-            },
-        ]
+        // menus: [
+        //     {
+        //         name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
+        //     },
+        // ]
     },
     { //Quản lý chuyên khoa
         name: 'menu.admin.manage-specialty', 
@@ -59,11 +59,11 @@ export const adminMenu = [
         name: 'menu.admin.manage-booking', 
         link: '/system/manage-booking',
         icon: 'fa-solid fa-calendar-check',  
-        menus: [
-            {
-                name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
-            },
-        ]
+        // menus: [
+        //     {
+        //         name: 'menu.admin.create-specialty', link: '/system/create-specialty', 
+        //     },
+        // ]
     },
 
 ];

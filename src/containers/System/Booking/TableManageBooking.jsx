@@ -22,29 +22,53 @@ class TableManageBooking extends Component {
       sortOrder: 'DESC',
       loading: false,
 
+      // filters
+      keywordDoctor: '',
+      keywordPatient: '',
       listTime: [],
       selectedTime: null,
-      selectedDate: new Date(),
+      selectedDate: null,
+
+      listStatus: [],
+      selectedStatus: null,
     };
+
+    this.searchTimer = null;
   }
 
   async componentDidMount() {
-    await this.fetchTimeOptions();
+    await Promise.all([this.fetchTimeOptions(), this.fetchStatusOptions()]);
     this.fetchBookings();
   }
 
   async componentDidUpdate(prevProps) {
     if (prevProps.language !== this.props.language) {
-      await this.fetchTimeOptions();
+      await Promise.all([this.fetchTimeOptions(), this.fetchStatusOptions()]);
     }
   }
 
-  // lấy list TIME cho Select
+  componentWillUnmount() {
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+  }
+
+  fetchStatusOptions = async () => {
+    try {
+      const res = await getAllCodeService('STATUS');
+      if (res && res.errCode === 0) {
+        const listStatus = this.buildOptions(res.data || []);
+        this.setState({ listStatus });
+      }
+      console.log('check res status: ', res)
+    } catch (error) {
+      console.log('fetchStatusOptions error:', error);
+    }
+  };
+
   fetchTimeOptions = async () => {
     try {
       const res = await getAllCodeService('TIME');
       if (res && res.errCode === 0) {
-        const listTime = this.buildTimeOptions(res.data || []);
+        const listTime = this.buildOptions(res.data || []);
         this.setState({ listTime });
       }
     } catch (error) {
@@ -52,7 +76,7 @@ class TableManageBooking extends Component {
     }
   };
 
-  buildTimeOptions = (data) => {
+  buildOptions = (data) => {
     const { language } = this.props;
     if (!data || data.length === 0) return [];
     return data.map((item) => ({
@@ -61,28 +85,47 @@ class TableManageBooking extends Component {
     }));
   };
 
-  // gọi API lấy booking
+  buildDateTimestamp = (date) => {
+    if (!date) return undefined;
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return undefined;
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  };
+
   fetchBookings = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const {
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keywordDoctor,
+      keywordPatient,
+      selectedTime,
+      selectedDate,
+      selectedStatus,
+    } = this.state;
 
     try {
       this.setState({ loading: true });
 
-      const res = await handleGetAllBooking({
+      const params = {
         page,
         limit,
         sortBy,
         sortOrder,
-      });
+        keywordDoctor: keywordDoctor ? keywordDoctor.trim() : undefined,
+        keywordPatient: keywordPatient ? keywordPatient.trim() : undefined,
+        timeType: selectedTime ? selectedTime.value : undefined,
+        statusId: selectedStatus ? selectedStatus.value : undefined,
+        date: this.buildDateTimestamp(selectedDate),
+      };
 
+      const res = await handleGetAllBooking(params);
       const data = res && res.data ? res.data : res;
+
       if (data && data.errCode === 0) {
-        const {
-          bookings,
-          total,
-          page: resPage,
-          limit: resLimit,
-        } = data;
+        const { bookings, total, page: resPage, limit: resLimit } = data;
 
         this.setState({
           bookings: bookings || [],
@@ -100,7 +143,6 @@ class TableManageBooking extends Component {
     }
   };
 
-  // format date
   formatDate = (value, language) => {
     if (!value) return '';
     const timestamp = Number(value);
@@ -125,33 +167,18 @@ class TableManageBooking extends Component {
     const totalPages = Math.ceil((totalBookings || 0) / limit) || 1;
     let newPage = page;
 
-    if (type === 'prev' && page > 1) {
-      newPage = page - 1;
-    }
-
-    if (type === 'next' && page < totalPages) {
-      newPage = page + 1;
-    }
+    if (type === 'prev' && page > 1) newPage = page - 1;
+    if (type === 'next' && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
-      this.setState(
-        {
-          page: newPage,
-        },
-        () => {
-          this.fetchBookings();
-        }
-      );
+      this.setState({ page: newPage }, () => this.fetchBookings());
     }
   };
 
   handleSort = (field) => {
     const { sortBy, sortOrder } = this.state;
     let newSortOrder = 'ASC';
-
-    if (sortBy === field && sortOrder === 'ASC') {
-      newSortOrder = 'DESC';
-    }
+    if (sortBy === field && sortOrder === 'ASC') newSortOrder = 'DESC';
 
     this.setState(
       {
@@ -159,9 +186,7 @@ class TableManageBooking extends Component {
         sortOrder: newSortOrder,
         page: 1,
       },
-      () => {
-        this.fetchBookings();
-      }
+      () => this.fetchBookings()
     );
   };
 
@@ -172,16 +197,51 @@ class TableManageBooking extends Component {
   };
 
   handleChangeTime = (selectedTime) => {
-    this.setState({ selectedTime });
-    // sau này filter thêm theo timeType thì gọi lại fetchBookings ở đây
+    this.setState({ selectedTime, page: 1 }, () => this.fetchBookings());
+  };
+
+  handleChangeStatus = (selectedStatus) => {
+    this.setState({ selectedStatus, page: 1 }, () => this.fetchBookings());
   };
 
   handleOnchangeDatePicker = (dateArr) => {
-    const date = dateArr && dateArr[0] ? dateArr[0] : new Date();
-    this.setState({
-      selectedDate: date,
-    });
-    // sau này gửi date này lên API filter
+    const date = dateArr && dateArr[0] ? dateArr[0] : null;
+    this.setState({ selectedDate: date, page: 1 }, () => this.fetchBookings());
+  };
+
+  debounceFetch = () => {
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {
+      this.fetchBookings();
+    }, 400);
+  };
+
+  handleChangeKeywordDoctor = (e) => {
+    this.setState(
+      { keywordDoctor: e.target.value, page: 1 },
+      this.debounceFetch
+    );
+  };
+
+  handleChangeKeywordPatient = (e) => {
+    this.setState(
+      { keywordPatient: e.target.value, page: 1 },
+      this.debounceFetch
+    );
+  };
+
+  clearFilters = () => {
+    this.setState(
+      {
+        keywordDoctor: '',
+        keywordPatient: '',
+        selectedTime: null,
+        selectedDate: null,
+        selectedStatus: null,
+        page: 1,
+      },
+      () => this.fetchBookings()
+    );
   };
 
   render() {
@@ -194,7 +254,12 @@ class TableManageBooking extends Component {
       listTime,
       selectedTime,
       selectedDate,
+      listStatus,
+      selectedStatus,
+      keywordDoctor,
+      keywordPatient,
     } = this.state;
+
     const { language } = this.props;
 
     const arrBookings = bookings || [];
@@ -202,22 +267,49 @@ class TableManageBooking extends Component {
 
     return (
       <>
-        <div className="users-container">
+        <div className="bookings-container">
           <div className="title text-center">
             <FormattedMessage id="admin.manage-booking.title" />
           </div>
 
-          <div className="user-function">
-            <button className="btn-search">
-              <input
-                className="input-search"
-                type="text"
-                placeholder="Tìm kiếm"
-              />
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
+          <div className="booking-function">
+            <div className="search-group">
+              <div className="btn-search">
+                <i className="fa-solid fa-user-doctor"></i>
+                <input
+                  className="input-search"
+                  type="text"
+                  value={keywordDoctor}
+                  onChange={this.handleChangeKeywordDoctor}
+                  placeholder="Tìm theo tên bác sĩ"
+                />
+              </div>
+
+              <div className="btn-search">
+                <i className="fa-solid fa-user"></i>
+                <input
+                  className="input-search"
+                  type="text"
+                  value={keywordPatient}
+                  onChange={this.handleChangeKeywordPatient}
+                  placeholder="Tìm theo tên bệnh nhân"
+                />
+              </div>
+            </div>
 
             <div className="filter-schedule">
+              <div className="filter-item">
+                <label className="filter-label">Trạng thái</label>
+                <Select
+                  value={selectedStatus}
+                  onChange={this.handleChangeStatus}
+                  options={listStatus}
+                  name="selectedStatus"
+                  placeholder="Chọn trạng thái"
+                  classNamePrefix="schedule-select"
+                />
+              </div>
+
               <div className="filter-item">
                 <label className="filter-label">Thời gian khám</label>
                 <Select
@@ -238,10 +330,14 @@ class TableManageBooking extends Component {
                   value={selectedDate}
                 />
               </div>
+
+              <button className="btn-clear" onClick={this.clearFilters}>
+                Bỏ lọc
+              </button>
             </div>
           </div>
 
-          <div className="users-table mt-3 mx-1">
+          <div className="bookings-table mt-3 mx-1">
             {loading && <div className="loading-overlay">Loading...</div>}
 
             <table>
