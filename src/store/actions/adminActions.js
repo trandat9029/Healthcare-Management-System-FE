@@ -141,37 +141,42 @@ export const saveUserFailed = () =>({
 
 //get all users
 export const fetchAllUsersStart = (
-    page = 1,
-    limit = 10,
-    sortBy = 'createdAt',
-    sortOrder = 'DESC'
-    ) => {
-    return async (dispatch) => {
-        try {
-        let res = await getAllUsers({
-            id: 'ALL',
-            page,
-            limit,
-            sortBy,
-            sortOrder,
-        });
-        if (res && res.errCode === 0) {
-            dispatch(
-            fetchAllUsersSuccess({
-                users: res.users,
-                total: res.total,
-                page: res.page,
-                limit: res.limit,
-            })
-            );
-        } else {
-            dispatch(fetchAllUsersFailed());
-        }
-        } catch (error) {
-        console.log('fetchAllUsersStart error ', error);
+  page = 1,
+  limit = 10,
+  sortBy = 'createdAt',
+  sortOrder = 'DESC',
+  keyword = '',
+  roleId = 'ALL'
+) => {
+  return async (dispatch) => {
+    try {
+      let res = await getAllUsers({
+        id: 'ALL',
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        keyword,
+        roleId,
+      });
+
+      if (res && res.errCode === 0) {
+        dispatch(
+          fetchAllUsersSuccess({
+            users: res.users,
+            total: res.total,
+            page: res.page,
+            limit: res.limit,
+          })
+        );
+      } else {
         dispatch(fetchAllUsersFailed());
-        }
-    };
+      }
+    } catch (error) {
+      console.log('fetchAllUsersStart error ', error);
+      dispatch(fetchAllUsersFailed());
+    }
+  };
 };
 
 

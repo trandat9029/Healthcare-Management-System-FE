@@ -7,6 +7,7 @@ import { FormattedMessage } from "react-intl";
 import UserRedux from "./UserRedux";
 import { CRUD_ACTIONS, LANGUAGES } from "../../../utils/constant";
 import Select from "react-select";
+import { getAllCodeService } from "../../../services/userService";
 
 class TableManageUser extends Component {
   constructor(props) {
@@ -14,13 +15,19 @@ class TableManageUser extends Component {
     this.state = {
       userRedux: [],
       page: 1,
-      limit: 8,
+      limit: 9,
       sortBy: "createdAt",
       sortOrder: "DESC",
+
+      // NEW. search
+      search: "",
 
       roleFilter: "ALL",
       listRole: [],
       selectedRole: null,
+
+      // NEW. lưu list ROLE lấy từ Allcode để đổi ngôn ngữ build lại label
+      roleCodes: [],
 
       showUserModal: false,
       modalAction: CRUD_ACTIONS.CREATE,
@@ -31,55 +38,52 @@ class TableManageUser extends Component {
   async componentDidMount() {
     const { page, limit, sortBy, sortOrder } = this.state;
     await this.props.fetchUserRedux(page, limit, sortBy, sortOrder);
+    this.fetchRoleOptions();
   }
 
   componentDidUpdate(prevProps) {
     const { listUsers, language } = this.props;
 
-    // cập nhật list user
     if (prevProps.listUsers !== listUsers) {
-      this.setState(
-        {
-          userRedux: listUsers,
-        },
-        () => {
-          this.buildRoleOptions();
-        }
-      );
+      this.setState({
+        userRedux: listUsers,
+      });
     }
 
-    // đổi ngôn ngữ thì build lại options
+    // đổi ngôn ngữ thì build lại options ROLE
     if (prevProps.language !== language) {
-      this.buildRoleOptions();
+      const { roleCodes } = this.state;
+      if (roleCodes && roleCodes.length > 0) {
+        const listRole = this.buildRoleOptionsFromAllcodes(roleCodes);
+        this.setState({ listRole });
+      }
     }
   }
 
-  // build options cho Select vai trò
-  buildRoleOptions = () => {
-    const { userRedux } = this.state;
-    const { language } = this.props;
-
-    if (!userRedux || userRedux.length === 0) {
-      this.setState({ listRole: [] });
-      return;
-    }
-
-    const map = new Map();
-    userRedux.forEach((u) => {
-      if (u.roleId && u.roleData && !map.has(u.roleId)) {
-        map.set(u.roleId, u.roleData);
+  fetchRoleOptions = async () => {
+    try {
+      const res = await getAllCodeService("ROLE");
+      if (res && res.errCode === 0) {
+        const roleCodes = res.data || [];
+        const listRole = this.buildRoleOptionsFromAllcodes(roleCodes);
+        this.setState({ listRole, roleCodes });
       }
-    });
+    } catch (error) {
+      console.log("fetchRoleOptions error:", error);
+    }
+  };
 
-    const listRole = [
+  // build options cho Select vai trò từ Allcode ROLE
+  buildRoleOptionsFromAllcodes = (roleCodes) => {
+    const { language } = this.props;
+    const opts = [
       { value: "ALL", label: "Tất cả vai trò" },
-      ...Array.from(map.entries()).map(([id, data]) => ({
-        value: id,
-        label: language === LANGUAGES.VI ? data.valueVi : data.valueEn,
+      ...(roleCodes || []).map((item) => ({
+        value: item.keyMap,
+        label: language === LANGUAGES.VI ? item.valueVi : item.valueEn,
       })),
     ];
-
-    this.setState({ listRole });
+    return opts;
   };
 
   handleDeleteUser = (user) => {
@@ -117,28 +121,18 @@ class TableManageUser extends Component {
     const totalPages = Math.ceil((totalUsers || 0) / limit) || 1;
     let newPage = page;
 
-    if (type === "prev" && page > 1) {
-      newPage = page - 1;
-    }
-
-    if (type === "next" && page < totalPages) {
-      newPage = page + 1;
-    }
+    if (type === "prev" && page > 1) newPage = page - 1;
+    if (type === "next" && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
-      this.setState(
-        {
-          page: newPage,
-        },
-        () => {
-          this.props.fetchUserRedux(
-            this.state.page,
-            this.state.limit,
-            this.state.sortBy,
-            this.state.sortOrder
-          );
-        }
-      );
+      this.setState({ page: newPage }, () => {
+        this.props.fetchUserRedux(
+          this.state.page,
+          this.state.limit,
+          this.state.sortBy,
+          this.state.sortOrder
+        );
+      });
     }
   };
 
@@ -146,9 +140,7 @@ class TableManageUser extends Component {
     const { sortBy, sortOrder } = this.state;
     let newSortOrder = "ASC";
 
-    if (sortBy === field && sortOrder === "ASC") {
-      newSortOrder = "DESC";
-    }
+    if (sortBy === field && sortOrder === "ASC") newSortOrder = "DESC";
 
     this.setState(
       {
@@ -173,16 +165,22 @@ class TableManageUser extends Component {
     return sortOrder === "ASC" ? " ↑" : " ↓";
   };
 
-  // đổi filter vai trò bằng Select
-  handleChangeRole = (selectedRole) => {
-    const value = selectedRole && selectedRole.value ? selectedRole.value : "ALL";
-
-    this.setState({
-      selectedRole,
-      roleFilter: value,
-      page: 1,
+ handleChangeSearch = (e) => {
+    const keyword = e.target.value;
+    this.setState({ search: keyword, page: 1 }, () => {
+      const { page, limit, sortBy, sortOrder, roleFilter, search } = this.state;
+      this.props.fetchUserRedux(page, limit, sortBy, sortOrder, search, roleFilter);
     });
   };
+
+  handleChangeRole = (selectedRole) => {
+    const roleId = selectedRole && selectedRole.value ? selectedRole.value : 'ALL';
+    this.setState({ selectedRole, roleFilter: roleId, page: 1 }, () => {
+      const { page, limit, sortBy, sortOrder, roleFilter, search } = this.state;
+      this.props.fetchUserRedux(page, limit, sortBy, sortOrder, search, roleFilter);
+    });
+  };
+
 
   render() {
     const {
@@ -195,13 +193,36 @@ class TableManageUser extends Component {
       roleFilter,
       listRole,
       selectedRole,
+      search,
     } = this.state;
 
     const { totalUsers, language } = this.props;
 
     let arrUsers = userRedux || [];
+
+    // filter theo vai trò
     if (roleFilter !== "ALL") {
       arrUsers = arrUsers.filter((u) => u.roleId === roleFilter);
+    }
+
+    // NEW. filter theo search (email hoặc tên)
+    const q = (search || "").trim().toLowerCase();
+    if (q) {
+      arrUsers = arrUsers.filter((u) => {
+        const email = (u.email || "").toLowerCase();
+        const firstName = (u.firstName || "").toLowerCase();
+        const lastName = (u.lastName || "").toLowerCase();
+        const fullName = `${firstName} ${lastName}`.trim();
+        const fullName2 = `${lastName} ${firstName}`.trim();
+
+        return (
+          email.includes(q) ||
+          firstName.includes(q) ||
+          lastName.includes(q) ||
+          fullName.includes(q) ||
+          fullName2.includes(q)
+        );
+      });
     }
 
     const totalPages = Math.ceil((totalUsers || 0) / limit) || 1;
@@ -210,7 +231,6 @@ class TableManageUser extends Component {
       <>
         <div className="users-page">
           <div className="users-container">
-            {/* Header */}
             <div className="users-header">
               <div className="users-header-top">
                 <div className="title">
@@ -225,8 +245,11 @@ class TableManageUser extends Component {
                     className="input-search"
                     type="text"
                     placeholder="Tìm kiếm theo email hoặc tên"
+                    value={search}
+                    onChange={this.handleChangeSearch}
                   />
                 </button>
+
                 <div className="users-filter">
                   <div className="users-filter-row">
                     <div className="filter-group">
@@ -256,19 +279,16 @@ class TableManageUser extends Component {
               </div>
             </div>
 
-            {/* Table */}
             <div className="users-table mt-3 mx-1">
               <table>
                 <tbody>
                   <tr>
+                    <th>STT</th>
                     <th onClick={() => this.handleSort("email")}>
                       Email{this.renderSortLabel("email")}
                     </th>
                     <th onClick={() => this.handleSort("firstName")}>
                       First name{this.renderSortLabel("firstName")}
-                    </th>
-                    <th onClick={() => this.handleSort("lastName")}>
-                      Last name{this.renderSortLabel("lastName")}
                     </th>
                     <th>Address</th>
                     <th onClick={() => this.handleSort("roleId")}>
@@ -284,9 +304,11 @@ class TableManageUser extends Component {
                     arrUsers.map((item, index) => {
                       return (
                         <tr key={index}>
+                          <td>{index + 1}</td>
                           <td>{item.email}</td>
-                          <td>{item.firstName}</td>
-                          <td>{item.lastName}</td>
+                          <td>
+                            {item.firstName} {item.lastName}
+                          </td>
                           <td>{item.address}</td>
                           <td>
                             {language === LANGUAGES.VI
@@ -326,7 +348,6 @@ class TableManageUser extends Component {
               </table>
             </div>
 
-            {/* Pagination */}
             <div className="pagination mt-3 d-flex justify-content-center align-items-center">
               <button
                 className="btn btn-light mx-2"
@@ -374,8 +395,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUserRedux: (page, limit, sortBy, sortOrder) =>
-      dispatch(actions.fetchAllUsersStart(page, limit, sortBy, sortOrder)),
+    fetchUserRedux: (page, limit, sortBy, sortOrder, keyword, roleId) =>
+     dispatch(actions.fetchAllUsersStart(page, limit, sortBy, sortOrder, keyword, roleId)),
     deleteUserRedux: (id) => dispatch(actions.deleteUser(id)),
   };
 };
