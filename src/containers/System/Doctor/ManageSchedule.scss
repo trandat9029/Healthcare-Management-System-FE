@@ -141,16 +141,15 @@
   box-shadow: 0 2px 6px rgba(6, 78, 59, 0.12);
   text-align: center;
 
-  &:hover {
-    background-color: #ecfdf5;
-    border-color: #34d399;
+  &.active {
+    background: linear-gradient(135deg,  #fbbf24);
+    border-color: #f59e0b;
+    color: #064e3b;
+    // box-shadow: 0 4px 14px rgba(245, 158, 11, 0.28);
   }
 
-  &.active {
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-color: #059669;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  &.active:hover {
+    filter: brightness(1.02);
   }
 }
 

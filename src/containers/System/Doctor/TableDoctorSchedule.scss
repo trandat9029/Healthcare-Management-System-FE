@@ -1,20 +1,20 @@
-.users-container {
+.d-schedules-container {
   display: flex;
   flex-direction: column;
   gap: 10x;
 }
 
 /* Tiêu đề */
-.users-container .title {
+.d-schedules-container .title {
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #065f46;
-  margin: 0;
+  margin-top: 15px;
 }
 
-.user-function{
+.d-schedule-function{
   display: flex; 
   gap: 10px;
 
@@ -34,7 +34,7 @@
 }
 
 /* Card chứa bảng */
-.users-table {
+.d-schedules-table {
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
@@ -43,7 +43,7 @@
 }
 
 /* Bảng */
-.users-table table {
+.d-schedules-table table {
   width: 100%;
   border-collapse: collapse;
   font-family: Arial, Helvetica, sans-serif;
@@ -51,7 +51,7 @@
 }
 
 /* Header */
-.users-table th {
+.d-schedules-table th {
   padding: 10px 12px;
   text-align: left;
   font-size: 13px;
@@ -64,12 +64,12 @@
   white-space: nowrap;
 }
 
-.users-table th:last-child {
+.d-schedules-table th:last-child {
   text-align: center;
 }
 
 /* Cell */
-.users-table td {
+.d-schedules-table td {
   padding: 10px 12px;
   font-size: 14px;
   border-bottom: 1px solid #e5e7eb;
@@ -77,17 +77,17 @@
 }
 
 /* Hàng chẵn lẻ */
-.users-table tr:nth-child(even) td {
+.d-schedules-table tr:nth-child(even) td {
   background-color: #f9fafb;
 }
 
 /* Hover trên hàng */
-.users-table tr:hover td {
+.d-schedules-table tr:hover td {
   background-color: #ecfdf3;
 }
 
 /* Cột actions */
-.users-table td:last-child {
+.d-schedules-table td:last-child {
   text-align: center;
 }
 
@@ -158,11 +158,12 @@
   cursor: default;
 }
 
-.user-function {
+.d-schedule-function {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  padding: 0 25px;
   gap: 16px;
 
   .btn-search {
@@ -267,4 +268,33 @@
 .schedule-select__menu {
   border-radius: 8px;
   overflow: hidden;
+}
+
+.d-schedule-function {
+  .d-schedule-create {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .btn-clear-filter {
+      padding: 8px 16px;
+      background-color: #fef2f2; /* nhạt giống màu delete */
+      color: #b91c1c; /* đỏ chính */
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover:not(:disabled) {
+        background: #ecfdf3;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+    }
+  }
 }

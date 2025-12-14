@@ -25,7 +25,7 @@ class TableDoctorSchedule extends Component {
 
       listTime: [],
       selectedTime: null,
-      selectedDate: new Date(),
+      selectedDate: null,
 
       showClinicModal: false,
     };
@@ -86,7 +86,7 @@ class TableDoctorSchedule extends Component {
   };
 
   fetchSchedules = async () => {
-    const { page, limit, sortBy, sortOrder } = this.state;
+    const { page, limit, sortBy, sortOrder, selectedTime, selectedDate } = this.state;
     const { user } = this.props;
 
     if (!user || !user.id) {
@@ -97,22 +97,31 @@ class TableDoctorSchedule extends Component {
     try {
       this.setState({ loading: true });
 
-      const res = await handleGetScheduleByDoctor({
+      // params base, luôn có doctorId
+      const params = {
         doctorId: user.id,
         page,
         limit,
         sortBy,
         sortOrder,
-      });
+      };
+
+      // chỉ filter khi user thật sự chọn
+      if (selectedTime && selectedTime.value) {
+        params.timeType = selectedTime.value;
+      }
+
+      // LƯU Ý. Để "vừa vào trang load full" thì selectedDate nên là null ở state mặc định
+      // khi user chọn ngày thì selectedDate mới có giá trị Date
+      if (selectedDate instanceof Date && !isNaN(selectedDate.getTime())) {
+        params.date = selectedDate.getTime();
+      }
+
+      const res = await handleGetScheduleByDoctor(params);
 
       const data = res && res.data ? res.data : res;
       if (data && data.errCode === 0) {
-        const {
-          schedules,
-          total,
-          page: resPage,
-          limit: resLimit,
-        } = data;
+        const { schedules, total, page: resPage, limit: resLimit } = data;
 
         this.setState({
           schedules: schedules || [],
@@ -122,6 +131,10 @@ class TableDoctorSchedule extends Component {
         });
       } else {
         console.log('Fetch schedule failed:', data);
+        this.setState({
+          schedules: [],
+          totalSchedules: 0,
+        });
       }
     } catch (error) {
       console.log('Fetch schedule error:', error);
@@ -129,6 +142,7 @@ class TableDoctorSchedule extends Component {
       this.setState({ loading: false });
     }
   };
+
 
   formatDate = (value, language) => {
     if (!value) return '';
@@ -201,15 +215,44 @@ class TableDoctorSchedule extends Component {
   };
 
   handleChangeTime = (selectedTime) => {
-    this.setState({ selectedTime });
+    this.setState(
+      {
+        selectedTime,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      }
+    );
   };
 
   handleOnchangeDatePicker = (dateArr) => {
-    const date = dateArr && dateArr[0] ? dateArr[0] : new Date();
-    this.setState({
-      selectedDate: date,
-    });
+    const date = dateArr && dateArr[0] ? dateArr[0] : null;
+
+    this.setState(
+      {
+        selectedDate: date,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      }
+    );
   };
+
+  handleClearFilter = () => {
+    this.setState(
+      { 
+        selectedTime: null,
+        selectedDate: null,
+        page: 1,
+      },
+      () => {
+        this.fetchSchedules();
+      }
+    );
+  };
+
 
   render() {
     const {
@@ -230,21 +273,12 @@ class TableDoctorSchedule extends Component {
 
     return (
       <>
-        <div className="users-container">
+        <div className="d-schedules-container">
           <div className="title text-center">
             <FormattedMessage id="admin.manage-doctor.schedule-title" />
           </div>
 
-          <div className="user-function">
-            <button className="btn-search">
-              <input
-                className="input-search"
-                type="text"
-                placeholder="Tìm kiếm"
-              />
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </button>
-
+          <div className="d-schedule-function">
             <div className="filter-schedule">
               <div className="filter-item">
                 <label className="filter-label">Thời gian khám</label>
@@ -265,9 +299,17 @@ class TableDoctorSchedule extends Component {
                   value={selectedDate}
                 />
               </div>
-              
+              <div className="d-schedule-create">
+                <button
+                  className="btn-clear-filter"
+                  onClick={this.handleClearFilter}
+                  disabled={!selectedTime && !selectedDate}
+                >
+                  Bỏ lọc
+                </button>
+              </div>
           </div>
-          <div className="user-create">
+          <div className="d-schedule-create">
                 <button
                   className="btn-create-user"
                   onClick={this.openClinicModal}
@@ -277,9 +319,8 @@ class TableDoctorSchedule extends Component {
               </div>
             </div>
 
-          <div className="users-table mt-3 mx-1">
+          <div className="d-schedules-table mt-3 mx-1">
             {loading && <div className="loading-overlay">Loading...</div>}
-
             <table>
               <tbody>
                 <tr>

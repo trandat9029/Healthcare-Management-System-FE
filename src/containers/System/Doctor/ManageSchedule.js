@@ -10,7 +10,8 @@ import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 
-import { saveBulkScheduleDoctorService } from '../../../services/doctorService';
+import { saveBulkScheduleDoctorService, getScheduleDoctorByDate } from '../../../services/doctorService';
+
 
 class ManageSchedule extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class ManageSchedule extends Component {
     this.state = {
       listDoctors: [],
       selectedDoctor: {},
-      currentDate: '',
+      currentDate: null,
       rangeTime: [],
     };
   }
@@ -40,12 +41,24 @@ class ManageSchedule extends Component {
     if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
       let data = this.props.allScheduleTime;
       if (data && data.length > 0) {
-        data = data.map((item) => ({ ...item, isSelected: false }));
+        data = data.map((item) => ({
+          ...item,
+          isSelected: false,
+        }));
       }
-      this.setState({
-        rangeTime: data,
-      });
+
+      this.setState(
+        { rangeTime: data },
+        () => {
+          // CHỈ tick lại sau khi rangeTime đã tồn tại
+          if (this.state.currentDate) {
+            this.loadExistingScheduleByDate();
+          }
+        }
+      );
     }
+
+
   }
 
   initDoctorFromProps = () => {
@@ -71,11 +84,19 @@ class ManageSchedule extends Component {
     });
   };
 
-  handleOnchangeDatePicker = (date) => {
-    this.setState({
-      currentDate: date[0],
-    });
+  handleOnchangeDatePicker = (dateArr) => {
+    const date = dateArr && dateArr[0] ? dateArr[0] : null;
+
+    this.setState(
+      {
+        currentDate: date,
+      },
+      () => {
+        this.loadExistingScheduleByDate();
+      }
+    );
   };
+
 
   handleClickBtnTime = (time) => {
     let { rangeTime } = this.state;
@@ -139,6 +160,48 @@ class ManageSchedule extends Component {
       console.log('error saveBulkScheduleDoctorService >>> res: ', res);
     }
   };
+
+  loadExistingScheduleByDate = async () => {
+    const { selectedDoctor, currentDate, rangeTime } = this.state;
+
+    if (!selectedDoctor?.value) return;
+    if (!currentDate) return;
+
+    const doctorId = selectedDoctor.value;
+    const date = new Date(currentDate).getTime();
+
+    try {
+      const res = await getScheduleDoctorByDate(doctorId, date);
+      console.log('check res: ', res);
+
+      // Chuẩn hóa response
+      // Nếu res là axios response thì có status, còn nếu res là data luôn thì không có status
+      const payload = res && typeof res.status === 'number' ? res.data : res;
+
+      if (payload && payload.errCode === 0) {
+        const schedules = payload.data || [];
+
+        const selectedTimeTypes = new Set(schedules.map((s) => s.timeType));
+
+        const newRangeTime = (rangeTime || []).map((t) => ({
+          ...t,
+          isSelected: selectedTimeTypes.has(t.keyMap),
+        }));
+
+        this.setState({ rangeTime: newRangeTime });
+      } else {
+        const newRangeTime = (rangeTime || []).map((t) => ({
+          ...t,
+          isSelected: false,
+        }));
+        this.setState({ rangeTime: newRangeTime });
+      }
+    } catch (e) {
+      console.log('loadExistingScheduleByDate error:', e);
+    }
+  };
+
+
 
   render() {
     const { rangeTime, listDoctors, selectedDoctor, currentDate } =
