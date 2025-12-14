@@ -1,6 +1,8 @@
 export { default as adminService } from './adminService';
 export { default as doctorService } from './doctorService';
 export { default as handbookService } from './handbookService';
+export { default as authService } from './authService';
 export { default as userService } from './userService';
 export { default as specialtyService } from './specialtyService';
 export { default as clinicService } from './clinicService';
+export { default as scheduleService } from './scheduleService';

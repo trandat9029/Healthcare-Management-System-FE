@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import './Specialties.scss';
-import { getAllSpecialtyService } from '../../../services/userService';
+import { getAllSpecialtyService } from '../../../services/specialtyService';
 import { withRouter } from 'react-router';
 
 class Specialties extends Component {

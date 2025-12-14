@@ -7,12 +7,10 @@ import HomeHeader from '../../HomePage/HomeHeader';
 import DoctorSchedule from '../Doctor/DoctorSchedule';
 import DoctorExtraInfo from '../Doctor/DoctorExtraInfo';
 import ProfileDoctor from '../Doctor/ProfileDoctor';
-import {
-  getAllDetailSpecialtyByIdService,
-  getAllCodeService,
-} from '../../../services/userService';
+import { getAllCodeService } from '../../../services/userService';
 import _ from 'lodash';
 import { LANGUAGES } from '../../../utils';
+import { getAllDetailSpecialtyByIdService } from '../../../services/specialtyService';
 
 class DetailSpecialty extends Component {
     constructor(props) {

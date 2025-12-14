@@ -13,7 +13,14 @@ export const processLogout = () =>({
     type: actionTypes.PROCESS_LOGOUT,
 })
 
-export const userLoginSuccess = (userInfo) =>({
-    type: actionTypes.USER_LOGIN_SUCCESS,
-    userInfo: userInfo,
-})
+
+export const userLoginSuccess = (userInfo, accessToken) => ({
+  type: actionTypes.USER_LOGIN_SUCCESS,
+  userInfo,
+  accessToken
+});
+
+export const updateAccessToken = (accessToken) => ({
+  type: actionTypes.UPDATE_ACCESS_TOKEN,
+  accessToken
+});

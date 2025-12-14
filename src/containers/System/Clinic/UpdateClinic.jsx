@@ -5,7 +5,7 @@ import './UpdateClinic.scss';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import CommonUtils from '../../../utils/CommonUtils';
-import { handleUpdateClinic } from '../../../services/userService';
+import { handleUpdateClinic } from '../../../services/clinicService';
 import { toast } from 'react-toastify';
 
 const mdParser = new MarkdownIt();

@@ -4,16 +4,16 @@ import { FormattedMessage } from 'react-intl';
 import './ManagePatient.scss';
 import DatePicker from '../../../components/Input/DatePicker';
 import {
-  getAllPatientForDoctorService,
-  postSendRemedy,
   getAllCodeService,
 } from '../../../services/userService';
+
 import moment from 'moment';
 import { LANGUAGES } from '../../../utils';
 import RemedyModal from './RemedyModal';
 import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import Select from 'react-select';
+import { getAllPatientForDoctorService, postSendRemedy } from '../../../services/doctorService';
 
 class ManagePatient extends Component {
   constructor(props) {

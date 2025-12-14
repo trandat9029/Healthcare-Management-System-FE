@@ -7,7 +7,9 @@ import {
 } from "../../services/doctorService";
 
 import { toast } from "react-toastify";
-import { getAllClinicService, getAllCodeService, getAllSpecialtyService } from "../../services/userService";
+import { getAllCodeService} from "../../services/userService";
+import { getAllClinicService } from "../../services/clinicService";
+import { getAllSpecialtyService } from "../../services/specialtyService";
 
 //get top doctor
 export const fetchTopDoctor = () => {

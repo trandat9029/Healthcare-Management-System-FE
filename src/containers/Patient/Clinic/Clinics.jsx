@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Clinics.scss';
-import { getAllClinicService } from '../../../services/userService';
+import { getAllClinicService } from '../../../services/clinicService';
 import { withRouter } from 'react-router';
 
 class Clinics extends Component {

@@ -10,7 +10,7 @@ import DatePicker from '../../../../components/Input/DatePicker';
 import * as actions from '../../../../store/actions';
 import { LANGUAGES } from '../../../../utils';
 import Select from 'react-select';
-import { postPatientBookAppointmentService } from '../../../../services/userService';
+import { postPatientBookAppointmentService } from '../../../../services/doctorService';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import LoadingOverlay from 'react-loading-overlay';

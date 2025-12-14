@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './Doctors.scss';
-import { getTopDoctorHomeService } from '../../../services/userService';
+import { getTopDoctorHomeService } from '../../../services/doctorService';
 
 class Doctors extends Component {
   constructor(props) {

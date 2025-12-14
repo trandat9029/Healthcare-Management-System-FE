@@ -11,7 +11,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 
 import Select from 'react-select';
 import { CRUD_ACTIONS, LANGUAGES } from '../../../utils';
-import { getDetailInfoDoctorService } from '../../../services/userService';
+import { getDetailInfoDoctorService } from '../../../services/doctorService';
 
 const mdParser = new MarkdownIt();
 

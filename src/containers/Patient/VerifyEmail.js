@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { postVerifyBookAppointmentService } from '../../services/userService';
+import { postVerifyBookAppointmentService } from '../../services/doctorService';
 import HomeHeader from '../HomePage/HomeHeader';
 import './VerifyEmail.scss';
 

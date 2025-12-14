@@ -5,7 +5,7 @@ import './DetailClinic.scss';
 import DoctorSchedule from '../Doctor/DoctorSchedule';
 import DoctorExtraInfo from '../Doctor/DoctorExtraInfo';
 import ProfileDoctor from '../Doctor/ProfileDoctor';
-import { getAllDetailClinicByIdService } from '../../../services/userService';
+import { getAllDetailClinicByIdService } from '../../../services/clinicService';
 import _ from 'lodash';
 
 class DetailClinic extends Component {

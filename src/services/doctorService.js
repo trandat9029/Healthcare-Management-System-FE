@@ -4,7 +4,7 @@ const getTopDoctorHomeService = (limit) =>{
     return axios.get(`/api/top-doctor-home?limit=${limit}`)
 }   
 const getAllDoctorsService = (params) => {
-  return axios.get('/api/get-all-doctors', { params });
+  return axios.get('/api/doctors/all', { params });
 };
 const saveDetailDoctorService = (data) =>{
     return axios.post(`/api/save-info-doctors`, data)
@@ -15,11 +15,11 @@ const getDetailInfoDoctorService = (inputId) =>{
 }
 
 const saveBulkScheduleDoctorService = (data) =>{
-    return axios.post(`/api/bulk-create-schedule`, data)
+    return axios.post(`/api/schedule`, data)
 }
 
 const getScheduleDoctorByDate = (doctorId, date) =>{
-    return axios.get(`/api/get-schedule-doctor-by-date?doctorId=${doctorId}&date=${date}`)
+    return axios.get(`/api/get-schedule-by-date?doctorId=${doctorId}&date=${date}`)
 }
 
 const getExtraInfoDoctorByIdService = (doctorId) =>{
@@ -30,16 +30,16 @@ const getProfileDoctorByIdService = (doctorId) =>{
 }
 
 const postPatientBookAppointmentService = (data) =>{
-    return axios.post(`/api/patient-book-appointment`, data)
+    return axios.post(`/api/booking`, data)
 }
 
 const postVerifyBookAppointmentService = (data) =>{
-    return axios.post(`/api/verify-book-appointment`, data)
+    return axios.post(`/api/booking/verify-booking`, data)
 }
 
 
 const getAllPatientForDoctorService = (data) =>{
-    return axios.get(`/api/get-list-patient-for-doctor?doctorId=${data.doctorId}&date=${data.date}`)
+    return axios.get(`/api/patients?doctorId=${data.doctorId}&date=${data.date}`)
 } 
 
 const postSendRemedy = (data) =>{

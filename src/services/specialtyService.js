@@ -28,7 +28,7 @@ const getAllSpecialtyService = (params) => {
 };
 
 const getAllDetailSpecialtyByIdService = (data) =>{
-    return axios.get(`/api/get-detail-specialty-by-id?id=${data.id}&location=${data.location}`)
+    return axios.get(`/api/specialties/detail?id=${data.id}&location=${data.location}`)
 } 
 
 const handleDeleteSpecialty = (id) => {

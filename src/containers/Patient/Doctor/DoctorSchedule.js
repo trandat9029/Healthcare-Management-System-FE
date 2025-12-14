@@ -6,7 +6,7 @@ import { LANGUAGES } from '../../../utils';
 import { FormattedMessage } from 'react-intl';
 import * as actions from "../../../store/actions"
 import './DoctorSchedule.scss'
-import { getScheduleDoctorByDate} from '../../../services/userService'
+import { getScheduleDoctorByDate} from '../../../services/doctorService';
 import BookingModal from './Modal/BookingModal';
 
 class DoctorSchedule extends Component {

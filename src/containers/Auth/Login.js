@@ -5,12 +5,8 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import * as actions from '../../store/actions';
 import './Login.scss';
-import { handleLoginApi } from '../../services/userService';
+import { handleLoginApi } from '../../services/authService';
 import logo from '../../assets/logo.svg';
-
-/* ====== ẢNH NỀN LOGIN ====== */
-/* Thêm ảnh bạn muốn vào thư mục: src/assets/login-bg.jpg */
-/* Sau đó import như sau: */
 import loginBg from '../../assets/banner.jpg';
 
 import ForgotPassword from './ForgotPassword';
@@ -47,7 +43,7 @@ class Login extends Component {
       }
 
       if (data && data.errCode === 0) {
-        this.props.userLoginSuccess(data.user);
+        this.props.userLoginSuccess(data.user, data.accessToken);
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -196,8 +192,8 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (path) => dispatch(push(path)),
-    userLoginSuccess: (userInfo) =>
-      dispatch(actions.userLoginSuccess(userInfo)),
+    userLoginSuccess: (userInfo, accessToken) =>
+      dispatch(actions.userLoginSuccess(userInfo, accessToken)),
   };
 };
 

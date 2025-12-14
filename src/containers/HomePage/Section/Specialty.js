@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./Specialty.scss";
 import Slider from "react-slick";
-import { getAllSpecialtyService } from "../../../services/userService";
+import { getAllSpecialtyService } from "../../../services/specialtyService";
 import { FormattedMessage } from "react-intl";
 import { withRouter } from "react-router";
 

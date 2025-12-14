@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 
 import './DetailDoctor.scss';
-import { getDetailInfoDoctorService } from '../../../services/userService';
+import { getDetailInfoDoctorService } from '../../../services/doctorService';
 import { LANGUAGES } from '../../../utils';
 import DoctorSchedule from './DoctorSchedule';
 import DoctorExtraInfo from './DoctorExtraInfo';

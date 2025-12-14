@@ -6,8 +6,9 @@ import { history } from "../redux";
 import { ToastContainer } from "react-toastify";
 
 import {
-  userIsAuthenticated,
   userIsNotAuthenticated,
+  userIsAdmin,
+  userIsDoctor,
 } from "../hoc/authentication";
 
 import { path } from "../utils";
@@ -67,14 +68,8 @@ class App extends Component {
                     path={path.LOGIN}
                     component={userIsNotAuthenticated(Login)}
                   />
-                  <Route
-                    path={path.SYSTEM}
-                    component={userIsAuthenticated(System)}
-                  />
-                  <Route
-                    path={path.DOCTOR}
-                    component={userIsAuthenticated(Doctor)}
-                  />
+                  <Route path={path.SYSTEM} component={userIsAdmin(System)} />
+                  <Route path={path.DOCTOR} component={userIsDoctor(Doctor)} />
 
                   {/* các trang public cho bệnh nhân, dùng ClientLayout */}
                   <Route

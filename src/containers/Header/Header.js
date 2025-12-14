@@ -8,6 +8,8 @@ import "./Header.scss";
 import { LANGUAGES, USER_ROLE } from "../../utils";
 import _ from 'lodash'
 
+import { logoutApi } from "../../services/authService";
+
 class Header extends Component {
 
   constructor(props){
@@ -40,6 +42,13 @@ class Header extends Component {
     }) 
   }
 
+  handleLogout = async () => {
+    try {
+      await logoutApi();
+    } catch (e) {}
+    this.props.processLogout();
+  };
+
   render() {
     const { processLogout, language, userInfo } = this.props;
     
@@ -63,7 +72,7 @@ class Header extends Component {
             EN
           </span>
           {/* nút logout */}
-          <div className="btn btn-logout" onClick={processLogout} title="Log out">
+          <div className="btn btn-logout" onClick={this.handleLogout} title="Log out">
             <i className="fas fa-sign-out-alt"></i>
           </div>
         </div>

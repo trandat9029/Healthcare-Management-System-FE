@@ -1,18 +1,15 @@
 import actionTypes from './actionTypes';
 import { getAllCodeService, createNewUserService, 
          getAllUsers, deleteUserService, editUserService,
-         getTopDoctorHomeService,  
-         getAllDoctorsService,
-         saveDetailDoctorService,
-         getDetailInfoDoctorService,
-         getAllSpecialtyService,
+         
 
         
         } from '../../services/userService';
 import { toast } from 'react-toastify';
 import { handleCreateHandbook, handleDeleteHandbook, handleGetAllHandbook } from '../../services/handbookService';
-import { getAllDetailSpecialtyByIdService } from '../../services/specialtyService';
+import { getAllDetailSpecialtyByIdService, getAllSpecialtyService } from '../../services/specialtyService';
 import { getAllClinicService } from '../../services/clinicService';
+import { getAllDoctorsService, getTopDoctorHomeService, saveDetailDoctorService } from '../../services/doctorService';
 
 
 // Gender

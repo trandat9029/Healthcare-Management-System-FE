@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormattedMessage } from 'react-intl';
 import './ProfileDoctor.scss'
-import { getProfileDoctorByIdService } from '../../../services/userService';
+import { getProfileDoctorByIdService } from '../../../services/doctorService';
 import { LANGUAGES } from '../../../utils';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
