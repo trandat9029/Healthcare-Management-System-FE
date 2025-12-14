@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   getHistoriesByEmail,
   postSendEmailCancelBookedService,
-} from "../../../services/userService";
+} from "../../../services/bookingService";
 import { LANGUAGES } from "../../../utils";
 import "./Histories.scss";
 

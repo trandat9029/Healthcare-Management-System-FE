@@ -31,33 +31,10 @@ const getAllCodeService = (inputType) =>{
 
 
 
-const getHistoriesByEmail = (email, page = 1, limit = 10) => {
-  return axios.get(`/api/booking/histories`, {
-    params: {
-      email,
-      page,
-      limit,
-    },
-  });
-};
-
-const postSendEmailCancelBookedService = (data) => {
-  return axios.post('/api/booking/cancel', data);
-};
-
-const postVerifyCancelBookedService = (data) => {
-  return axios.post('/api/booking/cancel/verify', data);
-};
-
-
 export { 
-
     getAllUsers,
     createNewUserService, 
     deleteUserService,
     editUserService,
     getAllCodeService,
-    getHistoriesByEmail,
-    postSendEmailCancelBookedService,
-    postVerifyCancelBookedService 
 }

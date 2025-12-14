@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postVerifyCancelBookedService } from '../../services/userService';
+import { postVerifyCancelBookedService } from '../../services/bookingService';
 import './VerifyEmailCancel.scss';
 
 class VerifyEmailCancel extends Component {

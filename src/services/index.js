@@ -5,4 +5,5 @@ export { default as authService } from './authService';
 export { default as userService } from './userService';
 export { default as specialtyService } from './specialtyService';
 export { default as clinicService } from './clinicService';
+export { default as bookingService } from './bookingService';
 export { default as scheduleService } from './scheduleService';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './TableManageBooking.scss';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../../utils/constant';
-import { handleGetAllBooking } from '../../../services/doctorService';
+import { handleGetAllBooking } from '../../../services/bookingService';
 
 import Select from 'react-select';
 import { getAllCodeService } from '../../../services/userService';

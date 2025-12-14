@@ -1,43 +1,45 @@
 import axios from "../axios";
 
+// Doctor
 const getTopDoctorHomeService = (limit) =>{
-    return axios.get(`/api/top-doctor-home?limit=${limit}`)
+    return axios.get(`/api/out-standing?limit=${limit}`)
 }   
 const getAllDoctorsService = (params) => {
   return axios.get('/api/doctors/all', { params });
 };
 const saveDetailDoctorService = (data) =>{
-    return axios.post(`/api/save-info-doctors`, data)
+    return axios.post(`/api/doctors`, data)
 }
 
 const getDetailInfoDoctorService = (inputId) =>{
-    return axios.get(`/api/get-detail-doctor-by-id?id=${inputId}`)
+    return axios.get(`/api/doctors/detail?id=${inputId}`)
 }
 
+const getExtraInfoDoctorByIdService = (doctorId) =>{
+    return axios.get(`/api/doctors/extra-info?doctorId=${doctorId}`)
+}
+const getProfileDoctorByIdService = (doctorId) =>{
+    return axios.get(`/api/doctors/profile?doctorId=${doctorId}`)
+}
+
+//Schedule
 const saveBulkScheduleDoctorService = (data) =>{
     return axios.post(`/api/schedule`, data)
 }
 
 const getScheduleDoctorByDate = (doctorId, date) =>{
-    return axios.get(`/api/get-schedule-by-date?doctorId=${doctorId}&date=${date}`)
+    return axios.get(`/api/schedule/schedule-by-date?doctorId=${doctorId}&date=${date}`)
 }
 
-const getExtraInfoDoctorByIdService = (doctorId) =>{
-    return axios.get(`/api/get-extra-info-doctor-by-id?doctorId=${doctorId}`)
-}
-const getProfileDoctorByIdService = (doctorId) =>{
-    return axios.get(`/api/get-profile-doctor-by-id?doctorId=${doctorId}`)
+const handleGetAllSchedule = (params) => {
+    return axios.get('/api/schedule/all', { params });
 }
 
-const postPatientBookAppointmentService = (data) =>{
-    return axios.post(`/api/booking`, data)
+const handleGetScheduleByDoctor = (params) => {
+    return axios.get('/api/schedule', { params });
 }
 
-const postVerifyBookAppointmentService = (data) =>{
-    return axios.post(`/api/booking/verify-booking`, data)
-}
-
-
+//Patient
 const getAllPatientForDoctorService = (data) =>{
     return axios.get(`/api/patients?doctorId=${data.doctorId}&date=${data.date}`)
 } 
@@ -46,17 +48,7 @@ const postSendRemedy = (data) =>{
     return axios.post(`/api/send-remedy`, data)
 }
 
-const handleGetAllSchedule = (params) => {
-    return axios.get('/api/schedule/all', { params });
-}
 
-const handleGetAllBooking = (params) => {
-    return axios.get('/api/booking/', { params });
-}
-
-const handleGetScheduleByDoctor = (params) => {
-    return axios.get('/api/schedule/', { params });
-}
 
 // const getSchedules = (params) => {
 //   return axios.get('/api/schedule', { params });
@@ -72,12 +64,9 @@ export {
     getScheduleDoctorByDate,
     getExtraInfoDoctorByIdService,
     getProfileDoctorByIdService,
-    postPatientBookAppointmentService,
-    postVerifyBookAppointmentService,
     getAllPatientForDoctorService,
     postSendRemedy,
     handleGetAllSchedule,
-    handleGetAllBooking,
     // getSchedules,
     handleGetScheduleByDoctor,
 }
