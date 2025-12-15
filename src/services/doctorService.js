@@ -56,7 +56,9 @@ const postSendRemedy = (data) =>{
     return axios.post(`/api/booking/send-remedy`, data)
 }
 
-
+const updateProfileDoctorService = (data) => {
+  return axios.post('/api/doctors/profile', data);
+};
 
 // const getSchedules = (params) => {
 //   return axios.get('/api/schedule', { params });
@@ -77,4 +79,5 @@ export {
     handleGetAllSchedule,
     // getSchedules,
     handleGetScheduleByDoctor,
+    updateProfileDoctorService
 }

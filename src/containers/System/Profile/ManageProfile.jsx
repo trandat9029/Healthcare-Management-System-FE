@@ -80,8 +80,10 @@ class ManageProfile extends Component {
       showUpdateModal,
     } = this.state;
 
+    console.log('check state doctorData: ', doctorData);
+
     const basic = doctorData || {};
-    const info = doctorData?.Doctor_info || {};
+    const info = doctorData?.doctorInfoData || {};
     const markdown = doctorData?.Markdown || {};
 
     const fullName = `${basic.firstName || ''} ${basic.lastName || ''}`.trim();

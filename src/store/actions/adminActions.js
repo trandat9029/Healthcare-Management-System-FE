@@ -405,13 +405,17 @@ export const getRequiredDoctorInfo=  () => {
             let resPrice = await getAllCodeService("PRICE");
             let resPayment = await getAllCodeService("PAYMENT");
             let resProvince = await getAllCodeService("PROVINCE");
+            let resGender = await getAllCodeService("GENDER");
+            let resPosition = await getAllCodeService("POSITION");
             let resSpecialty = await getAllSpecialtyService({limit: 'ALL',});
             let resClinic = await getAllClinicService({limit: 'ALL'});
             if(resPrice && resPrice.errCode === 0 &&
                 resPayment && resPayment.errCode === 0 &&
                 resProvince && resProvince.errCode === 0 &&
                 resSpecialty && resSpecialty.errCode === 0 &&
-                resClinic && resClinic.errCode === 0 
+                resClinic && resClinic.errCode === 0 &&
+                resGender && resGender.errCode === 0 &&
+                resPosition && resPosition.errCode === 0 
             ){
                 let data = {
                     resPrice: resPrice.data,
@@ -419,9 +423,9 @@ export const getRequiredDoctorInfo=  () => {
                     resProvince: resProvince.data,
                     resSpecialty: resSpecialty.specialties,
                     resClinic: resClinic.data,
+                    resGender: resGender.data,
+                    resPosition: resPosition.data
                 }
-
-                // console.log('check data requid: ', resClinic);
                 
                 dispatch(fetchRequiredDoctorInfoSuccess(data));
             }else {

@@ -11,7 +11,11 @@ import 'react-markdown-editor-lite/lib/index.css';
 
 import Select from 'react-select';
 import { CRUD_ACTIONS, LANGUAGES } from '../../../utils';
-import { getDetailInfoDoctorService } from '../../../services/doctorService';
+import {
+  getDetailInfoDoctorService,
+  updateProfileDoctorService,
+} from '../../../services/doctorService';
+import { toast } from 'react-toastify';
 
 const mdParser = new MarkdownIt();
 
@@ -24,9 +28,13 @@ class ProfileUpdate extends Component {
       lastName: '',
       address: '',
       phoneNumber: '',
-      gender: '',
-      position: '',
       image: '',
+
+      // gender + position chuyển sang select
+      listGender: [],
+      listPosition: [],
+      selectedGender: null,
+      selectedPosition: null,
 
       doctorName: '',
 
@@ -44,11 +52,11 @@ class ProfileUpdate extends Component {
       listSpecialty: [],
 
       // gia tri duoc chon
-      selectedPrice: '',
-      selectedPayment: '',
-      selectedProvince: '',
-      selectedClinic: '',
-      selectedSpecialty: '',
+      selectedPrice: null,
+      selectedPayment: null,
+      selectedProvince: null,
+      selectedClinic: null,
+      selectedSpecialty: null,
       nameClinic: '',
       addressClinic: '',
       note: '',
@@ -63,9 +71,7 @@ class ProfileUpdate extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.allRequiredDoctorInfo !== this.props.allRequiredDoctorInfo
-    ) {
+    if (prevProps.allRequiredDoctorInfo !== this.props.allRequiredDoctorInfo) {
       this.rebuildSelectOptions();
     }
 
@@ -97,7 +103,7 @@ class ProfileUpdate extends Component {
           object.value = item.keyMap;
         }
 
-        if (type === 'PAYMENT' || type === 'PROVINCE') {
+        if (type === 'PAYMENT' || type === 'PROVINCE' || type === 'GENDER' || type === 'POSITION') {
           let labelVi = item.valueVi;
           let labelEn = item.valueEn;
           object.label = language === LANGUAGES.VI ? labelVi : labelEn;
@@ -126,19 +132,14 @@ class ProfileUpdate extends Component {
     if (!info) return;
 
     const listPrice = this.buildDataInputSelect(info.resPrice || [], 'PRICE');
-    const listPayment = this.buildDataInputSelect(
-      info.resPayment || [],
-      'PAYMENT'
-    );
-    const listProvince = this.buildDataInputSelect(
-      info.resProvince || [],
-      'PROVINCE'
-    );
-    const listSpecialty = this.buildDataInputSelect(
-      info.resSpecialty || [],
-      'SPECIALTY'
-    );
+    const listPayment = this.buildDataInputSelect(info.resPayment || [], 'PAYMENT');
+    const listProvince = this.buildDataInputSelect(info.resProvince || [], 'PROVINCE');
+    const listSpecialty = this.buildDataInputSelect(info.resSpecialty || [], 'SPECIALTY');
     const listClinic = this.buildDataInputSelect(info.resClinic || [], 'CLINIC');
+
+    // 2 list này yêu cầu BE/Redux trả về resGender, resPosition
+    const listGender = this.buildDataInputSelect(info.resGender || [], 'GENDER');
+    const listPosition = this.buildDataInputSelect(info.resPosition || [], 'POSITION');
 
     this.setState(
       {
@@ -147,6 +148,8 @@ class ProfileUpdate extends Component {
         listProvince,
         listSpecialty,
         listClinic,
+        listGender,
+        listPosition,
       },
       () => {
         if (this.props.doctorId) {
@@ -166,14 +169,14 @@ class ProfileUpdate extends Component {
         let detail = res.data;
         let markdown = detail.Markdown || {};
 
-        let priceId = detail.Doctor_info?.priceId || '';
-        let paymentId = detail.Doctor_info?.paymentId || '';
-        let provinceId = detail.Doctor_info?.provinceId || '';
-        let specialtyId = detail.Doctor_info?.specialtyId || '';
-        let clinicId = detail.Doctor_info?.clinicId || '';
-        let nameClinic = detail.Doctor_info?.nameClinic || '';
-        let addressClinic = detail.Doctor_info?.addressClinic || '';
-        let note = detail.Doctor_info?.note || '';
+        let priceId = detail.doctorInfoData?.priceId || '';
+        let paymentId = detail.doctorInfoData?.paymentId || '';
+        let provinceId = detail.doctorInfoData?.provinceId || '';
+        let specialtyId = detail.doctorInfoData?.specialtyId || '';
+        let clinicId = detail.doctorInfoData?.clinicId || '';
+        let nameClinic = detail.doctorInfoData?.nameClinic || '';
+        let addressClinic = detail.doctorInfoData?.addressClinic || '';
+        let note = detail.doctorInfoData?.note || '';
 
         const {
           listPrice,
@@ -181,6 +184,8 @@ class ProfileUpdate extends Component {
           listProvince,
           listSpecialty,
           listClinic,
+          listGender,
+          listPosition,
         } = this.state;
 
         this.setState({
@@ -189,20 +194,13 @@ class ProfileUpdate extends Component {
           lastName: detail.lastName || '',
           address: detail.address || '',
           phoneNumber: detail.phoneNumber || '',
-          gender:
-            detail.genderData?.valueVi ||
-            detail.genderData?.valueEn ||
-            detail.gender ||
-            '',
-          position:
-            detail.positionData?.valueVi ||
-            detail.positionData?.valueEn ||
-            '',
           image: detail.image || '',
 
-          doctorName: `${detail.firstName || ''} ${
-            detail.lastName || ''
-          }`.trim(),
+          // set select theo keyMap
+          selectedGender: listGender.find((i) => i.value === detail.gender) || null,
+          selectedPosition: listPosition.find((i) => i.value === detail.positionId) || null,
+
+          doctorName: `${detail.firstName || ''} ${detail.lastName || ''}`.trim(),
 
           // markdown
           contentHTML: markdown.contentHTML || '',
@@ -211,13 +209,11 @@ class ProfileUpdate extends Component {
           hasOldData: !!markdown.contentMarkdown,
 
           // doctor_info select
-          selectedPrice: listPrice.find((i) => i.value === priceId) || '',
-          selectedPayment: listPayment.find((i) => i.value === paymentId) || '',
-          selectedProvince:
-            listProvince.find((i) => i.value === provinceId) || '',
-          selectedSpecialty:
-            listSpecialty.find((i) => i.value === specialtyId) || '',
-          selectedClinic: listClinic.find((i) => i.value === clinicId) || '',
+          selectedPrice: listPrice.find((i) => i.value === priceId) || null,
+          selectedPayment: listPayment.find((i) => i.value === paymentId) || null,
+          selectedProvince: listProvince.find((i) => i.value === provinceId) || null,
+          selectedSpecialty: listSpecialty.find((i) => Number(i.value) === Number(specialtyId)) || null,
+          selectedClinic: listClinic.find((i) => Number(i.value) === Number(clinicId)) || null,
           nameClinic,
           addressClinic,
           note,
@@ -271,7 +267,7 @@ class ProfileUpdate extends Component {
     }
   };
 
-  handleSave = () => {
+  handleSave = async () => {
     const payload = {
       doctorId: this.props.doctorId,
 
@@ -280,15 +276,18 @@ class ProfileUpdate extends Component {
       lastName: this.state.lastName,
       address: this.state.address,
       phoneNumber: this.state.phoneNumber,
-      gender: this.state.gender,
-      position: this.state.position,
       image: this.state.image,
+
+      // gửi keyMap cho BE
+      gender: this.state.selectedGender?.value || '',
+      positionId: this.state.selectedPosition?.value || '',
 
       // thong tin kham benh
       contentHTML: this.state.contentHTML,
       contentMarkdown: this.state.contentMarkdown,
       description: this.state.description,
       action: this.state.hasOldData ? CRUD_ACTIONS.EDIT : CRUD_ACTIONS.CREATE,
+
       selectedPrice: this.state.selectedPrice?.value || '',
       selectedPayment: this.state.selectedPayment?.value || '',
       selectedProvince: this.state.selectedProvince?.value || '',
@@ -299,10 +298,20 @@ class ProfileUpdate extends Component {
       note: this.state.note,
     };
 
-    console.log('ProfileUpdate payload', payload);
-
-    if (this.props.onClose) {
-      this.props.onClose();
+    try {
+      const res = await updateProfileDoctorService(payload);
+      if (res && res.errCode === 0) {
+        await this.loadDoctorDetail(this.props.doctorId);
+        if (this.props.onClose) this.props.onClose();
+        toast.success('Cập nhật hồ sơ cá nhân thành công');
+      } else {
+        alert(res?.errMessage || 'Update failed');
+        toast.error('Cập nhật hồ sơ cá nhân thất bại');
+      }
+    } catch (e) {
+      console.log('update profile error', e);
+      alert('Error from the server!');
+      toast.error('Cập nhật hồ sơ cá nhân thất bại');
     }
   };
 
@@ -311,16 +320,22 @@ class ProfileUpdate extends Component {
     if (!isOpen) return null;
 
     const {
+      listGender,
+      listPosition,
       listPrice,
       listPayment,
       listProvince,
       listSpecialty,
       listClinic,
+
+      selectedGender,
+      selectedPosition,
       selectedPrice,
       selectedPayment,
       selectedProvince,
       selectedSpecialty,
       selectedClinic,
+
       description,
       nameClinic,
       addressClinic,
@@ -332,43 +347,32 @@ class ProfileUpdate extends Component {
       lastName,
       address,
       phoneNumber,
-      gender,
-      position,
       image,
     } = this.state;
 
+
     return (
-      <div className="doctor-modal-overlay" onClick={this.props.onClose}>
-        <div
-          className="doctor-modal-container"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="doctor-modal-header">
-            <span className="doctor-modal-title">
-              {hasOldData
-                ? 'Chỉnh sửa thông tin bác sĩ'
-                : 'Tạo thêm thông tin bác sĩ'}
+      <div className="profile-modal-overlay" onClick={this.props.onClose}>
+        <div className="profile-modal-container" onClick={(e) => e.stopPropagation()}>
+          <div className="profile-modal-header">
+            <span className="profile-modal-title">
+              {hasOldData ? 'Chỉnh sửa thông tin bác sĩ' : 'Tạo thêm thông tin bác sĩ'}
             </span>
-            <button
-              className="doctor-modal-close"
-              onClick={this.props.onClose}
-            >
+            <button className="profile-modal-close" onClick={this.props.onClose}>
               ×
             </button>
           </div>
 
-          <div className="doctor-modal-body">
-            {/* dòng tên bác sĩ */}
-            <div className="doctor-name-banner">
+          <div className="profile-modal-body">
+            <div className="profile-name-banner">
               <strong>Bác sĩ</strong>
               <span>{doctorName || 'Chưa có tên'}</span>
             </div>
 
-            {/* khối 1: thông tin cơ bản và avatar */}
-            <div className="doctor-section">
-              <div className="doctor-section-title">Thông tin cơ bản</div>
-              <div className="doctor-basic-grid">
-                <div className="doctor-basic-left">
+            <div className="profile-section">
+              <div className="profile-section-title">Thông tin cơ bản</div>
+              <div className="profile-basic-grid">
+                <div className="profile-basic-left">
                   <div className="row mb-3">
                     <div className="col-3 form-group">
                       <label>Họ</label>
@@ -394,18 +398,17 @@ class ProfileUpdate extends Component {
                         className="form-control"
                         type="text"
                         value={phoneNumber}
-                        onChange={(e) =>
-                          this.handleChangeText(e, 'phoneNumber')
-                        }
+                        onChange={(e) => this.handleChangeText(e, 'phoneNumber')}
                       />
                     </div>
                     <div className="col-3 form-group">
                       <label>Giới tính</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        value={gender}
-                        onChange={(e) => this.handleChangeText(e, 'gender')}
+                      <Select
+                        value={selectedGender}
+                        onChange={this.handleChangeSelect}
+                        options={listGender}
+                        name="selectedGender"
+                        placeholder="Chọn giới tính"
                       />
                     </div>
                   </div>
@@ -422,59 +425,43 @@ class ProfileUpdate extends Component {
                     </div>
                     <div className="col-6 form-group">
                       <label>Chức danh</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        value={position}
-                        onChange={(e) =>
-                          this.handleChangeText(e, 'position')
-                        }
+                      <Select
+                        value={selectedPosition}
+                        onChange={this.handleChangeSelect}
+                        options={listPosition}
+                        name="selectedPosition"
+                        placeholder="Chọn chức danh"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="doctor-basic-right">
+                <div className="profile-basic-right">
                   <div className="avatar-label">Ảnh đại diện</div>
                   <div className="image-preview-box">
-                    {image ? (
-                      <img src={image} alt="avatar" />
-                    ) : (
-                      <div className="image-empty">Chưa có ảnh</div>
-                    )}
+                    {image ? <img src={image} alt="avatar" /> : <div className="image-empty">Chưa có ảnh</div>}
                   </div>
 
                   <label className="upload-button">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={this.handleImageChange}
-                    />
+                    <input type="file" accept="image/*" onChange={this.handleImageChange} />
                     <i className="fa-regular fa-image" />
                     <span>Chọn ảnh</span>
                   </label>
 
-                  <div className="upload-hint">
-                    Nên dùng ảnh vuông, dung lượng nhỏ hơn 2MB
-                  </div>
+                  <div className="upload-hint">Nên dùng ảnh vuông, dung lượng nhỏ hơn 2MB</div>
                 </div>
               </div>
             </div>
 
-            {/* khối 2: thông tin khám bệnh */}
-            <div className="doctor-section">
-              <div className="doctor-section-title">
-                Thông tin khám bệnh và phòng khám
-              </div>
+            <div className="profile-section">
+              <div className="profile-section-title">Thông tin khám bệnh và phòng khám</div>
 
               <div className="more-info mb-3">
                 <label>Thông tin giới thiệu ngắn</label>
                 <textarea
                   className="form-control"
                   value={description}
-                  onChange={(e) =>
-                    this.handleChangeText(e, 'description')
-                  }
+                  onChange={(e) => this.handleChangeText(e, 'description')}
                 />
               </div>
 
@@ -518,9 +505,7 @@ class ProfileUpdate extends Component {
                     className="form-control"
                     type="text"
                     value={nameClinic}
-                    onChange={(e) =>
-                      this.handleChangeText(e, 'nameClinic')
-                    }
+                    onChange={(e) => this.handleChangeText(e, 'nameClinic')}
                   />
                 </div>
 
@@ -530,9 +515,7 @@ class ProfileUpdate extends Component {
                     className="form-control"
                     type="text"
                     value={addressClinic}
-                    onChange={(e) =>
-                      this.handleChangeText(e, 'addressClinic')
-                    }
+                    onChange={(e) => this.handleChangeText(e, 'addressClinic')}
                   />
                 </div>
 
@@ -572,10 +555,9 @@ class ProfileUpdate extends Component {
               </div>
             </div>
 
-            {/* khối 3: nội dung chi tiết */}
-            <div className="doctor-section">
-              <div className="doctor-section-title">Nội dung giới thiệu chi tiết</div>
-              <div className="manage-doctor-editor">
+            <div className="profile-section">
+              <div className="profile-section-title">Nội dung giới thiệu chi tiết</div>
+              <div className="manage-profile-editor">
                 <MdEditor
                   style={{ height: '360px' }}
                   renderHTML={(text) => mdParser.render(text)}
@@ -586,7 +568,7 @@ class ProfileUpdate extends Component {
             </div>
           </div>
 
-          <div className="doctor-modal-footer">
+          <div className="profile-modal-footer">
             <button className="btn-save" onClick={this.handleSave}>
               {hasOldData ? 'Lưu thông tin' : 'Tạo thông tin'}
             </button>
@@ -606,8 +588,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRequiredDoctorInfoRedux: () =>
-      dispatch(actions.getRequiredDoctorInfo()),
+    getRequiredDoctorInfoRedux: () => dispatch(actions.getRequiredDoctorInfo()),
   };
 };
 

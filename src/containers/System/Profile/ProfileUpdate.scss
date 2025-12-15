@@ -1,5 +1,5 @@
 /* Overlay đơn giản, tông xanh nhẹ, không blur mạnh */
-.doctor-modal-overlay {
+.profile-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.35);
@@ -11,7 +11,7 @@
 }
 
 /* Khung modal chính, bỏ box shadow, dùng border và nền trắng */
-.doctor-modal-container {
+.profile-modal-container {
   width: 96%;
   max-width: 1320px;
   max-height: 92vh;
@@ -24,7 +24,7 @@
 }
 
 /* Header trên cùng */
-.doctor-modal-header {
+.profile-modal-header {
   padding: 12px 20px;
   background: linear-gradient(90deg, #dcfce7, #ecfdf5);
   border-bottom: 1px solid #a7f3d0;
@@ -33,7 +33,7 @@
   justify-content: space-between;
 }
 
-.doctor-modal-title {
+.profile-modal-title {
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
@@ -42,7 +42,7 @@
 }
 
 /* Nút đóng */
-.doctor-modal-close {
+.profile-modal-close {
   border: 1px solid #bbf7d0;
   background: #ffffff;
   width: 30px;
@@ -56,19 +56,20 @@
   color: #16a34a;
 }
 
-.doctor-modal-close:hover {
-  background: #dcfce7;
+.profile-modal-close:hover {
+  background:  #16a34a;
+  color: #dcfce7;
 }
 
 /* Body */
-.doctor-modal-body {
+.profile-modal-body {
   padding: 16px 20px 12px 20px;
   overflow-y: auto;
   background: #f0fdf4;
 }
 
 /* Banner tên bác sĩ */
-.doctor-name-banner {
+.profile-name-banner {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -88,7 +89,7 @@
 }
 
 /* Khối section */
-.doctor-section {
+.profile-section {
   background: #ffffff;
   border: 1px solid #bbf7d0;
   border-radius: 12px;
@@ -96,7 +97,7 @@
   margin-bottom: 12px;
 }
 
-.doctor-section-title {
+.profile-section-title {
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -106,13 +107,13 @@
 }
 
 /* Grid khối thông tin cơ bản */
-.doctor-basic-grid {
+.profile-basic-grid {
   display: grid;
   grid-template-columns: 3fr 1.2fr;
   gap: 16px;
 }
 
-.doctor-basic-right {
+.profile-basic-right {
   border-left: 1px solid #e5e7eb;
   padding-left: 16px;
   display: flex;
@@ -184,7 +185,7 @@
 }
 
 /* Label và input chung */
-.doctor-modal-body label {
+.profile-modal-body label {
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -193,7 +194,7 @@
   margin-bottom: 4px;
 }
 
-.doctor-modal-body .form-control {
+.profile-modal-body .form-control {
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background-color: #ffffff;
@@ -201,7 +202,7 @@
   padding: 7px 10px;
 }
 
-.doctor-modal-body .form-control:focus {
+.profile-modal-body .form-control:focus {
   border-color: #16a34a;
   outline: none;
 }
@@ -213,7 +214,7 @@
 }
 
 /* React select */
-.doctor-modal-body .css-13cymwt-control {
+.profile-modal-body .css-13cymwt-control {
   border-radius: 10px;
   border-color: #e5e7eb;
   background-color: #ffffff;
@@ -221,33 +222,33 @@
   font-size: 14px;
 }
 
-.doctor-modal-body .css-13cymwt-control:hover {
+.profile-modal-body .css-13cymwt-control:hover {
   border-color: #16a34a;
 }
 
-.doctor-modal-body .css-t3ipsp-control {
+.profile-modal-body .css-t3ipsp-control {
   border-radius: 10px;
   border-color: #16a34a;
 }
 
 /* Editor markdown, bỏ box shadow */
-.manage-doctor-editor {
+.manage-profile-editor {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #e5e7eb;
 }
 
-.manage-doctor-editor .rc-md-editor {
+.manage-profile-editor .rc-md-editor {
   border: none;
 }
 
-.manage-doctor-editor .rc-md-editor .rc-md-navigation {
+.manage-profile-editor .rc-md-editor .rc-md-navigation {
   background: #ecfdf5;
   border-bottom: 1px solid #bbf7d0;
 }
 
 /* Footer */
-.doctor-modal-footer {
+.profile-modal-footer {
   padding: 10px 20px 14px 20px;
   border-top: 1px solid #e5e7eb;
   background: #ffffff;
@@ -274,11 +275,11 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .doctor-basic-grid {
+  .profile-basic-grid {
     grid-template-columns: 1fr;
   }
 
-  .doctor-basic-right {
+  .profile-basic-right {
     border-left: none;
     padding-left: 0;
     border-top: 1px solid #e5e7eb;
@@ -286,7 +287,7 @@
     margin-top: 8px;
   }
 
-  .doctor-modal-body {
+  .profile-modal-body {
     padding: 12px 12px 10px 12px;
   }
 }
