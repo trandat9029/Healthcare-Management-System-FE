@@ -29,6 +29,9 @@ const getAllCodeService = (inputType) =>{
     return axios.get(`/api/allCode?type=${inputType}`)
 }
 
+const handleChangePassword = (inputData) =>{
+    return axios.put(`/api/users/profile/password`, inputData)
+}
 
 
 export { 
@@ -37,4 +40,5 @@ export {
     deleteUserService,
     editUserService,
     getAllCodeService,
+    handleChangePassword,
 }
