@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import LoadingOverlay from 'react-loading-overlay';
 import Select from 'react-select';
 import { getAllPatientForDoctorService, postSendRemedy } from '../../../services/doctorService';
+import PatientModal from './PatientModal';
 
 class ManagePatient extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class ManagePatient extends Component {
       currentDate: moment(new Date()).startOf('day').valueOf(),
       dataPatient: [],
       isOpenRemedyModal: false,
+      isOpenPatientModal: false,
       dataModal: {},
       isShowLoading: false,
 
@@ -83,21 +85,17 @@ class ManagePatient extends Component {
 
   getDataPatient = async () => {
     let { user } = this.props;
-    let { currentDate } = this.state;
-    let formatedDate = new Date(currentDate).getTime();
+    let { currentDate, selectedTime, selectedStatus, keyword } = this.state;
 
-    console.log('FE call get-list-patient-for-doctor with:', {
-      doctorId: user?.id,
-      date: formatedDate,
-  });
+    let formatedDate = new Date(currentDate).getTime();
 
     let res = await getAllPatientForDoctorService({
       doctorId: user.id,
       date: formatedDate,
-      // tạm thời chưa filter theo time, status, keyword ở BE
+      timeType: selectedTime ? selectedTime.value : '',
+      statusId: selectedStatus ? selectedStatus.value : '',
+      keyword: keyword || '',
     });
-
-    console.log('check res: ', res);
 
     if (res && res.errCode === 0) {
       this.setState({
@@ -117,20 +115,33 @@ class ManagePatient extends Component {
     );
   };
 
-  handleChangeTime = (selectedTime) => {
-    this.setState({ selectedTime });
-    // sau này có thể gọi lại getDataPatient với filter timeType
+  handleChangeTime = async (selectedTime) => {
+    this.setState({ selectedTime }, async () => {
+      await this.getDataPatient();
+    });
   };
 
-  handleChangeStatus = (selectedStatus) => {
-    this.setState({ selectedStatus });
-    // sau này có thể gọi lại getDataPatient với filter statusId
+  handleChangeStatus = async (selectedStatus) => {
+    this.setState({ selectedStatus }, async () => {
+      await this.getDataPatient();
+    });
   };
 
   handleChangeKeyword = (e) => {
-    this.setState({ keyword: e.target.value });
-    // hiện tại chỉ lưu keyword ở UI
+    const value = e.target.value;
+    this.setState({ keyword: value });
+
+    if (this.keywordTimer) clearTimeout(this.keywordTimer);
+
+    this.keywordTimer = setTimeout(async () => {
+      await this.getDataPatient();
+    }, 400);
   };
+
+  handleSearchByKeyword = async () => {
+    await this.getDataPatient();
+  };
+
 
   handleBtnConfirm = (item) => {
     let data = {
@@ -153,19 +164,73 @@ class ManagePatient extends Component {
     });
   };
 
+  closePatientModal = () => {
+    this.setState({
+      isOpenPatientModal: false,
+      // dataModal: {},
+    });
+  };
+
   handleResetFilters = async () => {
-  this.setState(
-    {
-      selectedTime: null,
-      selectedStatus: null,
-      keyword: '',
-      currentDate: moment(new Date()).startOf('day').valueOf(),
-    },
-    async () => {
-      await this.getDataPatient(); // load lại danh sách
-    }
-  );
-}
+    this.setState(
+      {
+        selectedTime: null,
+        selectedStatus: null,
+        keyword: '',
+        currentDate: moment(new Date()).startOf('day').valueOf(),
+      },
+      async () => {
+        await this.getDataPatient(); // load lại danh sách
+      }
+    );
+  }
+
+  
+  handleBtnViewDetail = (item) => {
+    const data = {
+      // thông tin booking cần nếu bạn muốn hiển thị thêm
+      bookingId: item.id,
+      doctorId: item.doctorId,
+      patientId: item.patientId,
+      date: item.date,
+      timeType: item.timeType,
+
+      // thông tin patient
+      email: item.patientData?.email || '',
+      firstName: item.patientData?.firstName || '',
+      lastName: item.patientData?.lastName || '',
+      fullName: `${item.patientData?.lastName || ''} ${item.patientData?.firstName || ''}`.trim(),
+      address: item.patientData?.address || '',
+      phoneNumber: item.patientData?.phoneNumber || '',
+
+      // các field mở rộng nếu API của bạn có trả về
+      birthday: item.patientData.patientInfoData?.birthday || '',
+      insuranceNumber: item.patientData.patientInfoData?.insuranceNumber || '',
+      note: item.patientData.patientInfoData?.note || '',
+      reason: item.patientData.patientInfoData?.reason || '',
+
+      // display text
+      timeString:
+        this.props.language === LANGUAGES.VI
+          ? item.timeTypeDataPatient?.valueVi
+          : item.timeTypeDataPatient?.valueEn,
+
+      genderText:
+        this.props.language === LANGUAGES.VI
+          ? item.patientData?.genderData?.valueVi
+          : item.patientData?.genderData?.valueEn,
+
+      statusText:
+        this.props.language === LANGUAGES.VI
+          ? item.statusData?.valueVi
+          : item.statusData?.valueEn,
+    };
+
+    this.setState({
+      isOpenPatientModal: true,
+      dataModal: data,
+    });
+  };
 
   sendRemedy = async (dataChild) => {
     let { dataModal } = this.state;
@@ -203,6 +268,7 @@ class ManagePatient extends Component {
     let {
       dataPatient,
       isOpenRemedyModal,
+      isOpenPatientModal,
       dataModal,
       listTime,
       selectedTime,
@@ -267,6 +333,9 @@ class ManagePatient extends Component {
                     placeholder="Nhập tên bệnh nhân"
                     value={keyword}
                     onChange={this.handleChangeKeyword}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') this.handleSearchByKeyword();
+                    }}
                   />
                 </div>
                 <div className="filter-item">
@@ -315,7 +384,7 @@ class ManagePatient extends Component {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{time}</td>
-                            <td>{item.patientData.firstName}</td>
+                            <td>{item.patientData.lastName} {item.patientData.firstName}</td>
                             <td>{gender}</td>
                             <td>{item.patientData.address}</td>
                             <td>{status}</td>
@@ -327,6 +396,12 @@ class ManagePatient extends Component {
                                 }}
                               >
                                 Xác nhận
+                              </button>
+                              <button
+                                className="mp-btn-detail"
+                                onClick={() => this.handleBtnViewDetail(item)}
+                              >
+                                Xem chi tiết
                               </button>
                             </td>
                           </tr>
@@ -350,6 +425,11 @@ class ManagePatient extends Component {
             dataModal={dataModal}
             closeRemedyModal={this.closeRemedyModal}
             sendRemedy={this.sendRemedy}
+          />
+          <PatientModal
+            isOpenModal={isOpenPatientModal}
+            dataModal={dataModal}
+            closePatientModal={this.closePatientModal}
           />
         </LoadingOverlay>
       </>

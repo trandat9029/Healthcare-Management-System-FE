@@ -41,11 +41,19 @@ const handleGetScheduleByDoctor = (params) => {
 
 //Patient
 const getAllPatientForDoctorService = (data) =>{
-    return axios.get(`/api/patients?doctorId=${data.doctorId}&date=${data.date}`)
+    return axios.get('/api/patients', {
+        params: {
+            doctorId: data.doctorId,
+            date: data.date,
+            timeType: data.timeType || '',
+            statusId: data.statusId || '',
+            keyword: data.keyword || '',
+        },
+    });
 } 
 
 const postSendRemedy = (data) =>{
-    return axios.post(`/api/send-remedy`, data)
+    return axios.post(`/api/booking/send-remedy`, data)
 }
 
 
