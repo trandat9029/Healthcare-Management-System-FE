@@ -12,13 +12,31 @@ import {
   Legend,
 } from "recharts";
 import "./Dashboard.scss";
+import { getAllDoctorsService, getAllPatientsService } from "../../../services/doctorService";
+import { getAllSpecialtyService } from "../../../services/specialtyService";
+import { getAllClinicService } from "../../../services/clinicService";
+import { handleGetAllHandbook } from "../../../services/handbookService";
+import { handleGetStatisticalBooking } from "../../../services/patientService";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedDate: new Date(),
+      totalDoctor: '',
+      totalPatient: '',
+      totalSpecialty: '',
+      totalClinic: '',
+      totalHandbook: '',
+
+
+      bookingStatusData: [],
     };
+  }
+
+  async componentDidMount () {
+    this.fecthTotalData();
+    this.fecthStatisticalBookingData();
   }
 
   handleOnchangeDatePicker = (date) => {
@@ -27,18 +45,55 @@ class Dashboard extends Component {
     });
   };
 
+  fecthTotalData = async () =>{
+    const resDoctor = await getAllDoctorsService();
+    const resPatient = await getAllPatientsService();
+    const resSpecialty = await getAllSpecialtyService();
+    const resClinic = await getAllClinicService();
+    const resHandbook = await handleGetAllHandbook();
+    
+
+    this.setState({
+      totalDoctor: resDoctor.total,
+      totalPatient: resPatient.total,
+      totalSpecialty: resSpecialty.total,
+      totalClinic: resClinic.total,
+      totalHandbook: resHandbook.total,
+    })
+  }
+  fecthStatisticalBookingData = async () =>{
+    const res  = await handleGetStatisticalBooking();
+    if(res && res.errCode === 0){
+      this.setState({
+        bookingStatusData : res.data
+      })
+    }
+  }
   render() {
-    const { selectedDate } = this.state;
+    const { 
+      selectedDate, 
+      totalDoctor, 
+      totalPatient, 
+      totalSpecialty, 
+      totalClinic, 
+      totalHandbook,
+      bookingStatusData,
+    } = this.state;
+    console.log('check state: ', this.state)
+
+    
 
     // demo trạng thái lịch khám theo tháng
-    const bookingStatusData = [
-      { month: "10/2025", confirmed: 160, finished: 145, pending: 40, cancelled: 25 },
-      { month: "11/2025", confirmed: 170, finished: 150, pending: 45, cancelled: 23 },
-      { month: "12/2025", confirmed: 190, finished: 160, pending: 48, cancelled: 22 },
-      { month: "01/2026", confirmed: 200, finished: 168, pending: 46, cancelled: 20 },
-      { month: "02/2026", confirmed: 195, finished: 165, pending: 44, cancelled: 18 },
-      { month: "03/2026", confirmed: 210, finished: 175, pending: 47, cancelled: 19 },
-    ];
+    // const bookingStatusData = [
+    //   { month: "10/2025", confirmed: 160, finished: 145, pending: 40, cancelled: 25 },
+    //   { month: "11/2025", confirmed: 170, finished: 150, pending: 45, cancelled: 23 },
+    //   { month: "12/2025", confirmed: 190, finished: 160, pending: 48, cancelled: 22 },
+    //   { month: "01/2026", confirmed: 200, finished: 168, pending: 46, cancelled: 20 },
+    //   { month: "02/2026", confirmed: 195, finished: 165, pending: 44, cancelled: 18 },
+    //   { month: "03/2026", confirmed: 210, finished: 175, pending: 47, cancelled: 19 },
+    // ];
+
+    
 
     // demo phân bố bệnh nhân theo chuyên khoa
     const specialtyData = [
@@ -163,7 +218,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-user-doctor" />
             </div>
             <div className="metric-label">Tổng bác sĩ</div>
-            <div className="metric-value">32</div>
+            <div className="metric-value">{totalDoctor}</div>
             <div className="metric-desc">Đang hoạt động trong hệ thống</div>
           </div>
 
@@ -172,7 +227,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-users" />
             </div>
             <div className="metric-label">Tổng bệnh nhân</div>
-            <div className="metric-value">40</div>
+            <div className="metric-value">{totalPatient}</div>
             <div className="metric-desc">Tài khoản bệnh nhân đã đăng ký</div>
           </div>
 
@@ -181,7 +236,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-stethoscope" />
             </div>
             <div className="metric-label">Tổng chuyên khoa</div>
-            <div className="metric-value">16</div>
+            <div className="metric-value">{totalSpecialty}</div>
             <div className="metric-desc">Chuyên khoa đang được quản lý</div>
           </div>
 
@@ -190,7 +245,7 @@ class Dashboard extends Component {
               <i className="fa-solid fa-hospital" />
             </div>
             <div className="metric-label">Tổng phòng khám</div>
-            <div className="metric-value">18</div>
+            <div className="metric-value">{totalClinic}</div>
             <div className="metric-desc">
               Cơ sở khám chữa bệnh trong hệ thống
             </div>
@@ -201,7 +256,7 @@ class Dashboard extends Component {
               <i className="fa-regular fa-newspaper" />
             </div>
             <div className="metric-label">Tổng bài viết</div>
-            <div className="metric-value">9</div>
+            <div className="metric-value">{totalHandbook}</div>
             <div className="metric-desc">Bài viết cẩm nang và tin tức</div>
           </div>
         </div>

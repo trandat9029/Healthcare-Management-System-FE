@@ -133,16 +133,9 @@ class ManageProfile extends Component {
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Phòng khám</div>
+                    <div className="info-label">Ngày sinh</div>
                     <div className="info-value">
-                      {info.nameClinic || 'Chưa cập nhật'}
-                    </div>
-                  </div>
-
-                  <div className="info-row">
-                    <div className="info-label">Địa chỉ phòng khám</div>
-                    <div className="info-value">
-                      {info.addressClinic || 'Chưa cập nhật'}
+                      {info.dateOfBirth || 'Chưa cập nhật'}
                     </div>
                   </div>
 

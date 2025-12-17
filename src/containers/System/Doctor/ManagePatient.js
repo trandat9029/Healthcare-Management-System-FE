@@ -96,6 +96,7 @@ class ManagePatient extends Component {
       statusId: selectedStatus ? selectedStatus.value : '',
       keyword: keyword || '',
     });
+    console.log('check res all patient: ', res)
 
     if (res && res.errCode === 0) {
       this.setState({
@@ -365,29 +366,30 @@ class ManagePatient extends Component {
                     </tr>
                     {dataPatient && dataPatient.length > 0 ? (
                       dataPatient.map((item, index) => {
-                        let gender =
+                        const patient = item?.patientData || {};
+                        const gender =
                           language === LANGUAGES.VI
-                            ? item.patientData.genderData.valueVi
-                            : item.patientData.genderData.valueEn;
+                            ? patient?.genderData?.valueVi
+                            : patient?.genderData?.valueEn;
 
-                        let time =
+                        const time =
                           language === LANGUAGES.VI
-                            ? item.timeTypeDataPatient.valueVi
-                            : item.timeTypeDataPatient.valueEn;
+                            ? item?.timeTypeDataPatient?.valueVi
+                            : item?.timeTypeDataPatient?.valueEn;
 
-                        let status =
+                        const status =
                           language === LANGUAGES.VI
-                            ? item.statusData.valueVi
-                            : item.statusData.valueEn;
+                            ? item?.statusData?.valueVi
+                            : item?.statusData?.valueEn;
 
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{time}</td>
-                            <td>{item.patientData.lastName} {item.patientData.firstName}</td>
-                            <td>{gender}</td>
-                            <td>{item.patientData.address}</td>
-                            <td>{status}</td>
+                            <td>{time || ''}</td>
+                            <td>{patient.firstName || ''} {patient.lastName || ''}</td>
+                            <td>{gender || ''}</td>
+                            <td>{patient.address || ''}</td>
+                            <td>{status || ''}</td>
                             <td>
                               <button
                                 className="mp-btn-confirm"

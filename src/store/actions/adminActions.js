@@ -285,9 +285,9 @@ export const fetchAllDoctor = (
         keyword,
         positionId, // thêm
       });
-
+      console.log('check res all doctor: ', res.doctors)
       // lưu ý axios trả về res.data
-      const data = res?.data || res;
+      const data = res;
 
       if (data && data.errCode === 0) {
         dispatch({

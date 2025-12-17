@@ -52,17 +52,20 @@ const getAllPatientForDoctorService = (data) =>{
     });
 } 
 
+const getAllPatientsService = (params) => {
+  return axios.get('/api/patients/all', { params });
+};
+
+
+// booking
 const postSendRemedy = (data) =>{
     return axios.post(`/api/booking/send-remedy`, data)
 }
 
 const updateProfileDoctorService = (data) => {
-  return axios.post('/api/doctors/profile', data);
+    return axios.post('/api/doctors/profile', data);
 };
 
-// const getSchedules = (params) => {
-//   return axios.get('/api/schedule', { params });
-// };
 
 
 export { 
@@ -79,5 +82,6 @@ export {
     handleGetAllSchedule,
     // getSchedules,
     handleGetScheduleByDoctor,
-    updateProfileDoctorService
+    updateProfileDoctorService,
+    getAllPatientsService
 }

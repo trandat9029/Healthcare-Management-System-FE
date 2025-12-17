@@ -38,8 +38,9 @@ class ManageDoctor extends Component {
       selectedProvince: '',
       selectedClinic: '',
       selectedSpecialty: '',
-      nameClinic: '',
-      addressClinic: '',
+
+      // thay thế nameClinic, addressClinic bằng dateOfBirth (string)
+      dateOfBirth: '',
       note: '',
       avatarUrl: '',
     };
@@ -48,19 +49,16 @@ class ManageDoctor extends Component {
   componentDidMount() {
     this.props.getRequiredDoctorInfoRedux();
 
-    // trường hợp reload lại trang mà redux đã có dữ liệu sẵn
     if (this.props.allRequiredDoctorInfo) {
       this.rebuildSelectOptions();
     }
   }
 
   componentDidUpdate(prevProps) {
-    // khi load xong dữ liệu required cho doctor
     if (prevProps.allRequiredDoctorInfo !== this.props.allRequiredDoctorInfo) {
       this.rebuildSelectOptions();
     }
 
-    // khi chọn bác sĩ khác ở TableManageDoctor
     if (prevProps.currentDoctor !== this.props.currentDoctor) {
       const { currentDoctor, allRequiredDoctorInfo } = this.props;
       const { listPrice, listPayment, listProvince, listSpecialty, listClinic } = this.state;
@@ -78,7 +76,6 @@ class ManageDoctor extends Component {
       }
     }
 
-    // đổi ngôn ngữ thì map lại label cho select
     if (prevProps.language !== this.props.language) {
       if (this.props.allRequiredDoctorInfo) {
         this.rebuildSelectOptions();
@@ -125,24 +122,14 @@ class ManageDoctor extends Component {
     return result;
   };
 
-  // build lại toàn bộ options cho select, sau đó nếu đang có currentDoctor thì load detail luôn
   rebuildSelectOptions = () => {
     const info = this.props.allRequiredDoctorInfo;
     if (!info) return;
 
     const listPrice = this.buildDataInputSelect(info.resPrice || [], 'PRICE');
-    const listPayment = this.buildDataInputSelect(
-      info.resPayment || [],
-      'PAYMENT'
-    );
-    const listProvince = this.buildDataInputSelect(
-      info.resProvince || [],
-      'PROVINCE'
-    );
-    const listSpecialty = this.buildDataInputSelect(
-      info.resSpecialty || [],
-      'SPECIALTY'
-    );
+    const listPayment = this.buildDataInputSelect(info.resPayment || [], 'PAYMENT');
+    const listProvince = this.buildDataInputSelect(info.resProvince || [], 'PROVINCE');
+    const listSpecialty = this.buildDataInputSelect(info.resSpecialty || [], 'SPECIALTY');
     const listClinic = this.buildDataInputSelect(info.resClinic || [], 'CLINIC');
 
     this.setState(
@@ -154,7 +141,6 @@ class ManageDoctor extends Component {
         listClinic,
       },
       () => {
-        // sau khi options đã sẵn sàng, nếu đang mở modal cho một bác sĩ thì load detail
         if (this.props.currentDoctor) {
           this.loadDoctorDetail(this.props.currentDoctor);
         }
@@ -167,16 +153,16 @@ class ManageDoctor extends Component {
 
     try {
       let res = await getDetailInfoDoctorService(doctor.id);
-      console.log('check res info doctor', res)
+      console.log('check res info doctor', res);
+
       if (res && res.errCode === 0 && res.data && res.data.Markdown) {
         let detail = res.data;
+
         let avatarUrl = '';
         if (detail?.image) {
-          // trường hợp BE trả về sẵn dạng data URL: "data:image/png;base64,..."
           if (typeof detail.image === 'string' && detail.image.startsWith('data:image')) {
             avatarUrl = detail.image;
           } else {
-            // trường hợp chỉ là base64 thuần
             avatarUrl = `data:image/jpeg;base64,${detail.image}`;
           }
         }
@@ -191,17 +177,10 @@ class ManageDoctor extends Component {
         let provinceId = doctorInfo?.provinceId || '';
         let specialtyId = doctorInfo?.specialtyId || '';
         let clinicId = doctorInfo?.clinicId || '';
-        let nameClinic = doctorInfo?.nameClinic || '';
-        let addressClinic = doctorInfo?.addressClinic || '';
+        let dateOfBirth = doctorInfo?.dateOfBirth || '';
         let note = doctorInfo?.note || '';
 
-        const {
-          listPrice,
-          listPayment,
-          listProvince,
-          listSpecialty,
-          listClinic,
-        } = this.state;
+        const { listPrice, listPayment, listProvince, listSpecialty, listClinic } = this.state;
 
         this.setState({
           contentHTML: markdown.contentHTML,
@@ -211,24 +190,22 @@ class ManageDoctor extends Component {
 
           selectedPrice: listPrice.find((i) => i.value === priceId) || '',
           selectedPayment: listPayment.find((i) => i.value === paymentId) || '',
-          selectedProvince:
-            listProvince.find((i) => i.value === provinceId) || '',
-          selectedSpecialty:
-            listSpecialty.find((i) => i.value === specialtyId) || '',
+          selectedProvince: listProvince.find((i) => i.value === provinceId) || '',
+          selectedSpecialty: listSpecialty.find((i) => i.value === specialtyId) || '',
           selectedClinic: listClinic.find((i) => i.value === clinicId) || '',
-          nameClinic,
-          addressClinic,
+
+          dateOfBirth,
           note,
           avatarUrl,
         });
 
+        
       } else {
-        // chưa có thông tin, reset form
         this.setState({
           contentHTML: '',
           contentMarkdown: '',
           description: '',
-          
+
           hasOldData: false,
           avatarUrl: '',
           selectedPrice: '',
@@ -236,8 +213,8 @@ class ManageDoctor extends Component {
           selectedProvince: '',
           selectedSpecialty: '',
           selectedClinic: '',
-          nameClinic: '',
-          addressClinic: '',
+
+          dateOfBirth: '',
           note: '',
         });
       }
@@ -270,7 +247,7 @@ class ManageDoctor extends Component {
     const { hasOldData } = this.state;
     const doctor = this.props.currentDoctor;
 
-    if (!doctor || !doctor.id) return;    
+    if (!doctor || !doctor.id) return;
 
     this.props.saveDetailDoctorRedux({
       doctorId: doctor.id,
@@ -284,12 +261,11 @@ class ManageDoctor extends Component {
       selectedProvince: this.state.selectedProvince?.value || '',
       specialtyId: this.state.selectedSpecialty?.value || '',
       clinicId: this.state.selectedClinic?.value || '',
-      nameClinic: this.state.nameClinic,
-      addressClinic: this.state.addressClinic,
+
+      dateOfBirth: this.state.dateOfBirth, // string
       note: this.state.note,
     });
 
-    // sau khi lưu xong đóng modal
     if (this.props.onClose) {
       this.props.onClose();
     }
@@ -312,38 +288,30 @@ class ManageDoctor extends Component {
       selectedSpecialty,
       selectedClinic,
       description,
-      nameClinic,
-      addressClinic,
+      dateOfBirth,
       note,
       contentMarkdown,
       hasOldData,
       avatarUrl,
     } = this.state;
 
+            console.log('check state: ', this.state);
+
     return (
-      <div
-        className="doctor-modal-overlay"
-        onClick={this.props.onClose}
-      >
-        <div
-          className="doctor-modal-container"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div className="doctor-modal-overlay" onClick={this.props.onClose}>
+        <div className="doctor-modal-container" onClick={(e) => e.stopPropagation()}>
           <div className="doctor-modal-header">
             <span>
               {hasOldData ? 'Chỉnh sửa thông tin bác sĩ' : 'Tạo thêm thông tin bác sĩ'}
             </span>
-            <button
-              className="doctor-modal-close"
-              onClick={this.props.onClose}
-            >
+            <button className="doctor-modal-close" onClick={this.props.onClose}>
               ×
             </button>
           </div>
 
           <div className="doctor-modal-body">
-            <div className='doctor-info-header'>
-              <div className='doctor-info-about'>
+            <div className="doctor-info-header">
+              <div className="doctor-info-about">
                 <div className="mb-3 doctor-info-title">
                   <strong>Bác sĩ. </strong>
                   {currentDoctor.firstName} {currentDoctor.lastName}
@@ -360,7 +328,7 @@ class ManageDoctor extends Component {
                   </div>
                 </div>
               </div>
-              
+
               <div className="doctor-basic mb-3">
                 <div
                   className="doctor-avatar"
@@ -406,22 +374,12 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group mb-3">
-                <label>Tên phòng khám</label>
+                <label>Ngày sinh</label>
                 <input
                   className="form-control"
-                  type="text"
-                  value={nameClinic}
-                  onChange={(e) => this.handleChangeText(e, 'nameClinic')}
-                />
-              </div>
-
-              <div className="col-4 form-group mb-3">
-                <label>Địa chỉ phòng khám</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={addressClinic}
-                  onChange={(e) => this.handleChangeText(e, 'addressClinic')}
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => this.handleChangeText(e, 'dateOfBirth')}
                 />
               </div>
 
@@ -471,10 +429,7 @@ class ManageDoctor extends Component {
           </div>
 
           <div className="doctor-modal-footer">
-            <button
-              className="btn btn-primary"
-              onClick={this.handleSave}
-            >
+            <button className="btn btn-primary" onClick={this.handleSave}>
               {hasOldData ? 'Lưu thông tin' : 'Tạo thông tin'}
             </button>
           </div>
@@ -493,10 +448,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRequiredDoctorInfoRedux: () =>
-      dispatch(actions.getRequiredDoctorInfo()),
-    saveDetailDoctorRedux: (data) =>
-      dispatch(actions.saveDetailDoctor(data)),
+    getRequiredDoctorInfoRedux: () => dispatch(actions.getRequiredDoctorInfo()),
+    saveDetailDoctorRedux: (data) => dispatch(actions.saveDetailDoctor(data)),
   };
 };
 

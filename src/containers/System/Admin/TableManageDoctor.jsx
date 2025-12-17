@@ -14,7 +14,7 @@ class TableManageDoctor extends Component {
       doctors: [],
 
       page: 1,
-      limit: 9,
+      limit: 5,
       sortBy: 'createdAt',
       sortOrder: 'DESC',
 
@@ -264,6 +264,8 @@ class TableManageDoctor extends Component {
             <table>
               <tbody>
                 <tr>
+
+                  <th>STT</th>
                   <th>Email</th>
 
                   <th onClick={() => this.handleSort('firstName')}>
@@ -271,6 +273,7 @@ class TableManageDoctor extends Component {
                   </th>
 
                   <th>Chức danh</th>
+                  <th>Ảnh đại diện</th>
 
                   <th onClick={() => this.handleSort('createdAt')}>
                     Created at{this.renderSortLabel('createdAt')}
@@ -282,6 +285,7 @@ class TableManageDoctor extends Component {
                 {filteredDoctors.length > 0 ? (
                   filteredDoctors.map((item, index) => (
                     <tr key={index}>
+                      <td>{index + 1}</td>
                       <td>{item.email}</td>
 
                       <td>
@@ -295,6 +299,17 @@ class TableManageDoctor extends Component {
                             : item.positionData.valueEn
                           : ''}
                       </td>
+                        <td className="doctor-avatar-cell">
+                          {item.image ? (
+                            <img
+                              className="doctor-avatar"
+                              src={item.image}
+                              alt="avatar"
+                            />
+                          ) : (
+                            <span>Không có</span>
+                          )}
+                        </td>
 
                       <td>
                         {item.createdAt
