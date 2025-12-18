@@ -153,7 +153,6 @@ class ManageDoctor extends Component {
 
     try {
       let res = await getDetailInfoDoctorService(doctor.id);
-      console.log('check res info doctor', res);
 
       if (res && res.errCode === 0 && res.data && res.data.Markdown) {
         let detail = res.data;

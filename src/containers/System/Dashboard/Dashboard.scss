@@ -1,5 +1,5 @@
 .dashboard-page {
-  height: calc(100vh - 60px);   /* chỉnh lại nếu header System cao khác */
+  height: calc(100vh - 60px); /* chỉnh lại nếu header System cao khác */
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px;
@@ -104,11 +104,21 @@
   font-size: 18px;
 }
 
-.metric-icon.doctors { background: #22c55e; }
-.metric-icon.patients { background: #3b82f6; }
-.metric-icon.specialties { background: #6366f1; }
-.metric-icon.clinics { background: #f97316; }
-.metric-icon.posts { background: #ec4899; }
+.metric-icon.doctors {
+  background: #22c55e;
+}
+.metric-icon.patients {
+  background: #3b82f6;
+}
+.metric-icon.specialties {
+  background: #6366f1;
+}
+.metric-icon.clinics {
+  background: #f97316;
+}
+.metric-icon.posts {
+  background: #ec4899;
+}
 
 .metric-label {
   font-size: 12px;
@@ -347,5 +357,114 @@
 
   .dashboard-metrics-row {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   TOP BÁC SĨ NỔI BẬT
+========================= */
+
+.doctor-section-body {
+  min-height: 220px;
+}
+
+.doctor-ranking {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* mỗi item như 1 card */
+.doctor-ranking li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid #e5f5eb;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.doctor-ranking li:hover {
+  border-color: #bbf7d0;
+  background: #f8fefb;
+  box-shadow: 0 10px 26px rgba(2, 44, 34, 0.06);
+}
+
+.rank-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 30px;
+}
+
+/* name + specialty cùng hàng */
+.doctor-info {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.doctor-info .name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.doctor-info .meta {
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* badge lượt khám bên phải */
+.count-tag {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+/* responsive */
+@media (max-width: 480px) {
+  .doctor-ranking li {
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+
+  .doctor-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .doctor-info .name {
+    max-width: 100%;
   }
 }

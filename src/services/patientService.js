@@ -17,6 +17,9 @@ const getAllPatientsService = (params) => {
   return axios.get('/api/patients/all', { params });
 };
 
+const handleGetPatientByClinic = (params) =>{
+    return axios.get('api/patients/patient-by-clinic', {params})
+}
 
 
 // booking
@@ -32,10 +35,14 @@ const handleGetStatisticalBooking = (params) =>{
     return axios.get('/api/booking/statistical', {params})
 }
 
+
+
 export { 
     getAllPatientForDoctorService,
     postSendRemedy,
     updateProfileDoctorService,
     getAllPatientsService,
     handleGetStatisticalBooking,
+    handleGetPatientByClinic,
+    
 }

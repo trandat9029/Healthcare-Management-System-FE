@@ -12,46 +12,74 @@ import {
   Legend,
 } from "recharts";
 import "./Dashboard.scss";
-import { getAllDoctorsService, getAllPatientsService } from "../../../services/doctorService";
+import {
+  getAllDoctorsService,
+  getAllPatientsService,
+  getTopDoctorHomeService,
+} from "../../../services/doctorService";
 import { getAllSpecialtyService } from "../../../services/specialtyService";
 import { getAllClinicService } from "../../../services/clinicService";
 import { handleGetAllHandbook } from "../../../services/handbookService";
-import { handleGetStatisticalBooking } from "../../../services/patientService";
+import {
+  handleGetStatisticalBooking,
+  handleGetPatientByClinic,
+} from "../../../services/patientService";
+import { LANGUAGES } from "../../../utils";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedDate: new Date(),
-      totalDoctor: '',
-      totalPatient: '',
-      totalSpecialty: '',
-      totalClinic: '',
-      totalHandbook: '',
-
+      totalDoctor: "",
+      totalPatient: "",
+      totalSpecialty: "",
+      totalClinic: "",
+      totalHandbook: "",
 
       bookingStatusData: [],
+
+      clinicOptions: [],
+      patientByClinicMonthly: [],
+      currentMonthLabel: "",
+
+      topDoctors: [],
+      specialtyNameMap: new Map(),
     };
   }
 
-  async componentDidMount () {
-    this.fecthTotalData();
+  async componentDidMount() {
+    await this.fecthTotalData();
+    await this.loadSpecialtyMap();
     this.fecthStatisticalBookingData();
+    this.fecthPatientByClinic();
+    this.fecthTopDoctors();
   }
 
   handleOnchangeDatePicker = (date) => {
-    this.setState({
-      selectedDate: date,
-    });
+    this.setState({ selectedDate: date });
   };
 
-  fecthTotalData = async () =>{
+  getCurrentMonthLabel = () => {
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const yyyy = String(now.getFullYear());
+    return `${mm}/${yyyy}`;
+  };
+
+  fecthTotalData = async () => {
     const resDoctor = await getAllDoctorsService();
     const resPatient = await getAllPatientsService();
     const resSpecialty = await getAllSpecialtyService();
     const resClinic = await getAllClinicService();
     const resHandbook = await handleGetAllHandbook();
-    
+
+    const clinicOptions = (resClinic?.data || resClinic?.clinics || []).map(
+      (c) => ({
+        id: c.id,
+        name: c.name,
+      })
+    );
 
     this.setState({
       totalDoctor: resDoctor.total,
@@ -59,86 +87,103 @@ class Dashboard extends Component {
       totalSpecialty: resSpecialty.total,
       totalClinic: resClinic.total,
       totalHandbook: resHandbook.total,
-    })
-  }
-  fecthStatisticalBookingData = async () =>{
-    const res  = await handleGetStatisticalBooking();
-    if(res && res.errCode === 0){
+      clinicOptions,
+    });
+  };
+
+  fecthStatisticalBookingData = async () => {
+    const res = await handleGetStatisticalBooking();
+    if (res && res.errCode === 0) {
       this.setState({
-        bookingStatusData : res.data
-      })
+        bookingStatusData: res.data,
+      });
     }
-  }
+  };
+
+  loadSpecialtyMap = async () => {
+    const res = await getAllSpecialtyService({ limit: "ALL" });
+
+    const list = res?.data || res?.specialties || res?.resSpecialty || [];
+    const map = new Map((list || []).map((s) => [Number(s.id), s.name]));
+
+    this.setState({ specialtyNameMap: map });
+  };
+
+  fecthTopDoctors = async () => {
+    try {
+      const res = await getTopDoctorHomeService(5);
+      
+      if (res && res.errCode === 0) {
+        const { specialtyNameMap } = this.state;
+        const { language } =this.props;
+                     
+        const topDoctors = (res.data || []).map((d) => {
+          const position = language === LANGUAGES.VI ? d.positionData.valueVi : d.positionData.valueEn;
+          const fullName = `${position} ${d.firstName || ""} ${d.lastName || ""}`.trim();
+
+          const specialtyId = Number(d.doctorInfoData?.specialtyId || 0);
+          const specialtyName =
+            specialtyNameMap.get(specialtyId) || "Chuyên khoa";
+
+          return {
+            id: d.id,
+            name: fullName || `Bác sĩ ${d.id}`,
+            specialty: specialtyName,
+            count: Number(d.monthCompleteCount || 0),
+            image: d.image || null,
+          };
+        });
+
+        this.setState({ topDoctors });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fecthPatientByClinic = async () => {
+    const res = await handleGetPatientByClinic(); // lấy tất cả phòng khám
+
+    if (res && res.errCode === 0) {
+      const clinicNameMap = new Map(
+        this.state.clinicOptions.map((c) => [Number(c.id), c.name])
+      );
+
+      const formatted = (res.data || []).map((item) => {
+        const clinicId = Number(item.clinicId);
+        return {
+          clinicId,
+          name: clinicNameMap.get(clinicId) || `Phòng khám ${clinicId}`,
+          month: item.month,
+          countComplete: Number(item.countComplete || 0),
+        };
+      });
+
+      // sắp xếp giảm dần theo số ca đã khám
+      formatted.sort((a, b) => b.countComplete - a.countComplete);
+
+      this.setState({
+        patientByClinicMonthly: formatted,
+        currentMonthLabel: formatted?.[0]?.month || this.getCurrentMonthLabel(),
+      });
+    }
+  };
+
   render() {
-    const { 
-      selectedDate, 
-      totalDoctor, 
-      totalPatient, 
-      totalSpecialty, 
-      totalClinic, 
+    const {
+      selectedDate,
+      totalDoctor,
+      totalPatient,
+      totalSpecialty,
+      totalClinic,
       totalHandbook,
       bookingStatusData,
+      patientByClinicMonthly,
+      currentMonthLabel,
+      topDoctors,
     } = this.state;
-    console.log('check state: ', this.state)
 
-    
-
-    // demo trạng thái lịch khám theo tháng
-    // const bookingStatusData = [
-    //   { month: "10/2025", confirmed: 160, finished: 145, pending: 40, cancelled: 25 },
-    //   { month: "11/2025", confirmed: 170, finished: 150, pending: 45, cancelled: 23 },
-    //   { month: "12/2025", confirmed: 190, finished: 160, pending: 48, cancelled: 22 },
-    //   { month: "01/2026", confirmed: 200, finished: 168, pending: 46, cancelled: 20 },
-    //   { month: "02/2026", confirmed: 195, finished: 165, pending: 44, cancelled: 18 },
-    //   { month: "03/2026", confirmed: 210, finished: 175, pending: 47, cancelled: 19 },
-    // ];
-
-    
-
-    // demo phân bố bệnh nhân theo chuyên khoa
-    const specialtyData = [
-      { name: "Cơ xương khớp", value: 190 },
-      { name: "Tim mạch", value: 150 },
-      { name: "Tiêu hóa", value: 130 },
-      { name: "Nội tổng quát", value: 100 },
-      { name: "Khác", value: 70 },
-    ];
-
-    // demo top bác sĩ
-    const topDoctors = [
-      { id: 1, name: "BS. Lê Quốc Việt", specialty: "Cơ xương khớp", count: 32 },
-      { id: 2, name: "BS. Trần Minh Hùng", specialty: "Tim mạch", count: 27 },
-      { id: 3, name: "BS. Phan Thanh Hà", specialty: "Tiêu hóa", count: 21 },
-      { id: 4, name: "BS. Nguyễn Thu Trang", specialty: "Nội tổng quát", count: 19 },
-    ];
-
-    // demo hoạt động gần đây
-    const activities = [
-      {
-        id: 1,
-        type: "success",
-        title: "Tạo mới lịch khám cho Nguyễn Văn A",
-        time: "5 phút trước . BS. Lê Quốc Việt",
-      },
-      {
-        id: 2,
-        type: "info",
-        title: "Cập nhật hồ sơ phòng khám Phòng 305",
-        time: "30 phút trước . Quản trị viên",
-      },
-      {
-        id: 3,
-        type: "warning",
-        title: "Thêm bài viết cẩm nang về bệnh xương khớp",
-        time: "1 giờ trước . Bộ phận nội dung",
-      },
-      {
-        id: 4,
-        type: "danger",
-        title: "Khóa tài khoản bệnh nhân không xác thực email",
-        time: "2 giờ trước . Hệ thống",
-      },
-    ];
+    const { language } = this.props
 
     const formattedDate = selectedDate
       ? new Date(selectedDate).toLocaleDateString("vi-VN")
@@ -171,27 +216,27 @@ class Dashboard extends Component {
       );
     };
 
-    const renderSpecialtyTooltip = (props) => {
-      const { active, payload } = props;
+    const renderClinicTooltip = (props) => {
+      const { active, payload, label } = props;
       if (!active || !payload || !payload.length) return null;
-      const item = payload[0];
+
+      const complete = payload[0]?.value || 0;
 
       return (
         <div className="bh-tooltip">
-          <div className="bh-tooltip-title">{item.payload.name}</div>
-          <div>{item.value} bệnh nhân</div>
+          <div className="bh-tooltip-title">{label}</div>
+          <div>Đã khám xong: {complete} lịch</div>
         </div>
       );
     };
 
     return (
       <div className="dashboard-page">
-        {/* header */}
         <div className="dashboard-header">
           <div>
             <div className="dashboard-title">Tổng quan hệ thống</div>
             <div className="dashboard-subtitle">
-              Theo dõi nhanh tình hình hệ thống BookingHealth theo ngày.
+              Theo dõi nhanh tình hình hệ thống BookingHealth.
             </div>
           </div>
 
@@ -211,7 +256,6 @@ class Dashboard extends Component {
           </div>
         </div>
 
-        {/* thẻ thống kê */}
         <div className="dashboard-metrics-row">
           <div className="metric-card">
             <div className="metric-icon doctors">
@@ -261,17 +305,12 @@ class Dashboard extends Component {
           </div>
         </div>
 
-        {/* nội dung chính */}
         <div className="dashboard-main">
-          {/* biểu đồ trạng thái lịch khám */}
           <div className="dashboard-section wide">
             <div className="section-header">
               <div>
                 <h3>Trạng thái lịch khám theo tháng</h3>
-                <p>
-                  Phân bố số lịch khám đã xác nhận. đã khám xong. chờ xác nhận
-                  và hủy trong từng tháng. Dữ liệu demo.
-                </p>
+                <p>Phân bố số lịch theo trạng thái trong từng tháng.</p>
               </div>
               <button type="button" className="btn-small-secondary">
                 Xem theo tháng
@@ -284,13 +323,24 @@ class Dashboard extends Component {
                   data={bookingStatusData}
                   margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
                 >
-                  {/* gradient cho cột đẹp hơn */}
                   <defs>
-                    <linearGradient id="colorConfirmed" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient
+                      id="colorConfirmed"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
                       <stop offset="0%" stopColor="#86efac" />
                       <stop offset="100%" stopColor="#4ade80" />
                     </linearGradient>
-                    <linearGradient id="colorFinished" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient
+                      id="colorFinished"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
                       <stop offset="0%" stopColor="#34d399" />
                       <stop offset="100%" stopColor="#22c55e" />
                     </linearGradient>
@@ -307,6 +357,7 @@ class Dashboard extends Component {
                     iconSize={8}
                     wrapperStyle={{ fontSize: 12 }}
                   />
+
                   <Bar
                     dataKey="confirmed"
                     name="Đã xác nhận"
@@ -337,16 +388,14 @@ class Dashboard extends Component {
             </div>
           </div>
 
-          {/* các khối bên dưới, mỗi khối 1 hàng riêng */}
           <div className="dashboard-lower">
-            {/* bệnh nhân theo chuyên khoa */}
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
-                  <h3>Bệnh nhân theo chuyên khoa</h3>
+                  <h3>Bệnh nhân theo phòng khám</h3>
                   <p>
-                    Tỉ lệ phân bố bệnh nhân theo khoa trong ngày hôm nay
-                    {formattedDate ? ` . ${formattedDate}` : ""}.
+                    Thống kê lịch đã khám xong (S3) theo phòng khám trong tháng{" "}
+                    {currentMonthLabel}
                   </p>
                 </div>
               </div>
@@ -354,7 +403,7 @@ class Dashboard extends Component {
               <div className="section-body chart-body-md">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={specialtyData}
+                    data={patientByClinicMonthly}
                     layout="vertical"
                     margin={{ top: 10, right: 20, left: 40, bottom: 0 }}
                   >
@@ -364,15 +413,27 @@ class Dashboard extends Component {
                       type="category"
                       dataKey="name"
                       tick={{ fontSize: 12 }}
+                      width={140}
                     />
-                    <Tooltip content={renderSpecialtyTooltip} />
-                    <Bar dataKey="value" fill="#22c55e" radius={[0, 6, 6, 0]} />
+                    <Tooltip content={renderClinicTooltip} />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={28}
+                      iconType="circle"
+                      iconSize={8}
+                      wrapperStyle={{ fontSize: 12 }}
+                    />
+                    <Bar
+                      dataKey="countComplete"
+                      name="Đã khám xong"
+                      fill="#22c55e"
+                      radius={[0, 6, 6, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* top bác sĩ nổi bật */}
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
@@ -383,51 +444,19 @@ class Dashboard extends Component {
 
               <div className="section-body doctor-section-body">
                 <ul className="doctor-ranking">
-                  {topDoctors.map((doctor, index) => (
+                  {(topDoctors || []).map((doctor, index) => (
                     <li key={doctor.id}>
                       <div className="rank-badge">{index + 1}</div>
+
                       <div className="doctor-info">
-                        <div className="name">{doctor.name}</div>
+                        <div className="name">{language === LANGUAGES.VI ? doctor.positionData?.valueVi : doctor.positionData?.valueEn} {doctor.name}</div>
                         <div className="meta">{doctor.specialty}</div>
                       </div>
+
                       <div className="count-tag">{doctor.count} lượt khám</div>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-
-            {/* hoạt động gần đây */}
-            <div className="dashboard-section">
-              <div className="section-header">
-                <div>
-                  <h3>Hoạt động gần đây</h3>
-                  <p>Một số thao tác mới phát sinh trong hệ thống.</p>
-                </div>
-              </div>
-
-              <div className="section-body activities-tall">
-                <div className="activities">
-                  {activities.map((item) => {
-                    let color = "#22c55e";
-                    if (item.type === "info") color = "#3b82f6";
-                    if (item.type === "warning") color = "#f97316";
-                    if (item.type === "danger") color = "#ef4444";
-
-                    return (
-                      <div key={item.id} className="activity-item">
-                        <div
-                          className="activity-dot"
-                          style={{ backgroundColor: color }}
-                        />
-                        <div className="activity-text">
-                          <div className="activity-title">{item.title}</div>
-                          <div className="activity-time">{item.time}</div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
             </div>
           </div>
@@ -437,10 +466,5 @@ class Dashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    language: state.app.language,
-  };
-};
-
+const mapStateToProps = (state) => ({ language: state.app.language });
 export default connect(mapStateToProps)(Dashboard);

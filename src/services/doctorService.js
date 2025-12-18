@@ -2,7 +2,7 @@ import axios from "../axios";
 
 // Doctor
 const getTopDoctorHomeService = (limit) =>{
-    return axios.get(`/api/out-standing?limit=${limit}`)
+    return axios.get(`/api/doctors/out-standing?limit=${limit}`)
 }   
 const getAllDoctorsService = (params) => {
   return axios.get('/api/doctors/all', { params });
