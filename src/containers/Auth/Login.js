@@ -1,4 +1,3 @@
-// src/containers/Auth/Login.js
 import React, { Component } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { connect } from 'react-redux';
@@ -9,8 +8,8 @@ import { handleLoginApi } from '../../services/authService';
 import logo from '../../assets/logo.svg';
 import loginBg from '../../assets/banner.jpg';
 
-import ForgotPassword from './ForgotPassword';
-import SendEmailOTP from './SendEmailOTP';
+import SendEmailOTP from './SendEmailOTP';     // Email + OTP
+import ForgotPassword from './ForgotPassword'; // Reset mật khẩu
 
 class Login extends Component {
   constructor(props) {
@@ -20,7 +19,8 @@ class Login extends Component {
       password: '',
       isShowPassword: false,
       errMessage: '',
-      activeForm: 'login',
+      activeForm: 'login', // login | forgot | reset
+      resetToken: '',      // token sau khi verify OTP
     };
   }
 
@@ -118,7 +118,7 @@ class Login extends Component {
           <button
             type="button"
             className="btn-forgot-password"
-            onClick={() => this.setState({ activeForm: 'forgot' })}
+            onClick={() => this.setState({ activeForm: 'forgot', resetToken: '' })}
           >
             Quên mật khẩu
           </button>
@@ -128,25 +128,35 @@ class Login extends Component {
   };
 
   renderRightCard = () => {
-    const { activeForm } = this.state;
+    const { activeForm, resetToken } = this.state;
 
+    // Login
     if (activeForm === 'login') {
       return this.renderLoginForm();
     }
 
+    // Email + OTP
     if (activeForm === 'forgot') {
       return (
-        <ForgotPassword
-          onBackToLogin={() => this.setState({ activeForm: 'login' })}
-          onOtpVerified={() => this.setState({ activeForm: 'reset' })}
+        <SendEmailOTP
+          onBackToLogin={() =>
+            this.setState({ activeForm: 'login', resetToken: '' })
+          }
+          onOtpVerified={({ resetToken }) =>
+            this.setState({ activeForm: 'reset', resetToken })
+          }
         />
       );
     }
 
+    // Reset mật khẩu
     if (activeForm === 'reset') {
       return (
-        <SendEmailOTP
-          onBackToLogin={() => this.setState({ activeForm: 'login' })}
+        <ForgotPassword
+          resetToken={resetToken}
+          onBackToLogin={() =>
+            this.setState({ activeForm: 'login', resetToken: '' })
+          }
         />
       );
     }
@@ -158,10 +168,10 @@ class Login extends Component {
     return (
       <div
         className="login-background"
-        style={{ backgroundImage: `url(${loginBg})` }} // ảnh nền mờ
+        style={{ backgroundImage: `url(${loginBg})` }}
       >
         <div className="login-wrapper">
-          {/* Panel trái */}
+          {/* Left panel */}
           <div className="login-left">
             <div className="login-left-brand">
               <div className="left-brand-top">
@@ -179,9 +189,11 @@ class Login extends Component {
             </div>
           </div>
 
-          {/* Panel phải */}
+          {/* Right panel */}
           <div className="login-card">
-            <div className="login-card-inner">{this.renderRightCard()}</div>
+            <div className="login-card-inner">
+              {this.renderRightCard()}
+            </div>
           </div>
         </div>
       </div>
