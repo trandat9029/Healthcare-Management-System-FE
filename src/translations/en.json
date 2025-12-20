@@ -40,6 +40,7 @@
 
             "clinic": "Clinic",
             "manage-clinic": "Manage Clinic",
+            "statistical-clinic": "Statistical clinic",
 
             "specialty":"Specialties",
             "manage-specialty": "Manage Specialty",
@@ -139,6 +140,9 @@
             "title": "Manage specialties"
         },
         "manage-clinic":{
+            "title": "Manage Clinics"
+        },
+        "manage-patient":{
             "title": "Manage Clinics"
         }
     }

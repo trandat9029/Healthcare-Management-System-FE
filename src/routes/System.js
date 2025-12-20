@@ -21,6 +21,7 @@ import TableManageClinic from '../containers/System/Clinic/TableManageClinic';
 import TableManageHandbook from '../containers/System/Handbook/TableManageHandbook';
 import TableManageSchedule from '../containers/System/Schedule/TableManageSchedule';
 import TableManageBooking from '../containers/System/Booking/TableManageBooking';
+import StatisticalClinic from '../containers/System/Clinic/StatisticalClinic';
 
 class System extends Component {
     render() {
@@ -47,6 +48,7 @@ class System extends Component {
                                 <Route path="/system/create-specialty" component={ManageSpecialty} />
                                 <Route path="/system/manage-clinic" component={TableManageClinic} />
                                 <Route path="/system/create-clinic" component={ManageClinic} />
+                                <Route path="/system/statistical-clinic" component={StatisticalClinic} />
                                 <Route path="/system/manage-handbook" component={TableManageHandbook} />
                                 <Route path="/system/create-handbook" component={ManageHandbook} />
                                 <Route path="/system/manage-schedule" component={TableManageSchedule} />

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10x;
+  padding: 15px;
 }
 
 /* Tiêu đề */
@@ -11,13 +12,19 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #065f46;
-  margin-top: 25px;
   margin-bottom: 15px;
 }
 
 .schedule-function {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between !important;
+  gap: 18px;
+  padding: 16px !important;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  align-items: flex-end;
 
   .btn-search {
     border-radius: 50px;
@@ -234,7 +241,7 @@
   min-width: 220px;
 }
 
-.form-control{
+.form-control {
   border-color: rgb(204, 204, 204) !important;
   border-radius: 5px !important;
 }

@@ -39,11 +39,11 @@ export const adminMenu = [
         name: 'menu.admin.manage-clinic', 
         link: '/system/manage-clinic', 
         icon: 'fa-solid fa-house-chimney-medical', 
-        // menus: [
-        //     {
-        //         name: 'menu.admin.create-clinic', link: '/system/create-clinic', 
-        //     },
-        // ]
+        menus: [
+            {
+                name: 'menu.admin.statistical-clinic', link: '/system/statistical-clinic', 
+            },
+        ]
     },
     { //Quản lý cẩm nang
         name: 'menu.admin.manage-handbook', 

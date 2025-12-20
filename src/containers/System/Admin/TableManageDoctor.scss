@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 10px;
+  padding: 15px;
 }
 
 /* Title */
@@ -20,12 +22,14 @@
 /* Row tools: trái (search + filter + clear) và phải (create) */
 .doctor-function {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 10px;
-  padding: 0 25px;
-  gap: 18px;
-  flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 16px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 14px;
+    align-items: end;
+    justify-content: space-between;
 }
 
 /* Cụm filter bên trái, cân đều theo hàng */
@@ -37,14 +41,14 @@
 }
 
 /* Search */
-.doctor-btn-search {
+.btn-search {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid #d1fae5;
-  background-color: #ecfdf5;
+  background-color: #ecfdf5 !important;
   box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
   cursor: text;
   min-height: 40px;
@@ -69,11 +73,18 @@
 }
 
 /* Filter item */
+.doctor-filter-group{
+  display: flex;
+  align-items: end;
+  gap: 15px;
+}
+
 .doctor-filter-item {
   display: flex;
   flex-direction: column;
   min-width: 240px;
 }
+
 
 .doctor-filter-label {
   font-size: 12px;
@@ -171,7 +182,6 @@
   box-shadow: 0 8px 24px rgba(22, 163, 74, 0.12);
   padding: 16px 18px 10px 18px;
   overflow-x: auto;
-  margin-top: 16px;
   position: relative;
 }
 

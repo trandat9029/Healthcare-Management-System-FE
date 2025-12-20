@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './TableManageDoctor.scss';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
-import { LANGUAGES } from '../../../utils/constant';
-import Select from 'react-select';
-import ManageDoctor from './ManageDoctor';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./TableManageDoctor.scss";
+import * as actions from "../../../store/actions";
+import { FormattedMessage } from "react-intl";
+import { LANGUAGES } from "../../../utils/constant";
+import Select from "react-select";
+import ManageDoctor from "./ManageDoctor";
 
 class TableManageDoctor extends Component {
   constructor(props) {
@@ -15,10 +15,10 @@ class TableManageDoctor extends Component {
 
       page: 1,
       limit: 5,
-      sortBy: 'createdAt',
-      sortOrder: 'DESC',
+      sortBy: "createdAt",
+      sortOrder: "DESC",
 
-      keyword: '',
+      keyword: "",
       searchTimer: null,
 
       listPosition: [],
@@ -70,7 +70,7 @@ class TableManageDoctor extends Component {
     });
 
     const listPosition = [
-      { value: 'ALL', label: 'Tất cả chức danh' },
+      { value: "ALL", label: "Tất cả chức danh" },
       ...Array.from(map.entries()).map(([id, data]) => ({
         value: id,
         label: language === LANGUAGES.VI ? data.valueVi : data.valueEn,
@@ -126,18 +126,12 @@ class TableManageDoctor extends Component {
 
     this.setState(
       {
-        keyword: '',
+        keyword: "",
         selectedPosition: null,
         page: 1,
       },
       () => {
-        this.props.fetchAllDoctorRedux(
-          1,
-          limit,
-          sortBy,
-          sortOrder,
-          ''
-        );
+        this.props.fetchAllDoctorRedux(1, limit, sortBy, sortOrder, "");
       }
     );
   };
@@ -149,8 +143,8 @@ class TableManageDoctor extends Component {
     const totalPages = Math.ceil((totalDoctors || 0) / limit) || 1;
     let newPage = page;
 
-    if (type === 'prev' && page > 1) newPage = page - 1;
-    if (type === 'next' && page < totalPages) newPage = page + 1;
+    if (type === "prev" && page > 1) newPage = page - 1;
+    if (type === "next" && page < totalPages) newPage = page + 1;
 
     if (newPage !== page) {
       this.setState({ page: newPage }, () => {
@@ -167,10 +161,10 @@ class TableManageDoctor extends Component {
 
   handleSort = (field) => {
     const { sortBy, sortOrder, limit, keyword } = this.state;
-    let newSortOrder = 'ASC';
+    let newSortOrder = "ASC";
 
-    if (sortBy === field && sortOrder === 'ASC') {
-      newSortOrder = 'DESC';
+    if (sortBy === field && sortOrder === "ASC") {
+      newSortOrder = "DESC";
     }
 
     this.setState(
@@ -180,13 +174,7 @@ class TableManageDoctor extends Component {
         page: 1,
       },
       () => {
-        this.props.fetchAllDoctorRedux(
-          1,
-          limit,
-          field,
-          newSortOrder,
-          keyword
-        );
+        this.props.fetchAllDoctorRedux(1, limit, field, newSortOrder, keyword);
       }
     );
   };
@@ -194,7 +182,7 @@ class TableManageDoctor extends Component {
   renderSortLabel = (field) => {
     const { sortBy, sortOrder } = this.state;
     if (sortBy !== field) return null;
-    return sortOrder === 'ASC' ? ' ↑' : ' ↓';
+    return sortOrder === "ASC" ? " ↑" : " ↓";
   };
 
   render() {
@@ -213,7 +201,7 @@ class TableManageDoctor extends Component {
 
     let filteredDoctors = doctors || [];
 
-    if (selectedPosition && selectedPosition.value !== 'ALL') {
+    if (selectedPosition && selectedPosition.value !== "ALL") {
       filteredDoctors = filteredDoctors.filter(
         (d) => d.positionId === selectedPosition.value
       );
@@ -223,12 +211,12 @@ class TableManageDoctor extends Component {
 
     return (
       <>
-        <div className="users-container">
+        <div className="doctors-container">
           <div className="title text-center">
             <FormattedMessage id="admin.manage-doctor.title" />
           </div>
 
-          <div className="user-function">
+          <div className="doctor-function">
             <div className="btn-search">
               <i className="fa-solid fa-magnifying-glass"></i>
               <input
@@ -240,43 +228,44 @@ class TableManageDoctor extends Component {
               />
             </div>
 
-            <div className="filter-item">
-              <label className="filter-label">Chức danh</label>
-              <Select
-                value={selectedPosition}
-                onChange={this.handleChangePosition}
-                options={listPosition}
-                placeholder="Tất cả chức danh"
-                classNamePrefix="schedule-select"
-                isClearable
-              />
-            </div>
+            <div className="doctor-filter-group">
+              <div className="filter-item">
+                <label className="filter-label">Chức danh</label>
+                <Select
+                  value={selectedPosition}
+                  onChange={this.handleChangePosition}
+                  options={listPosition}
+                  placeholder="Tất cả chức danh"
+                  classNamePrefix="schedule-select"
+                  isClearable
+                />
+              </div>
 
-            <button
-              className="btn-clear-filter"
-              onClick={this.handleClearFilter}
-            >
-              Bỏ lọc
-            </button>
+              <button
+                className="btn-clear-filter"
+                onClick={this.handleClearFilter}
+              >
+                Bỏ lọc
+              </button>
+            </div>
           </div>
 
-          <div className="users-table mt-3 mx-1">
+          <div className="doctors-table mt-3 mx-1">
             <table>
               <tbody>
                 <tr>
-
                   <th>STT</th>
                   <th>Email</th>
 
-                  <th onClick={() => this.handleSort('firstName')}>
-                    Họ tên{this.renderSortLabel('firstName')}
+                  <th onClick={() => this.handleSort("firstName")}>
+                    Họ tên{this.renderSortLabel("firstName")}
                   </th>
 
                   <th>Chức danh</th>
                   <th>Ảnh đại diện</th>
 
-                  <th onClick={() => this.handleSort('createdAt')}>
-                    Created at{this.renderSortLabel('createdAt')}
+                  <th onClick={() => this.handleSort("createdAt")}>
+                    Created at{this.renderSortLabel("createdAt")}
                   </th>
 
                   <th>Actions</th>
@@ -297,24 +286,24 @@ class TableManageDoctor extends Component {
                           ? language === LANGUAGES.VI
                             ? item.positionData.valueVi
                             : item.positionData.valueEn
-                          : ''}
+                          : ""}
                       </td>
-                        <td className="doctor-avatar-cell">
-                          {item.image ? (
-                            <img
-                              className="doctor-avatar"
-                              src={item.image}
-                              alt="avatar"
-                            />
-                          ) : (
-                            <span>Không có</span>
-                          )}
-                        </td>
+                      <td className="doctor-avatar-cell">
+                        {item.image ? (
+                          <img
+                            className="doctor-avatar"
+                            src={item.image}
+                            alt="avatar"
+                          />
+                        ) : (
+                          <span>Không có</span>
+                        )}
+                      </td>
 
                       <td>
                         {item.createdAt
                           ? new Date(item.createdAt).toLocaleString()
-                          : ''}
+                          : ""}
                       </td>
 
                       <td>
@@ -329,7 +318,7 @@ class TableManageDoctor extends Component {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" style={{ textAlign: 'center' }}>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
                       No doctors found
                     </td>
                   </tr>
@@ -341,7 +330,7 @@ class TableManageDoctor extends Component {
           <div className="pagination mt-3 d-flex justify-content-center align-items-center">
             <button
               className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('prev')}
+              onClick={() => this.handleChangePage("prev")}
               disabled={page <= 1}
             >
               Prev
@@ -353,7 +342,7 @@ class TableManageDoctor extends Component {
 
             <button
               className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('next')}
+              onClick={() => this.handleChangePage("next")}
               disabled={page >= totalPages}
             >
               Next
@@ -384,9 +373,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAllDoctorRedux: (page, limit, sortBy, sortOrder, keyword) =>
-      dispatch(
-        actions.fetchAllDoctor(page, limit, sortBy, sortOrder, keyword)
-      ),
+      dispatch(actions.fetchAllDoctor(page, limit, sortBy, sortOrder, keyword)),
   };
 };
 

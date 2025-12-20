@@ -317,8 +317,8 @@ class TableManageSchedule extends Component {
         <div className="title text-center">QUẢN LÍ LỊCH KHÁM</div>
 
         <div className="schedule-function">
-          <div className="filter-schedule">
-            <div className="filter-item">
+
+          <div className="filter-item">
               <label className="filter-label">BÁC SĨ</label>
               <Select
                 value={selectedDoctor}
@@ -330,6 +330,8 @@ class TableManageSchedule extends Component {
                 isClearable
               />
             </div>
+          <div className="filter-schedule">
+            
 
             <div className="filter-item">
               <label className="filter-label">THỜI GIAN KHÁM</label>

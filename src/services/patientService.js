@@ -35,6 +35,10 @@ const handleGetStatisticalBooking = (params) =>{
     return axios.get('/api/booking/statistical', {params})
 }
 
+const handleGetStatisticalBookingByDate = (params) => {
+  return axios.get("/api/patients/patient-by-date", { params });
+};
+
 
 
 export { 
@@ -44,5 +48,5 @@ export {
     getAllPatientsService,
     handleGetStatisticalBooking,
     handleGetPatientByClinic,
-    
+    handleGetStatisticalBookingByDate,
 }

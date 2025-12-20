@@ -224,7 +224,7 @@ class ManageSchedule extends Component {
             </div>
 
             <div className="manage-schedule-form container">
-              <div className="row">
+              <div className="row ">
                 <div className="col-6 form-group">
                   <label className="manage-schedule-label">
                     <FormattedMessage id="manage-schedule.choose-doctor" />

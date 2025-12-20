@@ -1,26 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { FormattedMessage } from 'react-intl';
-import './ManagePatient.scss';
-import DatePicker from '../../../components/Input/DatePicker';
-import {
-  getAllCodeService,
-} from '../../../services/userService';
+import { FormattedMessage } from "react-intl";
+import "./ManagePatient.scss";
+import DatePicker from "../../../components/Input/DatePicker";
+import { getAllCodeService } from "../../../services/userService";
 
-import moment from 'moment';
-import { LANGUAGES } from '../../../utils';
-import RemedyModal from './RemedyModal';
-import { toast } from 'react-toastify';
-import LoadingOverlay from 'react-loading-overlay';
-import Select from 'react-select';
-import { getAllPatientForDoctorService, postSendRemedy } from '../../../services/doctorService';
-import PatientModal from './PatientModal';
+import moment from "moment";
+import { LANGUAGES } from "../../../utils";
+import RemedyModal from "./RemedyModal";
+import { toast } from "react-toastify";
+import LoadingOverlay from "react-loading-overlay";
+import Select from "react-select";
+import {
+  getAllPatientForDoctorService,
+  postSendRemedy,
+} from "../../../services/doctorService";
+import PatientModal from "./PatientModal";
 
 class ManagePatient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDate: moment(new Date()).startOf('day').valueOf(),
+      currentDate: moment(new Date()).startOf("day").valueOf(),
       dataPatient: [],
       isOpenRemedyModal: false,
       isOpenPatientModal: false,
@@ -32,7 +33,7 @@ class ManagePatient extends Component {
       selectedTime: null,
       listStatus: [],
       selectedStatus: null,
-      keyword: '',
+      keyword: "",
     };
   }
 
@@ -51,8 +52,8 @@ class ManagePatient extends Component {
   fetchFilterOptions = async () => {
     try {
       const [resTime, resStatus] = await Promise.all([
-        getAllCodeService('TIME'),
-        getAllCodeService('STATUS'),
+        getAllCodeService("TIME"),
+        getAllCodeService("STATUS"),
       ]);
 
       const listTime =
@@ -70,7 +71,7 @@ class ManagePatient extends Component {
         listStatus,
       });
     } catch (error) {
-      console.log('fetchFilterOptions error:', error);
+      console.log("fetchFilterOptions error:", error);
     }
   };
 
@@ -92,11 +93,11 @@ class ManagePatient extends Component {
     let res = await getAllPatientForDoctorService({
       doctorId: user.id,
       date: formatedDate,
-      timeType: selectedTime ? selectedTime.value : '',
-      statusId: selectedStatus ? selectedStatus.value : '',
-      keyword: keyword || '',
+      timeType: selectedTime ? selectedTime.value : "",
+      statusId: selectedStatus ? selectedStatus.value : "",
+      keyword: keyword || "",
     });
-    console.log('check res all patient: ', res)
+    console.log("check res all patient: ", res);
 
     if (res && res.errCode === 0) {
       this.setState({
@@ -143,7 +144,6 @@ class ManagePatient extends Component {
     await this.getDataPatient();
   };
 
-
   handleBtnConfirm = (item) => {
     let data = {
       doctorId: item.doctorId,
@@ -177,16 +177,15 @@ class ManagePatient extends Component {
       {
         selectedTime: null,
         selectedStatus: null,
-        keyword: '',
-        currentDate: moment(new Date()).startOf('day').valueOf(),
+        keyword: "",
+        currentDate: moment(new Date()).startOf("day").valueOf(),
       },
       async () => {
         await this.getDataPatient(); // load lại danh sách
       }
     );
-  }
+  };
 
-  
   handleBtnViewDetail = (item) => {
     const data = {
       // thông tin booking cần nếu bạn muốn hiển thị thêm
@@ -197,18 +196,20 @@ class ManagePatient extends Component {
       timeType: item.timeType,
 
       // thông tin patient
-      email: item.patientData?.email || '',
-      firstName: item.patientData?.firstName || '',
-      lastName: item.patientData?.lastName || '',
-      fullName: `${item.patientData?.lastName || ''} ${item.patientData?.firstName || ''}`.trim(),
-      address: item.patientData?.address || '',
-      phoneNumber: item.patientData?.phoneNumber || '',
+      email: item.patientData?.email || "",
+      firstName: item.patientData?.firstName || "",
+      lastName: item.patientData?.lastName || "",
+      fullName: `${item.patientData?.lastName || ""} ${
+        item.patientData?.firstName || ""
+      }`.trim(),
+      address: item.patientData?.address || "",
+      phoneNumber: item.patientData?.phoneNumber || "",
 
       // các field mở rộng nếu API của bạn có trả về
-      birthday: item.patientData.patientInfoData?.birthday || '',
-      insuranceNumber: item.patientData.patientInfoData?.insuranceNumber || '',
-      note: item.patientData.patientInfoData?.note || '',
-      reason: item.patientData.patientInfoData?.reason || '',
+      birthday: item.patientData.patientInfoData?.birthday || "",
+      insuranceNumber: item.patientData.patientInfoData?.insuranceNumber || "",
+      note: item.patientData.patientInfoData?.note || "",
+      reason: item.patientData.patientInfoData?.reason || "",
 
       // display text
       timeString:
@@ -253,14 +254,14 @@ class ManagePatient extends Component {
       this.setState({
         isShowLoading: false,
       });
-      toast.success('Gửi hóa đơn thành công');
+      toast.success("Gửi hóa đơn thành công");
       await this.getDataPatient();
       this.closeRemedyModal();
     } else {
       this.setState({
         isShowLoading: false,
       });
-      toast.error('Gửi hóa đơn thất bại');
+      toast.error("Gửi hóa đơn thất bại");
     }
   };
 
@@ -291,17 +292,16 @@ class ManagePatient extends Component {
             </div>
 
             <div className="manage-patient-body row">
-              <div className="col-4 mb-3 form-group">
-                <label>Chọn ngày khám</label>
-                <DatePicker
-                  onChange={this.handleOnChangeDatePicker}
-                  className="form-control"
-                  value={this.state.currentDate}
-                />
-              </div>
-
               {/* thanh filter mới */}
               <div className="col-12 filter-bar">
+                <div className=" filter-item">
+                  <label className="filter-label">Chọn ngày khám</label>
+                  <DatePicker
+                    onChange={this.handleOnChangeDatePicker}
+                    className="form-control"
+                    value={this.state.currentDate}
+                  />
+                </div>
                 <div className="filter-item">
                   <label className="filter-label">Thời gian khám</label>
                   <Select
@@ -335,21 +335,20 @@ class ManagePatient extends Component {
                     value={keyword}
                     onChange={this.handleChangeKeyword}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') this.handleSearchByKeyword();
+                      if (e.key === "Enter") this.handleSearchByKeyword();
                     }}
                   />
                 </div>
                 <div className="filter-item">
-                    <label className="filter-label">&nbsp;</label>
-                    <button
-                        type="button"
-                        className="btn-reset-filters"
-                        onClick={this.handleResetFilters}
-                    >
-                        Xóa bộ lọc
-                    </button>
+                  <label className="filter-label">&nbsp;</label>
+                  <button
+                    type="button"
+                    className="btn-reset-filters"
+                    onClick={this.handleResetFilters}
+                  >
+                    Xóa bộ lọc
+                  </button>
                 </div>
-
               </div>
 
               <div className="col-12 table-manage-patient">
@@ -385,11 +384,13 @@ class ManagePatient extends Component {
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{time || ''}</td>
-                            <td>{patient.firstName || ''} {patient.lastName || ''}</td>
-                            <td>{gender || ''}</td>
-                            <td>{patient.address || ''}</td>
-                            <td>{status || ''}</td>
+                            <td>{time || ""}</td>
+                            <td>
+                              {patient.firstName || ""} {patient.lastName || ""}
+                            </td>
+                            <td>{gender || ""}</td>
+                            <td>{patient.address || ""}</td>
+                            <td>{status || ""}</td>
                             <td>
                               <button
                                 className="mp-btn-confirm"
@@ -411,7 +412,7 @@ class ManagePatient extends Component {
                       })
                     ) : (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center' }}>
+                        <td colSpan="7" style={{ textAlign: "center" }}>
                           no data
                         </td>
                       </tr>

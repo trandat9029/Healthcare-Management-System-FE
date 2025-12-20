@@ -1,0 +1,282 @@
+/* src/containers/System/Statistical/StatisticalClinic.scss */
+
+.stat-clinic-dashboard {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background: white;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #bbf7d0 #ecfdf5;
+}
+
+.stat-clinic-dashboard::-webkit-scrollbar {
+  width: 8px;
+}
+.stat-clinic-dashboard::-webkit-scrollbar-track {
+  background: #ecfdf5;
+  border-radius: 10px;
+}
+.stat-clinic-dashboard::-webkit-scrollbar-thumb {
+  background: #bbf7d0;
+  border-radius: 10px;
+}
+
+/* Header giống Dashboard */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #022c22;
+}
+
+.dashboard-subtitle {
+  font-size: 13px;
+  color: #4b5563;
+  margin-top: 2px;
+}
+
+.dashboard-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: #374151;
+}
+
+.filter-label {
+  margin-bottom: 4px;
+}
+
+.bh-date-input {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  outline: none;
+}
+
+.bh-date-input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+}
+
+.btn-dashboard-tag {
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid #bbf7d0;
+  background: #ecfdf5;
+  font-size: 13px;
+  font-weight: 600;
+  color: #047857;
+  cursor: pointer;
+}
+
+/* Error */
+.stat-clinic-error {
+  margin: 10px 0 14px 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+/* Metrics giống Dashboard */
+.dashboard-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+/* StatisticalClinic chỉ có 3 card */
+.dashboard-metrics-row.metrics-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.metric-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.metric-icon.clinics {
+  background: #f97316;
+}
+
+.metric-icon.finished {
+  background: #22c55e;
+}
+
+.metric-icon.cancelled {
+  background: #fb923c;
+}
+
+.metric-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #022c22;
+}
+
+.metric-desc {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Section giống Dashboard */
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-section {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #d1fae5;
+  padding: 22px 24px 26px;
+}
+
+.dashboard-section.wide {
+  padding: 26px 28px 32px;
+}
+
+.dashboard-section.wide:hover {
+  border-color: #22c55e;
+  background-color: #f8fefb;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.section-header h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #064e3b;
+  letter-spacing: 0.01em;
+}
+
+.section-header p {
+  margin-top: 4px;
+  font-size: 15px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.section-body {
+  font-size: 13px;
+}
+
+.chart-body-lg {
+  height: 440px;
+}
+
+/* Loading + No data */
+.loading,
+.no-data {
+  font-size: 13px;
+  color: #64748b;
+  padding: 14px 6px;
+}
+
+.no-data {
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* Tooltip giống Dashboard */
+.bh-tooltip {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #0f172a;
+  min-width: 160px;
+}
+
+.bh-tooltip-title {
+  font-weight: 600;
+  color: #047857;
+  margin-bottom: 6px;
+}
+
+/* Legend spacing */
+.recharts-legend-wrapper {
+  margin-top: 12px !important;
+}
+
+.recharts-legend-item {
+  padding: 0 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard-metrics-row.metrics-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-header-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .dashboard-metrics-row.metrics-3 {
+    grid-template-columns: 1fr;
+  }
+}

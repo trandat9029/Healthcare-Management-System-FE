@@ -305,7 +305,7 @@ class TableDoctorSchedule extends Component {
                   onClick={this.handleClearFilter}
                   disabled={!selectedTime && !selectedDate}
                 >
-                  Bỏ lọc
+                  Xóa bộ lọc
                 </button>
               </div>
           </div>
