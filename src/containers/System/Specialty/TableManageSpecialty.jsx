@@ -184,10 +184,7 @@ class TableManageSpecialty extends Component {
       <>
         <div className="specialtys-container">
           <div className="title text-center">
-            <FormattedMessage
-              id="admin.manage-specialty.title"
-              defaultMessage="Manage specialties"
-            />
+            <FormattedMessage id="admin.manage-specialty.specialty-title" />
           </div>
 
           <div className="specialty-function">
@@ -207,7 +204,7 @@ class TableManageSpecialty extends Component {
                 className="btn-create-specialty"
                 onClick={this.openCreateSpecialtyModal}
               >
-                Thêm chuyên khoa
+                <FormattedMessage id="admin.manage-specialty.specialty-btn-create" />
               </button>
             </div>
           </div>
@@ -218,11 +215,11 @@ class TableManageSpecialty extends Component {
                 <tr>
                   <th>STT</th>
                   <th onClick={() => this.handleSort('name')}>
-                    Tên chuyên khoa{this.renderSortLabel('name')}
+                    <FormattedMessage id="admin.manage-specialty.specialty.name" />{this.renderSortLabel('name')}
                   </th>
-                  <th>Ngày tạo</th>
-                  <th>Hình ảnh</th>
-                  <th>Actions</th>
+                  <th><FormattedMessage id="admin.manage-specialty.specialty.createAt" /></th>
+                  <th><FormattedMessage id="admin.manage-specialty.specialty.thumbnail" /></th>
+                  <th><FormattedMessage id="admin.manage-specialty.specialty.action" /></th>
                 </tr>
 
                 {arrSpecialties && arrSpecialties.length > 0 ? (
@@ -277,7 +274,7 @@ class TableManageSpecialty extends Component {
                 ) : (
                   <tr>
                     <td colSpan="5" style={{ textAlign: 'center' }}>
-                      No specialties found
+                      <FormattedMessage id="admin.manage-specialty.specialty-no-found" />
                     </td>
                   </tr>
                 )}
@@ -291,18 +288,18 @@ class TableManageSpecialty extends Component {
               onClick={() => this.handleChangePage('prev')}
               disabled={page <= 1}
             >
-              Prev
+              <FormattedMessage id="admin.prev" />
             </button>
             <span>
-              Page {page} of {totalPages}. Total {totalSpecialties || 0}{' '}
-              specialties
+              <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" /> {totalPages}. <FormattedMessage id="admin.total" /> {totalSpecialties || 0}{' '}
+              <FormattedMessage id="admin.manage-specialty.specialties" />
             </span>
             <button
               className="btn btn-light mx-2"
               onClick={() => this.handleChangePage('next')}
               disabled={page >= totalPages}
             >
-              Next
+              <FormattedMessage id="admin.next" />
             </button>
           </div>
         </div>

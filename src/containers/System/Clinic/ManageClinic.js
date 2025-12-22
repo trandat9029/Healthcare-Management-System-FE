@@ -7,6 +7,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import CommonUtils from '../../../utils/CommonUtils';
 import { createNewClinicService } from '../../../services/clinicService';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 const mdParser = new MarkdownIt();
 
@@ -93,7 +94,7 @@ class ManageClinic extends Component {
         <div
           className="clinic-modal-container">
           <div className="clinic-modal-header">
-            <div className="clinic-modal-title">Quản lý phòng khám</div>
+            <div className="clinic-modal-title"><FormattedMessage id="admin.manage-clinic.clinic-create.title"/></div>
             <button className="clinic-modal-close" onClick={onClose}>
               ×
             </button>
@@ -102,7 +103,7 @@ class ManageClinic extends Component {
           <div className="clinic-modal-body">
             <div className="add-new-clinic row">
               <div className="col-6 form-group mb-3">
-                <label className="mb-2">Tên phòng khám</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-clinic.clinic-create.name"/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -114,7 +115,7 @@ class ManageClinic extends Component {
               </div>
 
               <div className="col-6 form-group mb-3">
-                <label className="mb-2">Địa chỉ phòng khám</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-clinic.clinic-create.address"/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -126,7 +127,7 @@ class ManageClinic extends Component {
               </div>
 
               <div className="img-upload col-6 form-group mb-3">
-                <label className="mb-2">Ảnh phòng khám</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-clinic.clinic-create.thumbnail"/></label>
                 <div className="custom-upload">
                     <input
                     id="clinicImage"
@@ -136,12 +137,12 @@ class ManageClinic extends Component {
                     />
                     <label htmlFor="clinicImage" className="custom-upload-btn">
                     <i className="fa-solid fa-upload"></i>
-                    <span>Chọn ảnh</span>
+                    <span><FormattedMessage id="admin.manage-clinic.clinic-create.choose-thumbnail"/></span>
                     </label>
                     <span className="custom-upload-text">
                     {this.state.imageBase64
-                        ? 'Đã chọn 1 ảnh'
-                        : 'Chưa có tệp nào được chọn'}
+                        ? <FormattedMessage id="admin.manage-clinic.clinic-create.selected"/>
+                        : <FormattedMessage id="admin.manage-clinic.clinic-create.not-selected"/>}
                     </span>
                 </div>
             </div>
@@ -163,7 +164,7 @@ class ManageClinic extends Component {
               className="btn-save-clinic"
               onClick={this.handleSaveNewClinic}
             >
-              Save
+              <FormattedMessage id="admin.manage-clinic.clinic-create.save"/>
             </button>
           </div>
         </div>

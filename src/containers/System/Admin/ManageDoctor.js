@@ -12,6 +12,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import Select from 'react-select';
 import { CRUD_ACTIONS, LANGUAGES } from '../../../utils';
 import { getDetailInfoDoctorService } from '../../../services/doctorService';
+import { FormattedMessage } from 'react-intl';
 
 const mdParser = new MarkdownIt();
 
@@ -301,7 +302,7 @@ class ManageDoctor extends Component {
         <div className="doctor-modal-container" onClick={(e) => e.stopPropagation()}>
           <div className="doctor-modal-header">
             <span>
-              {hasOldData ? 'Chỉnh sửa thông tin bác sĩ' : 'Tạo thêm thông tin bác sĩ'}
+              {hasOldData ?  <FormattedMessage id="admin.manage-doctor.doctors.title-edit" /> : <FormattedMessage id="admin.manage-doctor.doctors.title-create" />}
             </span>
             <button className="doctor-modal-close" onClick={this.props.onClose}>
               ×
@@ -312,13 +313,13 @@ class ManageDoctor extends Component {
             <div className="doctor-info-header">
               <div className="doctor-info-about">
                 <div className="mb-3 doctor-info-title">
-                  <strong>Bác sĩ. </strong>
+                  <strong><FormattedMessage id="admin.manage-doctor.doctor" /> </strong>
                   {currentDoctor.firstName} {currentDoctor.lastName}
                 </div>
 
                 <div className="more-info">
                   <div className="content-right">
-                    <label>Thông tin giới thiệu</label>
+                    <label><FormattedMessage id="admin.manage-doctor.doctors.more-info" /></label>
                     <textarea
                       className="form-control"
                       value={description}
@@ -340,7 +341,7 @@ class ManageDoctor extends Component {
 
             <div className="more-info-extra mb-3 row">
               <div className="col-4 form-group mb-3">
-                <label>Giá khám</label>
+                <label><FormattedMessage id="admin.manage-doctor.price" /></label>
                 <Select
                   value={selectedPrice}
                   onChange={this.handleChangeSelect}
@@ -351,7 +352,7 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group mb-3">
-                <label>Phương thức thanh toán</label>
+                <label><FormattedMessage id="admin.manage-doctor.payment" /></label>
                 <Select
                   value={selectedPayment}
                   onChange={this.handleChangeSelect}
@@ -362,7 +363,7 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group mb-3">
-                <label>Tỉnh thành</label>
+                <label><FormattedMessage id="admin.manage-doctor.province" /></label>
                 <Select
                   value={selectedProvince}
                   onChange={this.handleChangeSelect}
@@ -373,7 +374,7 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group mb-3">
-                <label>Ngày sinh</label>
+                <label><FormattedMessage id="admin.manage-doctor.birthday" /></label>
                 <input
                   className="form-control"
                   type="date"
@@ -383,7 +384,7 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group mb-3">
-                <label>Ghi chú</label>
+                <label><FormattedMessage id="admin.manage-doctor.note" /></label>
                 <input
                   className="form-control"
                   type="text"
@@ -395,7 +396,7 @@ class ManageDoctor extends Component {
 
             <div className="row mb-3">
               <div className="col-4 form-group">
-                <label>Chọn chuyên khoa</label>
+                <label><FormattedMessage id="admin.manage-doctor.specialty" /></label>
                 <Select
                   value={selectedSpecialty}
                   onChange={this.handleChangeSelect}
@@ -406,7 +407,7 @@ class ManageDoctor extends Component {
               </div>
 
               <div className="col-4 form-group">
-                <label>Chọn phòng khám</label>
+                <label><FormattedMessage id="admin.manage-doctor.select-clinic" /></label>
                 <Select
                   value={selectedClinic}
                   onChange={this.handleChangeSelect}
@@ -429,7 +430,7 @@ class ManageDoctor extends Component {
 
           <div className="doctor-modal-footer">
             <button className="btn btn-primary" onClick={this.handleSave}>
-              {hasOldData ? 'Lưu thông tin' : 'Tạo thông tin'}
+              {hasOldData ? <FormattedMessage id="admin.manage-doctor.save" /> : <FormattedMessage id="admin.manage-doctor.add" />}
             </button>
           </div>
         </div>

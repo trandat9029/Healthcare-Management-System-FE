@@ -117,6 +117,35 @@
         }
     }, 
     "admin":{
+        "dashboard":{
+            "dashboard-title": "System Overview",
+            "dashboard-subtitle": "Get a quick update on the BookingHealth system.",
+            "dashboard-date": "Date",
+            "dashboard-month": "Month",
+            "dashboard-tag": "BookingHealth Dashboard",
+            "dashboard-total-doctor": "Total Doctors",
+            "dashboard-total-doctor-desc": "Currently operating within the system",
+            "dashboard-total-patient": "Total patients",
+            "dashboard-total-patient-desc": "Patient account has been registered.",
+            "dashboard-total-specialty": "Total Specialty",
+            "dashboard-total-specialty-desc": "The specialty is currently being managed.",
+            "dashboard-total-clinic": "Total clinic",
+            "dashboard-total-clinic-desc": "Healthcare facilities within the system.",
+            "dashboard-total-handbook": "Total handbook",
+            "dashboard-total-handbook-desc": "Guidebook and news articles",
+            "dashboard-header-h3": "Appointment schedule status by month",
+            "dashboard-header-p": "The calendar number distribution is based on status within each month.",
+            "dashboard-header-button": "View by month",
+            "dashboard-lower-h3": "Patients by clinic",
+            "dashboard-lower-p": "Statistics of completed examination schedules (S3) by clinic for the month",
+            "dashboard-doctor-outStanding-header": "Top outstanding doctors",
+            "dashboard-doctor-booking": "Based on the number of visits during the month.",
+            "dashboard-count": "number of examinations",
+            "dashboard-booked": "Examination completed",
+            "dashboard-calendar": "calendar."
+
+
+        },
         "manage-doctor":{
             "title": "Create more doctor information",
             "select-doctor": "Choose doctor",
@@ -126,24 +155,343 @@
             "price": "Examination price",
             "payment": "Payment method",
             "province": "Province",
+            "birthday": "Birthday",
             "name-clinic": "Clinic's name",
             "address-clinic": "Clinic's address",
             "note": "Note",
             "specialty":"Choose specialty",
             "select-clinic": "Choose clinic",
-            "schedule-title": "Manage Schedule"
+            "schedule-title": "Manage Schedule",
+            "doctor-fullName": "FullName",
+            "doctor": "doctors",
+            "doctors" : {
+                "title-create": "Add more doctor information",
+                "title-edit": "Edit doctor information",
+                "more-info": "Introduction"
+                
+            }
         },
         "manage-user":{
-            "title": "Manage User"
+            "user-title": "Manage User",
+            "user-filter": "Filter by role",
+            "user-btn-create": "Add user",
+            "user-name": "Name",
+            "user-address": "Address",
+            "user-role": "Role",
+            "user-createAt": "createAt",
+            "user-action": "Actions",
+            "user-no-found": "No users found",
+            "user": "users",
+
+            "user-create":{
+                "title-create": "Add user",
+                "title-edit": "Edit user information",
+                "password": "Password",
+                "firstName": "FirstName",
+                "lastName": "LastName",
+                "phone": "Phone number",
+                "address": "Address",
+                "gender": "Gender",
+                "position": "Position",
+                "role": "Role",
+                "avatar": "Avatar",
+                "import-file": "Import file",
+                "update": "Update",
+                "save": "Save user"
+            }
+
+        },
+         "manage-schedule":{
+            "schedule-title": "View appointment schedule information",
+            "schedule-doctor": "Doctor",
+            "schedule-fullName": "FullName",
+            "schedule-time-type": "TimeType",
+            "schedule-date": "Examination date",
+            "schedule-createAt": "createAt",
+            "schedule-no-found": "No appointment available.",
+            "schedule": "schedules",
+            "schedule-filter": {
+                "doctor":"Doctor",
+                "time":"EXAMINATION TIME",
+                "date": "Date"
+            }
         },
         "manage-specialty":{
-            "title": "Manage specialties"
+            "specialty-title": "Manage specialties",
+            "specialty-btn-create": "Create specialty",
+            "specialty-no-found": " No specialties found",
+            "specialties": "specialties",
+            "specialty": {
+                "name": "Name specialty",
+                "createAt": "CreateAt",
+                "thumbnail": "Thumbnail",
+                "action": "Actions"
+            },
+            "specialty-create": {
+                "save": "Save",
+                "title": "Create specialty",
+                "name": "Name specialty",
+                "thumbnail": "Image specialty",
+                "choose-thumbnail": "Choose image",
+                "selected": "Image selected",
+                "not-selected": "No files have been selected yet."
+            },
+            "specialty-edit": {
+                "update": "Update",
+                "title": "Update specialty",
+                "name": "Name specialty",
+                "choose-thumbnail": "Choose image",
+                "thumbnail": "Image specialty",
+                "selected": "Image selected",
+                "not-selected": "No files have been selected yet."
+            }
         },
         "manage-clinic":{
-            "title": "Manage Clinics"
+            "clinic-title": "Manage Clinics",
+            "clinic-btn-create": "Create clinic",
+            "clinic-no-found": " No clinics found",
+            "clinics": "clinics",
+            "clinic": {
+                "name": "Name clinic",
+                "address": "Address",
+                "createAt": "CreateAt",
+                "thumbnail": "Thumbnail",
+                "action": "Actions"
+            },
+            "clinic-create": {
+                "save": "Save",
+                "title": "Create clinic",
+                "name": "Name clinic",
+                "address": "Address clinic",
+                "thumbnail": "Image clinic",
+                "choose-thumbnail": "Choose image",
+                "selected": "Image selected",
+                "not-selected": "No files have been selected yet."
+            },
+            "clinic-edit": {
+                "update": "Update",
+                "title": "Update clinic",
+                "name": "Name clinic",
+                "address": "Address clinic",
+                "choose-thumbnail": "Choose image",
+                "thumbnail": "Image clinic",
+                "selected": "Image selected",
+                "not-selected": "No files have been selected yet."
+            },
+            "clinic-statistical": {
+                "title": "Clinic Statistics",
+                "subtitle": "Charts and summary metrics displaying data for the selected date.",
+                "filter": "Data view date",
+                "refresh": "Refresh",
+                "total-clinic": "Total Clinics",
+                "total-clinic-desc": "Number of facilities in the system",
+                "total-booking-completed": "Total Completed Bookings",
+                "booking-date": "Date",
+                "total-booking-canceled": "Total Canceled Bookings",
+                "header-h3": "Details by Individual Clinic",
+                "header-p": "Status S3 (Examination Completed) and S4 (Canceled). Date",
+                "loading": "Loading chart data...",
+                "no-data": "No data available for this date",
+                "booking-completed": "Completed",
+                "booking-canceled": "Canceled",
+                "calendar": "calendar"
+            }
+
         },
-        "manage-patient":{
-            "title": "Manage Clinics"
-        }
+        "manage-handbook": {
+            "handbook-title": "Manage Handbook",
+            "handbook-search": "Search by title or author",
+            "handbook-filter-status": "Filter by status",
+            "handbook-filter-date": "Filter by publish date",
+            "handbook-no-found": "No handbooks found.",
+            "handbooks": "articles",
+            "handbook": {
+                "title": "Title",
+                "author": "Author",
+                "image": "Article Image",
+                "no-image": "No Article Image",
+                "date-publish": "Publish Date",
+                "status": "Status",
+                "action": "Action"
+            },
+            "handbook-create": {
+                "save": "Save",
+                "title": "Create Article",
+                "subtitle": "Create and manage guidance articles for patients",
+                "name": "Article Title",
+                "date-publish": "Publish Date",
+                "content": "Handbook Content",
+                "author": "Author Name",
+                "status": "Display Status",
+                "status-onl": "Visible",
+                "status-off": "Hidden",
+                "choose-thumbnail": "Choose Image",
+                "thumbnail": "Article Image",
+                "selected": "Image selected",
+                "not-selected": "No file selected"
+            },
+            "handbook-edit": {
+                "update": "Update",
+                "title": "Edit Article",
+                "subtitle": "Edit guidance articles for patients",
+                "name": "Article Title",
+                "date-publish": "Publish Date",
+                "content": "Handbook Content",
+                "author": "Author Name",
+                "status": "Display Status",
+                "status-onl": "Visible",
+                "status-off": "Hidden",
+                "choose-thumbnail": "Choose Image",
+                "thumbnail": "Article Image",
+                "selected": "Image selected",
+                "not-selected": "No file selected"
+            }
+        },
+        "manage-booking": {
+            "booking-title": "Manage Bookings",
+            "booking-no-found": "No bookings found.",
+            "filter-status": "Status",
+            "filter-time-type": "Examination Time",
+            "filter-date": "Date",
+            "bookings": "bookings",
+            "booking": {
+                "doctor": "Doctor",
+                "patient": "Patient",
+                "status": "Status",
+                "time-type": "Examination Time",
+                "date": "Examination Date",
+                "createdAt": "Created Date"
+            }
+        },
+        "doctor": {
+            "manage-schedule": {
+                "schedule-title": "Manage Examination Schedule",
+                "filter-date": "Date",
+                "filter-time-type": "Examination Time",
+                "schedule-btn-create": "Add Examination Schedule",
+                "schedule-no-found": "No examination schedules found",
+                "schedules": "schedules",
+                "schedule": {
+                    "doctor": "Doctor",
+                    "time-type": "Examination Time",
+                    "date": "Date",
+                    "createdAt": "Created Date"
+                },
+                "schedule-create": {
+                    "title": "Add Examination Schedule",
+                    "doctor": "Doctor",
+                    "choose-date": "Select Date",
+                    "save": "Save Information"
+                }
+            },
+            "manage-booking": {
+                "booking-title": "Patient Examination Management",
+                "filter-date": "Select Examination Date",
+                "filter-time-type": "Examination Time",
+                "filter-status": "Status",
+                "filter-name": "Search by Patient Name",
+                "booking-btn-create": "Add Examination Booking",
+                "booking-no-found": "No patients found",
+                "patients": "patients",
+                "patient": {
+                    "time": "Time",
+                    "name": "Full Name",
+                    "gender": "Gender",
+                    "address": "Address",
+                    "status": "Status",
+                    "action": "Action",
+                    "confirm": "Confirm",
+                    "view-detail": "View Details"
+                },
+                "remedy": {
+                    "title": "Send Examination Invoice to Patient",
+                    "email": "Patient Email",
+                    "file": "Select Invoice File",
+                    "send": "Send Invoice",
+                    "cancel": "Cancel"
+                },
+                "patient-detail": {
+                    "title": "Patient Information",
+                    "fullName": "Full Name",
+                    "phoneNumber": "Phone Number",
+                    "email": "Email Address",
+                    "gender": "Gender",
+                    "insuranceNumber": "Health Insurance Number",
+                    "address": "Contact Address",
+                    "reason": "Reason for Visit",
+                    "note": "Note",
+                    "timeType": "Examination Time",
+                    "status": "Status",
+                    "birthday": "Date of Birth",
+                    "close": "Close"
+                }
+            },
+            "manage-profile": {
+                "profile-loading": "Loading profile...",
+                "profile-title": "Examination Information",
+                "profile-doctor": "Doctor",
+                "profile-email": "Email",
+                "profile-birthday": "Date of Birth",
+                "profile-nodata": "No data updated yet",
+                "profile-province": "Province/City",
+                "profile-price": "Examination Fee",
+                "profile-payment": "Payment Method",
+                "profile-desc": "Short Description",
+                "profile-detail": "Detailed Introduction",
+                "profile-btn-update": "Edit Profile",
+                "profile-btn-password": "Change Password",
+                "profile-idea": "Suggestion",
+                "profile-p": "You should fully update your clinic information, provide a detailed description, and add a profile picture to help patients easily recognize and trust you more.",
+                
+                "profile-update": {
+                    "title-create": "Create Additional Doctor Information",
+                    "title-edit": "Edit Doctor Information",
+                    "title": "Basic Information",
+                    "firstName": "First Name",
+                    "lastName": "Last Name",
+                    "phoneNumber": "Phone Number",
+                    "address": "Address",
+                    "gender": "Gender",
+                    "position": "Position",
+                    "avatar": "Profile Picture",
+                    "no-avatar": "No photo yet",
+                    "avatar-select": "Select Image",
+                    "avatar-hint": "Recommended to use a square image, file size less than 2MB",
+                    "info": "Examination and Clinic Information",
+                    "info-desc": "Short Introduction Information",
+                    "price": "Examination Fee",
+                    "payment": "Payment Method",
+                    "province": "Province/City",
+                    "birthday": "Date of Birth",
+                    "note": "Note",
+                    "specialty": "Specialty",
+                    "clinic": "Clinic",
+                    "content": "Detailed Introduction Content",
+                    "save": "Create Information",
+                    "update": "Save Information"
+                },
+                "profile-password": {
+                    "title": "Change Password",
+                    "current-password": "Current Password",
+                    "new-password": "New Password",
+                    "confirm-password": "Confirm New Password",
+                    "saving": "Saving...",
+                    "save-password": "Save Password",
+                    "cancel": "Cancel"
+                }
+            }
+        },
+
+
+        "prev": "Prev", 
+        "next": "Next", 
+        "page": "Page", 
+        "of": "of", 
+        "total": "Total",
+        "filter-cancel": "Remove filter",
+        "nothing": "Không có",
+        "loading": "Loading..." 
+
+
     }
 }

@@ -16,6 +16,7 @@ import {
   updateProfileDoctorService,
 } from '../../../services/doctorService';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 const mdParser = new MarkdownIt();
 
@@ -57,8 +58,7 @@ class ProfileUpdate extends Component {
       selectedProvince: null,
       selectedClinic: null,
       selectedSpecialty: null,
-      nameClinic: '',
-      addressClinic: '',
+      dateOfBirth: '',
       note: '',
     };
   }
@@ -174,8 +174,7 @@ class ProfileUpdate extends Component {
         let provinceId = detail.doctorInfoData?.provinceId || '';
         let specialtyId = detail.doctorInfoData?.specialtyId || '';
         let clinicId = detail.doctorInfoData?.clinicId || '';
-        let nameClinic = detail.doctorInfoData?.nameClinic || '';
-        let addressClinic = detail.doctorInfoData?.addressClinic || '';
+        let dateOfBirth = detail.doctorInfoData?.dateOfBirth || '';
         let note = detail.doctorInfoData?.note || '';
 
         const {
@@ -214,8 +213,7 @@ class ProfileUpdate extends Component {
           selectedProvince: listProvince.find((i) => i.value === provinceId) || null,
           selectedSpecialty: listSpecialty.find((i) => Number(i.value) === Number(specialtyId)) || null,
           selectedClinic: listClinic.find((i) => Number(i.value) === Number(clinicId)) || null,
-          nameClinic,
-          addressClinic,
+          dateOfBirth,
           note,
         });
       }
@@ -293,8 +291,7 @@ class ProfileUpdate extends Component {
       selectedProvince: this.state.selectedProvince?.value || '',
       selectedSpecialty: this.state.selectedSpecialty?.value || '',
       selectedClinic: this.state.selectedClinic?.value || '',
-      nameClinic: this.state.nameClinic,
-      addressClinic: this.state.addressClinic,
+      dateOfBirth: this.state.dateOfBirth,
       note: this.state.note,
     };
 
@@ -337,8 +334,7 @@ class ProfileUpdate extends Component {
       selectedClinic,
 
       description,
-      nameClinic,
-      addressClinic,
+
       note,
       contentMarkdown,
       hasOldData,
@@ -356,7 +352,7 @@ class ProfileUpdate extends Component {
         <div className="profile-modal-container" onClick={(e) => e.stopPropagation()}>
           <div className="profile-modal-header">
             <span className="profile-modal-title">
-              {hasOldData ? 'Chỉnh sửa thông tin bác sĩ' : 'Tạo thêm thông tin bác sĩ'}
+              {hasOldData ? <FormattedMessage id="admin.doctor.manage-profile.profile-update.title-create" /> : <FormattedMessage id="admin.doctor.manage-profile.profile-update.title-edit" />}
             </span>
             <button className="profile-modal-close" onClick={this.props.onClose}>
               ×
@@ -365,17 +361,17 @@ class ProfileUpdate extends Component {
 
           <div className="profile-modal-body">
             <div className="profile-name-banner">
-              <strong>Bác sĩ</strong>
-              <span>{doctorName || 'Chưa có tên'}</span>
+              <strong><FormattedMessage id="admin.doctor.manage-profile.profile-doctor" /></strong>
+              <span>{doctorName || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}</span>
             </div>
 
             <div className="profile-section">
-              <div className="profile-section-title">Thông tin cơ bản</div>
+              <div className="profile-section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-update.title" /></div>
               <div className="profile-basic-grid">
                 <div className="profile-basic-left">
                   <div className="row mb-3">
                     <div className="col-3 form-group">
-                      <label>Họ</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.lastName" /></label>
                       <input
                         className="form-control"
                         type="text"
@@ -384,7 +380,7 @@ class ProfileUpdate extends Component {
                       />
                     </div>
                     <div className="col-3 form-group">
-                      <label>Tên</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.firstName" /></label>
                       <input
                         className="form-control"
                         type="text"
@@ -393,7 +389,7 @@ class ProfileUpdate extends Component {
                       />
                     </div>
                     <div className="col-3 form-group">
-                      <label>Số điện thoại</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.phoneNumber" /></label>
                       <input
                         className="form-control"
                         type="text"
@@ -402,7 +398,7 @@ class ProfileUpdate extends Component {
                       />
                     </div>
                     <div className="col-3 form-group">
-                      <label>Giới tính</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.gender" /></label>
                       <Select
                         value={selectedGender}
                         onChange={this.handleChangeSelect}
@@ -415,7 +411,7 @@ class ProfileUpdate extends Component {
 
                   <div className="row mb-3">
                     <div className="col-6 form-group">
-                      <label>Địa chỉ</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.address" /></label>
                       <input
                         className="form-control"
                         type="text"
@@ -424,7 +420,7 @@ class ProfileUpdate extends Component {
                       />
                     </div>
                     <div className="col-6 form-group">
-                      <label>Chức danh</label>
+                      <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.position" /></label>
                       <Select
                         value={selectedPosition}
                         onChange={this.handleChangeSelect}
@@ -437,27 +433,27 @@ class ProfileUpdate extends Component {
                 </div>
 
                 <div className="profile-basic-right">
-                  <div className="avatar-label">Ảnh đại diện</div>
+                  <div className="avatar-label"><FormattedMessage id="admin.doctor.manage-profile.profile-update.avatar" /></div>
                   <div className="image-preview-box">
-                    {image ? <img src={image} alt="avatar" /> : <div className="image-empty">Chưa có ảnh</div>}
+                    {image ? <img src={image} alt="avatar" /> : <div className="image-empty"><FormattedMessage id="admin.doctor.manage-profile.profile-update.no-avatar" /></div>}
                   </div>
 
                   <label className="upload-button">
                     <input type="file" accept="image/*" onChange={this.handleImageChange} />
                     <i className="fa-regular fa-image" />
-                    <span>Chọn ảnh</span>
+                    <span><FormattedMessage id="admin.doctor.manage-profile.profile-update.avatar-select" /></span>
                   </label>
 
-                  <div className="upload-hint">Nên dùng ảnh vuông, dung lượng nhỏ hơn 2MB</div>
+                  <div className="upload-hint"><FormattedMessage id="admin.doctor.manage-profile.profile-update.avatar-hint" /></div>
                 </div>
               </div>
             </div>
 
             <div className="profile-section">
-              <div className="profile-section-title">Thông tin khám bệnh và phòng khám</div>
+              <div className="profile-section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-update.info" /></div>
 
               <div className="more-info mb-3">
-                <label>Thông tin giới thiệu ngắn</label>
+                <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.info-desc" /></label>
                 <textarea
                   className="form-control"
                   value={description}
@@ -467,7 +463,7 @@ class ProfileUpdate extends Component {
 
               <div className="more-info-extra mb-3 row">
                 <div className="col-4 form-group mb-3">
-                  <label>Giá khám</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.price" /></label>
                   <Select
                     value={selectedPrice}
                     onChange={this.handleChangeSelect}
@@ -478,7 +474,7 @@ class ProfileUpdate extends Component {
                 </div>
 
                 <div className="col-4 form-group mb-3">
-                  <label>Phương thức thanh toán</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.payment" /></label>
                   <Select
                     value={selectedPayment}
                     onChange={this.handleChangeSelect}
@@ -489,7 +485,7 @@ class ProfileUpdate extends Component {
                 </div>
 
                 <div className="col-4 form-group mb-3">
-                  <label>Tỉnh thành</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.province" /></label>
                   <Select
                     value={selectedProvince}
                     onChange={this.handleChangeSelect}
@@ -500,27 +496,18 @@ class ProfileUpdate extends Component {
                 </div>
 
                 <div className="col-4 form-group mb-3">
-                  <label>Tên phòng khám</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.birthday" /></label>
                   <input
                     className="form-control"
-                    type="text"
-                    value={nameClinic}
-                    onChange={(e) => this.handleChangeText(e, 'nameClinic')}
+                    type="date"
+                    value={this.state.dateOfBirth}
+                    onChange={(e) => this.handleChangeText(e, 'dateOfBirth')}
                   />
                 </div>
 
-                <div className="col-4 form-group mb-3">
-                  <label>Địa chỉ phòng khám</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={addressClinic}
-                    onChange={(e) => this.handleChangeText(e, 'addressClinic')}
-                  />
-                </div>
 
                 <div className="col-4 form-group mb-3">
-                  <label>Ghi chú</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.note" /></label>
                   <input
                     className="form-control"
                     type="text"
@@ -532,7 +519,7 @@ class ProfileUpdate extends Component {
 
               <div className="row mb-3">
                 <div className="col-4 form-group">
-                  <label>Chuyên khoa</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.specialty" /></label>
                   <Select
                     value={selectedSpecialty}
                     onChange={this.handleChangeSelect}
@@ -543,7 +530,7 @@ class ProfileUpdate extends Component {
                 </div>
 
                 <div className="col-4 form-group">
-                  <label>Phòng khám</label>
+                  <label><FormattedMessage id="admin.doctor.manage-profile.profile-update.clinic" /></label>
                   <Select
                     value={selectedClinic}
                     onChange={this.handleChangeSelect}
@@ -556,7 +543,7 @@ class ProfileUpdate extends Component {
             </div>
 
             <div className="profile-section">
-              <div className="profile-section-title">Nội dung giới thiệu chi tiết</div>
+              <div className="profile-section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-update.content" /></div>
               <div className="manage-profile-editor">
                 <MdEditor
                   style={{ height: '360px' }}
@@ -570,7 +557,7 @@ class ProfileUpdate extends Component {
 
           <div className="profile-modal-footer">
             <button className="btn-save" onClick={this.handleSave}>
-              {hasOldData ? 'Lưu thông tin' : 'Tạo thông tin'}
+              {hasOldData ? <FormattedMessage id="admin.doctor.manage-profile.profile-update.update" /> : <FormattedMessage id="admin.doctor.manage-profile.profile-update.save" />}
             </button>
           </div>
         </div>

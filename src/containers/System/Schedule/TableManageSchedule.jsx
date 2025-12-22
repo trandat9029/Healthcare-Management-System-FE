@@ -314,12 +314,12 @@ class TableManageSchedule extends Component {
 
     return (
       <div className="schedules-container">
-        <div className="title text-center">QUẢN LÍ LỊCH KHÁM</div>
+        <div className="title text-center"><FormattedMessage id="admin.manage-schedule.schedule-title" /></div>
 
         <div className="schedule-function">
 
           <div className="filter-item">
-              <label className="filter-label">BÁC SĨ</label>
+              <label className="filter-label"><FormattedMessage id="admin.manage-schedule.schedule-filter.doctor" /></label>
               <Select
                 value={selectedDoctor}
                 onChange={this.handleChangeDoctor}
@@ -334,7 +334,7 @@ class TableManageSchedule extends Component {
             
 
             <div className="filter-item">
-              <label className="filter-label">THỜI GIAN KHÁM</label>
+              <label className="filter-label"><FormattedMessage id="admin.manage-schedule.schedule-filter.time" /></label>
               <Select
                 value={selectedTime}
                 onChange={this.handleChangeTime}
@@ -347,7 +347,7 @@ class TableManageSchedule extends Component {
             </div>
 
             <div className="filter-item">
-              <label className="filter-label">NGÀY</label>
+              <label className="filter-label"><FormattedMessage id="admin.manage-schedule.schedule-filter.date" /></label>
               <DatePicker
                 className="form-control"
                 onChange={this.handleOnchangeDatePicker}
@@ -360,29 +360,29 @@ class TableManageSchedule extends Component {
               className="btn-clear-filter"
               onClick={this.handleClearFilter}
             >
-              Bỏ lọc
+              <FormattedMessage id="admin.filter-cancel" />
             </button>
           </div>
         </div>
 
         <div className="schedules-table mt-3 mx-1">
-          {loading && <div className="loading-overlay">Loading...</div>}
+          {loading && <div className="loading-overlay"><FormattedMessage id="admin.loading" /></div>}
 
           <table>
             <tbody>
               <tr>
                 <th>STT</th>
                 <th onClick={() => this.handleSort('doctorId')}>
-                  DOCTOR{this.renderSortLabel('doctorId')}
+                  <FormattedMessage id="admin.manage-schedule.schedule-fullName" />{this.renderSortLabel('doctorId')}
                 </th>
                 <th onClick={() => this.handleSort('timeType')}>
-                  TIMETYPE{this.renderSortLabel('timeType')}
+                  <FormattedMessage id="admin.manage-schedule.schedule-time-type" />{this.renderSortLabel('timeType')}
                 </th>
                 <th onClick={() => this.handleSort('date')}>
-                  DATE{this.renderSortLabel('date')}
+                  <FormattedMessage id="admin.manage-schedule.schedule-date" />{this.renderSortLabel('date')}
                 </th>
                 <th onClick={() => this.handleSort('createdAt')}>
-                  CREATED AT{this.renderSortLabel('createdAt')}
+                  <FormattedMessage id="admin.manage-schedule.schedule-createAt" />{this.renderSortLabel('createdAt')}
                 </th>
               </tr>
 
@@ -411,7 +411,7 @@ class TableManageSchedule extends Component {
               ) : (
                 <tr>
                   <td colSpan="5" style={{ textAlign: 'center' }}>
-                    Không có lịch khám
+                    <FormattedMessage id="admin.manage-schedule.schedule-no-found" />
                   </td>
                 </tr>
               )}
@@ -425,17 +425,17 @@ class TableManageSchedule extends Component {
             onClick={() => this.handleChangePage('prev')}
             disabled={page <= 1}
           >
-            Prev
+            <FormattedMessage id="admin.prev" />
           </button>
           <span>
-            Page {page} of {totalPages}. Total {totalSchedules || 0} schedules
+            <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" />  {totalPages}. <FormattedMessage id="admin.total" /> {totalSchedules || 0} <FormattedMessage id="admin.manage-schedule.schedule" />
           </span>
           <button
             className="btn btn-light mx-2"
             onClick={() => this.handleChangePage('next')}
             disabled={page >= totalPages}
           >
-            Next
+            <FormattedMessage id="admin.next" />
           </button>
         </div>
       </div>

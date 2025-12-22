@@ -116,6 +116,38 @@
         }
     },
     "admin":{
+        "dashboard":{
+            "dashboard-title": "Tổng quan hệ thống",
+            "dashboard-subtitle": "Theo dõi nhanh tình hình hệ thống BookingHealth.",
+            "dashboard-date": "Ngày",
+            "dashboard-month": "Tháng",
+            "dashboard-tag": "Bảng điều khiển BookingHealth",
+            "dashboard-total-doctor": "Tổng số bác sĩ",
+            "dashboard-total-doctor-desc": "Đang hoạt động trong hệ thống",
+            "dashboard-total-patient": "Tổng bệnh nhân ",
+            "dashboard-total-patient-desc": "Tài khoản bệnh nhân đã đăng ký ",
+            "dashboard-total-specialty": "Tổng chuyên khoa",
+            "dashboard-total-specialty-desc": "Chuyên khoa đang được quản lý",
+            "dashboard-total-clinic": "Tổng phòng khám",
+            "dashboard-total-clinic-desc": "Cơ sở khám chữa bệnh trong hệ thống.",
+            "dashboard-total-handbook": "Tổng bài viết",
+            "dashboard-total-handbook-desc": "Bài viết cẩm nang và tin tức ",
+            "dashboard-header-h3": "Trạng thái lịch khám theo tháng",
+            "dashboard-header-p": "Phân bố số lịch theo trạng thái trong từng tháng.",
+            "dashboard-header-button": "Xem theo tháng",
+            "dashboard-lower-h3": "Bệnh nhân theo phòng khám",
+            "dashboard-lower-p": "Thống kê lịch đã khám xong (S3) theo phòng khám trong tháng",
+            "dashboard-doctor-outStanding-header": "Top bác sĩ nổi bật ",
+            "dashboard-doctor-booking": "Dựa trên số lượt khám trong tháng.",
+            "dashboard-count": "lượt khám",
+            "dashboard-booked": "Đã khám xong",
+            "dashboard-calendar": "lịch."
+
+
+
+
+
+        },
         "manage-doctor": {
             "title": "Tạo thêm thông tin bác sĩ",
             "select-doctor": "Chọn bác sĩ",
@@ -125,28 +157,343 @@
             "price": "Giá khám ",
             "payment": "Phương thức thanh toán",
             "province": "Tỉnh thành phố",
+            "birthday": "Ngày sinh",
             "name-clinic": "Tên phòng khám",
             "address-clinic": "Địa chỉ phòng khám",
             "note": "Ghi chú",
             "specialty":"Chọn Chuyên khoa",
             "select-clinic": "Chọn phòng khám",
-            "schedule-title": "Quản lí lịch khám"
+            "schedule-title": "Quản lí lịch khám",
+            "doctor-fullName": "Họ tên",
+            "doctor": "bác sĩ",
+            "doctors" : {
+                "title-create": "Tạo thêm thông tin bác sĩ",
+                "title-edit": "Chỉnh sửa thông tin bác sĩ",
+                "more-info": "Thông tin giới thiệu"
+
+            }
 
         },
         "manage-user":{
-            "title": "Quản lý người dùng"
+            "user-title": "Quản lý người dùng",
+            "user-filter": "Lọc theo vai trò",
+            "user-btn-create": "Thêm người dùng",
+            "user-name": "Tên",
+            "user-address": "Địa chỉ",
+            "user-role": "Vai trò",
+            "user-createAt": "Ngày tạo",
+            "user-action": "Hành động",
+            "user-not-found": "Không tìm thấy người dùng nào",
+            "user": "người",
+
+            "user-create":{
+                "title-create": "Thêm người dùng",
+                "title-edit": "Chỉnh sủa thông tin người dùng",
+                "password": "Mật khẩu",
+                "firstName": "Tên",
+                "lastName": "Họ",
+                "phone": "Số điện thoại",
+                "address": "Địa chỉ",
+                "gender": "Giới tính",
+                "position": "Chức danh",
+                "role": "Vai trò",
+                "avatar": "Ảnh đại diện",
+                "import-file": "Tải ảnh",
+                "update": "Cập nhật",
+                "save": "Lưu người dùng"
+
+            }
+        },
+        "manage-schedule":{
+            "schedule-title": "Xem thông tin lịch khám",
+            "schedule-doctor": "Bác sĩ",
+            "schedule-fullName": "Họ tên",
+            "schedule-time-type": "Khoảng thời gian",
+            "schedule-date": "Ngày khám",
+            "schedule-createAt": "Ngày tạo",
+            "schedule-no-found": "Không có lịch khám",
+            "schedule": "lịch trình",
+            "schedule-filter": {
+                "doctor":"Bác sĩ",
+                "time":"THỜI GIAN KHÁM",
+                "date": "NGÀY"
+            }
         },
         "manage-specialty":{
-            "title": "Quản lí chuyên khoa"
+            "specialty-title": "Quản lí chuyên khoa",
+            "specialty-btn-create": "Thêm chuyên khoa",
+            "specialty-no-found": "Không tìm thấy chuyên ngành nào.",
+            "specialties": "chuyên khoa",
+            "specialty": {
+                "name": "Tên chuyên khoa",
+                "createAt": "Ngày tạo",
+                "thumbnail": "Hình ảnh",
+                "action": "Hành động"
+            },
+            "specialty-create": {
+                "save": "Lưu",
+                "title": "Thêm mới chuyên khoa",
+                "name": "Tên chuyên khoa",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh chuyên khoa",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            },
+            "specialty-edit": {
+                "update": "Cập nhật",
+                "title": "Chỉnh sửa chuyên khoa",
+                "name": "Tên chuyên khoa",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh chuyên khoa",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            }
         },
         "manage-clinic":{
-            "title": "Quản lí phòng khám"
+            "clinic-title": "Quản lí phòng khám",
+            "clinic-btn-create": "Thêm phòng khám",
+            "clinic-no-found": "Không tìm thấy phòng khám nào.",
+            "clinics": "phòng khám",
+            "clinic": {
+                "name": "Tên phòng khám",
+                "address": "Địa chỉ",
+                "createAt": "Ngày tạo",
+                "thumbnail": "Hình ảnh",
+                "action": "Hành động"
+            },
+            "clinic-create": {
+                "save": "Lưu",
+                "title": "Thêm mới phòng khám",
+                "name": "Tên phòng khám",
+                "address": "Địa chỉ phòng khám",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh phòng khám",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            },
+            "clinic-edit": {
+                "update": "Cập nhật",
+                "title": "Chỉnh sửa phòng khám",
+                "name": "Tên phòng khám",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh phòng khám",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            },
+            "clinic-statistical": {
+                "title": "Thống kê phòng khám",
+                "subtitle": "Biểu đồ và các chỉ số tổng hiển thị dữ liệu trong ngày đã chọn.",
+                "filter": "Ngày xem dữ liệu",
+                "refresh": "Làm mới",
+                "total-clinic": "Tổng phòng khám",
+                "total-clinic-desc": "Số cơ sở trong hệ thống",
+                "total-booking-completed": "Tổng lịch đặt",
+                "booking-date": "Ngày",
+                "total-booking-canceled": "Tổng lịch hủy",
+                "header-h3": "Chi tiết theo từng phòng khám",
+                "header-p": "Trạng thái S3 (Đã khám xong) và S4 (Hủy). Ngày",
+                "loading": "Đang tải dữ liệu biểu đồ...",
+                "no-data": "Không có dữ liệu cho ngày này",
+                "booking-completed": "Đã khám xong",
+                "booking-canceled": "Hủy",
+                "calendar": "lịch"
+            }
+            
         },
         "manage-handbook":{
-            "title": "Quản lí cẩm nang"
+            "handbook-title": "Quản lí cẩm nang",
+            "handbook-search": "Tìm kiếm theo tiêu đề hoặc tác giả",
+            "handbook-filter-status": "Lọc theo trạng thái",
+            "handbook-filter-date": "Lọc theo ngày đăng",
+            "handbook-no-found": "Không tìm thấy bài viết nào.",
+            "handbooks": "bài viết",
+            "handbook": {
+                "title": "Tiêu đề",
+                "author": "Tác giả",
+                "image": "Ảnh bài viết",
+                "no-image": "Không có ảnh bài viết",
+                "date-publish": "Ngày đăng",
+                "status": "Trạng thái",
+                "action": "Hành động"
+            },
+            "handbook-create": {
+                "save": "Lưu",
+                "title": "Chỉnh sửa bài viết",
+                "subtitle": "Tạo và quản lý các bài viết hướng dẫn cho bệnh nhân",
+                "name": "Tên bài viết",
+                "date-publish": "Ngày đăng tải",
+                "content": "Nội dung cẩm nang",
+                "author": "Tên tác giả",
+                "status": "Trạng thái hiển thị",
+                "status-onl": "Đang hiển thị",
+                "status-off": "Đang ẩn",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh bài viết",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            },
+            "handbook-edit": {
+                "update": "Cập nhật",
+                "title": "Chỉnh sửa bài viết",
+                "subtitle": "Chỉnh sửa các bài viết hướng dẫn cho bệnh nhân",
+                "name": "Tên bài viết",
+                "date-publish": "Ngày đăng tải",
+                "content": "Nội dung cẩm nang",
+                "author": "Tên tác giả",
+                "status": "Trạng thái hiển thị",
+                "status-onl": "Đang hiển thị",
+                "status-off": "Đang ẩn",
+                "choose-thumbnail": "Chọn ảnh",
+                "thumbnail": "Ảnh bài viết",
+                "selected": "Đã chọn ảnh",
+                "not-selected": "Chưa có tệp nào được chọn"
+            }
         },
         "manage-booking":{
-            "title": "Quản lí lịch đặt"
-        }
+            "booking-title": "Quản lí lịch đặt",
+            "booking-no-found": "Không tìm thấy lịch đặt nào.",
+            "filter-status": "Trạng thái",
+            "filter-time-type": "Thời gian khám",
+            "filter-date": "Ngày",
+
+            "bookings": "lịch đặt",
+            "booking": {
+                "doctor": "Bác sĩ",
+                "patient": "Bệnh nhân",
+                "status": "Trạng thái",
+                "time-type": "Thời gian khám",
+                "date": "Ngày khám",
+                "createdAt": "Ngày tạo"
+            }
+        },
+
+        "doctor":{
+            "manage-schedule": {
+                "schedule-title":"Quản lí lịch khám",
+                "filter-date": "Ngày",
+                "filter-time-type":"Thời gian khám",
+                "schedule-btn-create": "Thêm lịch khám",
+                "schedule-no-found": "Không có lịch khám",
+                "schedules": "lịch trình",
+                "schedule": {
+                    "doctor":"Bác sĩ",
+                    "time-type":"Thời gian khám",
+                    "date":"Ngày",
+                    "createdAt":"Ngày tạo"
+                },
+                "schedule-create": {
+                    "title": "Thêm lịch khám",
+                    "doctor": "Bác sĩ",
+                    "choose-date": "Chọn ngày",
+                    "save": "Lưu thông tin"
+                }
+            },
+            "manage-booking": {
+                "booking-title":"Quản lý bệnh nhân khám bệnh",
+                "filter-date": "Chọn ngày khám",
+                "filter-time-type":"Thời gian khám",
+                "filter-status":"Trạng thái",
+                "filter-name":"Tìm theo tên bệnh nhân",
+                "booking-btn-create": "Thêm lịch khám",
+                "booking-no-found": "Không có bệnh nhân nào ",
+                "patients": "bệnh nhân",
+                "patient": {
+                    "time":"Thời gian",
+                    "name":"Họ và tên",
+                    "gender":"Giới tính",
+                    "address":"Địa chỉ",
+                    "status":"Trạng thái",
+                    "action":"Hành động",
+                    "confirm":"Xác nhận",
+                    "view-detail":"Xem chi tiết"
+                },
+                "remedy": {
+                    "title":" Gửi hóa đơn khám bệnh cho bệnh nhân",
+                    "email": "Email bệnh nhân",
+                    "file": "Chọn file hóa đơn",
+                    "send": "Gửi hóa đơn",
+                    "cancel": "Hủy"
+                },
+                "patient-detail":{
+                    "title":"Thông tin bệnh nhân",
+                    "fullName": "Họ và tên",
+                    "phoneNumber": "Số điện thoại",
+                    "email": "Địa chỉ email",
+                    "gender": "Giới tính",
+                    "insuranceNumber": "Số bảo hiểm y tế",
+                    "address": "Địa chỉ liên lạc",
+                    "reason": "Lý do khám",
+                    "note": "Ghi chú",
+                    "timeType": "Thời gian khám",
+                    "status": "Trạng thái",
+                    "birthday": "Ngày sinh",
+                    "close": "Đóng"
+                }
+            },
+            "manage-profile": {
+                "profile-loading": "Đang tải hồ sơ...",
+                "profile-title": "Thông tin khám bệnh",
+                "profile-doctor": "Bác sĩ",
+                "profile-email": "Email",
+                "profile-birthday": "Ngày sinh",
+                "profile-nodata": "Chưa cập nhật dữ liệu",
+                "profile-province": "Tỉnh thành",
+                "profile-price": "Giá khám",
+                "profile-payment": "Thanh toán",
+                "profile-desc": "Mô tả ngắn",
+                "profile-detail": "Giới thiệu chi tiết",
+                "profile-btn-update": "Chỉnh sửa hồ sơ",
+                "profile-btn-password": " Đổi mật khẩu",
+                "profile-idea": " Gợi ý",
+                "profile-p": " Bạn nên cập nhật đầy đủ thông tin phòng khám, mô tả chi tiết và ảnh đại diện để bệnh nhân dễ nhận diện và tin tưởng hơn.",
+                
+                "profile-update":{
+                    "title-create": "Tạo thêm thông tin bác sĩ",
+                    "title-edit": "Chỉnh sửa thông tin bác sĩ",
+                    "title": "Thông tin cơ bản",
+                    "firstName": "Họ",
+                    "lastName": "Tên",
+                    "phoneNumber": "Số điện thoại",
+                    "address": "Địa chỉ",
+                    "gender": "Giới tính",
+                    "position": "Chức danh",
+                    "avatar": "Ảnh đại diện",
+                    "no-avatar": "Chưa có ảnh",
+                    "avatar-select": "Chọn ảnh",
+                    "avatar-hint": "Nên dùng ảnh vuông, dung lượng nhỏ hơn 2MB",
+                    "info": "Thông tin khám bệnh và phòng khám",
+                    "info-desc": "Thông tin giới thiệu ngắn",
+                    "price": "Giá khám",
+                    "payment": "Phương thức thanh toán",
+                    "province": "Tỉnh thành",
+                    "birthday": "Ngày sinh",
+                    "note": "Ghi chú",
+                    "specialty": "Chuyên khoa",
+                    "clinic": "Phòng khám",
+                    "content": "Nội dung giới thiệu chi tiết",
+                    "save": "Tạo thông tin",
+                    "update": "Lưu thông tin"
+
+                },
+                "profile-password": {
+                    "title": "Đổi mật khẩu",
+                    "current-password": "Mật khẩu hiện tại",
+                    "new-password": "Mật khẩu mới",
+                    "confirm-password": "Nhập lại mật khẩu mới",
+                    "saving": "Đang lưu...",
+                    "save-password": "Lưu mật khẩu",
+                    "cancel": "Hủy"
+                }
+            }
+        },
+
+        "prev": "Trước", 
+        "next": "Sau", 
+        "page": "Trang", 
+        "of": "của", 
+        "total": "Tổng",
+        "filter-cancel": "Bỏ lọc",
+        "nothing": "Không có",
+        "loading": "Đang tải..." 
     }
 }

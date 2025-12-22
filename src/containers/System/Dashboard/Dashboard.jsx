@@ -25,6 +25,7 @@ import {
   handleGetPatientByClinic,
 } from "../../../services/patientService";
 import { LANGUAGES } from "../../../utils";
+import { FormattedMessage } from "react-intl";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -195,7 +196,7 @@ class Dashboard extends Component {
 
       return (
         <div className="bh-tooltip">
-          <div className="bh-tooltip-title">Tháng {label}</div>
+          <div className="bh-tooltip-title"><FormattedMessage id="admin.dashboard.dashboard-month" /> {label}</div>
           {payload.map((item) => (
             <div key={item.dataKey} className="bh-tooltip-row">
               <span
@@ -208,7 +209,7 @@ class Dashboard extends Component {
                 }}
               />
               <span>
-                {item.name}: {item.value} lịch
+                {item.name}: {item.value} <FormattedMessage id="admin.dashboard.dashboard-calendar" /> 
               </span>
             </div>
           ))}
@@ -225,7 +226,7 @@ class Dashboard extends Component {
       return (
         <div className="bh-tooltip">
           <div className="bh-tooltip-title">{label}</div>
-          <div>Đã khám xong: {complete} lịch</div>
+          <div><FormattedMessage id="admin.dashboard.dashboard-booked" />: {complete} <FormattedMessage id="admin.dashboard.dashboard-calendar" /></div>
         </div>
       );
     };
@@ -234,15 +235,15 @@ class Dashboard extends Component {
       <div className="dashboard-page">
         <div className="dashboard-header">
           <div>
-            <div className="dashboard-title">Tổng quan hệ thống</div>
+            <div className="dashboard-title"><FormattedMessage id="admin.dashboard.dashboard-title" /></div>
             <div className="dashboard-subtitle">
-              Theo dõi nhanh tình hình hệ thống BookingHealth.
+              <FormattedMessage id="admin.dashboard.dashboard-subtitle" /> 
             </div>
           </div>
 
           <div className="dashboard-header-right">
             <div className="filter-item">
-              <label className="filter-label">Ngày</label>
+              <label className="filter-label"><FormattedMessage id="admin.dashboard.dashboard-date" /> </label>
               <DatePicker
                 className="form-control"
                 onChange={this.handleOnchangeDatePicker}
@@ -251,7 +252,7 @@ class Dashboard extends Component {
             </div>
 
             <button type="button" className="btn-dashboard-tag">
-              BookingHealth Dashboard
+              <FormattedMessage id="admin.dashboard.dashboard-tag" />
             </button>
           </div>
         </div>
@@ -261,37 +262,37 @@ class Dashboard extends Component {
             <div className="metric-icon doctors">
               <i className="fa-solid fa-user-doctor" />
             </div>
-            <div className="metric-label">Tổng bác sĩ</div>
+            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-doctor" /></div>
             <div className="metric-value">{totalDoctor}</div>
-            <div className="metric-desc">Đang hoạt động trong hệ thống</div>
+            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-doctor-desc" /></div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon patients">
               <i className="fa-solid fa-users" />
             </div>
-            <div className="metric-label">Tổng bệnh nhân</div>
+            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-patient" /></div>
             <div className="metric-value">{totalPatient}</div>
-            <div className="metric-desc">Tài khoản bệnh nhân đã đăng ký</div>
+            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-patient-desc" /></div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon specialties">
               <i className="fa-solid fa-stethoscope" />
             </div>
-            <div className="metric-label">Tổng chuyên khoa</div>
+            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-specialty" /></div>
             <div className="metric-value">{totalSpecialty}</div>
-            <div className="metric-desc">Chuyên khoa đang được quản lý</div>
+            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-specialty-desc" /></div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon clinics">
               <i className="fa-solid fa-hospital" />
             </div>
-            <div className="metric-label">Tổng phòng khám</div>
+            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-clinic" /></div>
             <div className="metric-value">{totalClinic}</div>
             <div className="metric-desc">
-              Cơ sở khám chữa bệnh trong hệ thống
+              <FormattedMessage id="admin.dashboard.dashboard-total-clinic-desc" />
             </div>
           </div>
 
@@ -299,9 +300,9 @@ class Dashboard extends Component {
             <div className="metric-icon posts">
               <i className="fa-regular fa-newspaper" />
             </div>
-            <div className="metric-label">Tổng bài viết</div>
+            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-handbook" /></div>
             <div className="metric-value">{totalHandbook}</div>
-            <div className="metric-desc">Bài viết cẩm nang và tin tức</div>
+            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-handbook-desc" /></div>
           </div>
         </div>
 
@@ -309,11 +310,11 @@ class Dashboard extends Component {
           <div className="dashboard-section wide">
             <div className="section-header">
               <div>
-                <h3>Trạng thái lịch khám theo tháng</h3>
-                <p>Phân bố số lịch theo trạng thái trong từng tháng.</p>
+                <h3><FormattedMessage id="admin.dashboard.dashboard-header-h3" /></h3>
+                <p><FormattedMessage id="admin.dashboard.dashboard-header-p" /></p>
               </div>
               <button type="button" className="btn-small-secondary">
-                Xem theo tháng
+                <FormattedMessage id="admin.dashboard.dashboard-header-button" />
               </button>
             </div>
 
@@ -392,9 +393,9 @@ class Dashboard extends Component {
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
-                  <h3>Bệnh nhân theo phòng khám</h3>
+                  <h3><FormattedMessage id="admin.dashboard.dashboard-lower-h3" /></h3>
                   <p>
-                    Thống kê lịch đã khám xong (S3) theo phòng khám trong tháng{" "}
+                    <FormattedMessage id="admin.dashboard.dashboard-lower-p" />{" "}
                     {currentMonthLabel}
                   </p>
                 </div>
@@ -437,8 +438,8 @@ class Dashboard extends Component {
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
-                  <h3>Top bác sĩ nổi bật</h3>
-                  <p>Dựa trên số lượt khám trong tháng. Dữ liệu demo.</p>
+                  <h3><FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" /></h3>
+                  <p><FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" /></p>
                 </div>
               </div>
 
@@ -453,7 +454,7 @@ class Dashboard extends Component {
                         <div className="meta">{doctor.specialty}</div>
                       </div>
 
-                      <div className="count-tag">{doctor.count} lượt khám</div>
+                      <div className="count-tag">{doctor.count} <FormattedMessage id="admin.dashboard.dashboard-count" /></div>
                     </li>
                   ))}
                 </ul>

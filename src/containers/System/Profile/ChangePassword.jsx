@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ChangePassword.scss';
 import { handleChangePassword } from '../../../services/userService';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 const ChangePassword = ({ isOpen, onClose, doctorId }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -76,7 +77,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
     <div className="cpw-overlay" onClick={onClose}>
       <div className="cpw-modal" onClick={(e) => e.stopPropagation()}>
         <div className="cpw-header">
-          <span className="cpw-title">Đổi mật khẩu</span>
+          <span className="cpw-title"><FormattedMessage id="admin.doctor.manage-profile.profile-password.title" /></span>
           <button className="cpw-close" onClick={onClose}>
             ×
           </button>
@@ -86,7 +87,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
           {error ? <div className="cpw-error">{error}</div> : null}
 
           <div className="cpw-field">
-            <label>Mật khẩu hiện tại</label>
+            <label><FormattedMessage id="admin.doctor.manage-profile.profile-password.current-password" /></label>
             <div className="cpw-input-wrap">
               <input
                 type={showCurrent ? 'text' : 'password'}
@@ -106,7 +107,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
           </div>
 
           <div className="cpw-field">
-            <label>Mật khẩu mới</label>
+            <label><FormattedMessage id="admin.doctor.manage-profile.profile-password.new-password" /></label>
             <div className="cpw-input-wrap">
               <input
                 type={showNew ? 'text' : 'password'}
@@ -126,7 +127,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
           </div>
 
           <div className="cpw-field">
-            <label>Nhập lại mật khẩu mới</label>
+            <label><FormattedMessage id="admin.doctor.manage-profile.profile-password.confirm-password" /></label>
             <div className="cpw-input-wrap">
               <input
                 type={showConfirm ? 'text' : 'password'}
@@ -153,7 +154,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? 'Đang lưu...' : 'Lưu mật khẩu'}
+            {loading ? <FormattedMessage id="admin.doctor.manage-profile.profile-password.saving" /> : <FormattedMessage id="admin.doctor.manage-profile.profile-password.save-password" />}
           </button>
           <button
             type="button"
@@ -161,7 +162,7 @@ const ChangePassword = ({ isOpen, onClose, doctorId }) => {
             onClick={onClose}
             disabled={loading}
           >
-            Hủy
+            <FormattedMessage id="admin.doctor.manage-profile.profile-password.cancel" />
           </button>
         </div>
       </div>

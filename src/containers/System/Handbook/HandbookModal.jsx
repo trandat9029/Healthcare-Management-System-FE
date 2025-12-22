@@ -11,6 +11,7 @@ import {
   handleCreateHandbook,
   handleEditHandbook,
 } from '../../../services/handbookService';
+import { FormattedMessage } from 'react-intl';
 
 const mdParser = new MarkdownIt();
 
@@ -215,10 +216,10 @@ class HandbookModal extends Component {
           <div className="manage-handbook-container">
             <div className="ms-header">
               <div className="ms-title">
-                {id ? 'Chỉnh sửa cẩm nang' : 'Tạo cẩm nang mới'}
+                <FormattedMessage id="admin.manage-handbook.handbook-edit.title"/>
               </div>
               <div className="ms-subtitle">
-                Tạo và quản lý các bài viết hướng dẫn cho bệnh nhân
+                <FormattedMessage id="admin.manage-handbook.handbook-edit.subtitle"/>
               </div>
             </div>
 
@@ -226,7 +227,7 @@ class HandbookModal extends Component {
               {/* Cột trái */}
               <div className="handbook-left">
                 <div className="form-group mb-3">
-                  <label className="mb-2">Tên cẩm nang</label>
+                  <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-edit.name"/></label>
                   <input
                     className="form-control"
                     type="text"
@@ -239,7 +240,7 @@ class HandbookModal extends Component {
                 </div>
 
                 <div className="form-group mb-3">
-                  <label className="mb-2">Ngày đăng tải</label>
+                  <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-edit.date-publish"/></label>
                   <DatePicker
                     className="form-control"
                     onChange={this.handleOnchangeDatePicker}
@@ -248,7 +249,7 @@ class HandbookModal extends Component {
                 </div>
 
                 <div className="form-group editor-wrapper">
-                  <label className="mb-2">Nội dung cẩm nang</label>
+                  <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-edit.content"/></label>
                   <MdEditor
                     style={{ height: '380px' }}
                     renderHTML={(text) => mdParser.render(text)}
@@ -261,7 +262,7 @@ class HandbookModal extends Component {
               {/* Cột phải */}
               <div className="handbook-right">
                 <div className="form-group mb-3">
-                  <label className="mb-2">Tên tác giả</label>
+                  <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-edit.author"/></label>
                   <input
                     className="form-control"
                     type="text"
@@ -274,7 +275,7 @@ class HandbookModal extends Component {
                 </div>
 
                 <div className="form-group mb-4">
-                  <label className="mb-2">Ảnh cẩm nang</label>
+                  <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-edit.thumbnail"/></label>
                   <div className="custom-upload">
                     <input
                       id="handbookImage"
@@ -288,10 +289,10 @@ class HandbookModal extends Component {
                       className="custom-upload-btn"
                     >
                       <i className="fa-regular fa-image" />
-                      Chọn ảnh
+                      <FormattedMessage id="admin.manage-handbook.handbook-edit.choose-thumbnail"/>
                     </label>
                     <span className="custom-upload-text">
-                      {imageFileName || 'Chưa có tệp nào được chọn'}
+                      {imageFileName ? <FormattedMessage id="admin.manage-handbook.handbook-edit.selected"/> : <FormattedMessage id="admin.manage-handbook.handbook-edit.not-selected"/>}
                     </span>
                   </div>
 
@@ -303,7 +304,7 @@ class HandbookModal extends Component {
                 </div>
 
                 <div className="form-group mb-4 status-row">
-                  <div className="status-label">Trạng thái hiển thị</div>
+                  <div className="status-label"><FormattedMessage id="admin.manage-handbook.handbook-edit.status"/></div>
                   <div
                     className={`toggle-switch ${isPublished ? 'on' : ''}`}
                     onClick={this.handleToggleStatus}
@@ -311,7 +312,7 @@ class HandbookModal extends Component {
                     <div className="toggle-circle" />
                   </div>
                   <span className="status-text">
-                    {isPublished ? 'Đang hiển thị' : 'Đang ẩn'}
+                    {isPublished ? <FormattedMessage id="admin.manage-handbook.handbook-edit.status-onl"/> : <FormattedMessage id="admin.manage-handbook.handbook-edit.status-off"/>}
                   </span>
                 </div>
 
@@ -320,7 +321,7 @@ class HandbookModal extends Component {
                     className="btn-save-handbook"
                     onClick={this.handleSaveHandbook}
                   >
-                    {id ? 'Update' : 'Save'}
+                    <FormattedMessage id="admin.manage-handbook.handbook-edit.update"/>
                   </button>
                 </div>
               </div>

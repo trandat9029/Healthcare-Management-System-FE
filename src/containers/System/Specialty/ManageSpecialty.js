@@ -7,6 +7,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import CommonUtils from '../../../utils/CommonUtils';
 import { createNewSpecialtyService } from '../../../services/specialtyService';
 import { toast } from 'react-toastify';
+import { FormattedMessage } from 'react-intl';
 
 const mdParser = new MarkdownIt();
 
@@ -99,7 +100,7 @@ class ManageSpecialty extends Component {
       <div className="specialty-modal-overlay">
         <div className="specialty-modal-container">
           <div className="specialty-modal-header">
-            <div className="specialty-modal-title">Quản lý chuyên khoa</div>
+            <div className="specialty-modal-title"><FormattedMessage id="admin.manage-specialty.specialty-create.title" /></div>
             <button className="specialty-modal-close" onClick={onClose}>
               ×
             </button>
@@ -108,7 +109,7 @@ class ManageSpecialty extends Component {
           <div className="specialty-modal-body">
             <div className="add-new-specialty row">
               <div className="col-6 form-group mb-3">
-                <label className="mb-2">Tên chuyên khoa</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-specialty.specialty-create.name" /></label>
                 <input
                   className="form-control"
                   type="text"
@@ -120,20 +121,20 @@ class ManageSpecialty extends Component {
               </div>
 
               <div className="img-upload col-6 form-group mb-3">
-                <label className="mb-2">Ảnh chuyên khoa</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-specialty.specialty-create.thumbnail" /></label>
                 <div className="upload-wrapper">
                   <label
                     htmlFor="specialtyImage"
                     className="upload-button"
                   >
                     <i className="fas fa-upload"></i>
-                    <span>Chọn ảnh</span>
+                    <span><FormattedMessage id="admin.manage-specialty.specialty-create.choose-thumbnail" /></span>
                   </label>
 
                   <span className="upload-file-name">
                     {this.state.imageBase64
-                      ? 'Đã chọn ảnh'
-                      : 'Chưa có tệp nào được chọn'}
+                      ? <FormattedMessage id="admin.manage-specialty.specialty-create.selected" />
+                      : <FormattedMessage id="admin.manage-specialty.specialty-create.not-selected" />}
                   </span>
 
                   <input
@@ -173,7 +174,7 @@ class ManageSpecialty extends Component {
               className="btn-save-specialty"
               onClick={this.handleSaveNewSpecialty}
             >
-              Save
+              <FormattedMessage id="admin.manage-specialty.specialty-create.save" />
             </button>
           </div>
         </div>

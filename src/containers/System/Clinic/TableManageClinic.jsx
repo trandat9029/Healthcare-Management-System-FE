@@ -200,10 +200,7 @@ class TableManageClinic extends Component {
       <>
         <div className="clinics-container">
           <div className="title text-center">
-            <FormattedMessage
-              id="admin.manage-clinic.title"
-              defaultMessage="Manage clinics"
-            />
+            <FormattedMessage id="admin.manage-clinic.clinic-title"/>
           </div>
 
           <div className="clinic-function">
@@ -224,7 +221,7 @@ class TableManageClinic extends Component {
                   className="btn-create-clinic"
                   onClick={this.openClinicModal}
                 >
-                  Thêm phòng khám
+                  <FormattedMessage id="admin.manage-clinic.clinic-btn-create"/>
                 </button>
               </div>
             </div>
@@ -236,11 +233,11 @@ class TableManageClinic extends Component {
                 <tr>
                   <th>STT</th>
                   <th onClick={() => this.handleSort('name')}>
-                    Tên phòng khám{this.renderSortLabel('name')}
+                    <FormattedMessage id="admin.manage-clinic.clinic.name"/>{this.renderSortLabel('name')}
                   </th>
-                  <th>Địa chỉ</th>
-                  <th>Hình ảnh</th>
-                  <th>Actions</th>
+                  <th><FormattedMessage id="admin.manage-clinic.clinic.address"/></th>
+                  <th><FormattedMessage id="admin.manage-clinic.clinic.thumbnail"/></th>
+                  <th><FormattedMessage id="admin.manage-clinic.clinic.action"/></th>
                 </tr>
 
                 {clinics && clinics.length > 0 ? (
@@ -291,7 +288,7 @@ class TableManageClinic extends Component {
                 ) : (
                   <tr>
                     <td colSpan="5" style={{ textAlign: 'center' }}>
-                      No clinics found
+                      <FormattedMessage id="admin.manage-clinic.clinic-no-found"/>
                     </td>
                   </tr>
                 )}
@@ -305,17 +302,17 @@ class TableManageClinic extends Component {
               onClick={() => this.handleChangePage('prev')}
               disabled={page <= 1}
             >
-              Prev
+              <FormattedMessage id="admin.prev"/>
             </button>
             <span>
-              Page {page} of {totalPages}. Total {totalClinics || 0} clinics
+              <FormattedMessage id="admin.page"/> {page} <FormattedMessage id="admin.of"/> {totalPages}. <FormattedMessage id="admin.total"/> {totalClinics || 0} <FormattedMessage id="admin.manage-clinic.clinics"/>
             </span>
             <button
               className="btn btn-light mx-2"
               onClick={() => this.handleChangePage('next')}
               disabled={page >= totalPages}
             >
-              Next
+              <FormattedMessage id="admin.next"/>
             </button>
           </div>
         </div>

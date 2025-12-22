@@ -63,7 +63,7 @@ const postSendRemedy = (data) =>{
 }
 
 const updateProfileDoctorService = (data) => {
-    return axios.post('/api/doctors/profile', data);
+    return axios.put('/api/doctors/profile', data);
 };
 
 

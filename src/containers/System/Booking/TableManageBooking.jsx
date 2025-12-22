@@ -269,7 +269,7 @@ class TableManageBooking extends Component {
       <>
         <div className="bookings-container">
           <div className="title text-center">
-            <FormattedMessage id="admin.manage-booking.title" />
+            <FormattedMessage id="admin.manage-booking.booking-title" />
           </div>
 
           <div className="booking-function">
@@ -299,7 +299,7 @@ class TableManageBooking extends Component {
 
             <div className="filter-schedule">
               <div className="filter-item">
-                <label className="filter-label">Trạng thái</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-booking.filter-status" /></label>
                 <Select
                   value={selectedStatus}
                   onChange={this.handleChangeStatus}
@@ -311,7 +311,7 @@ class TableManageBooking extends Component {
               </div>
 
               <div className="filter-item">
-                <label className="filter-label">Thời gian khám</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-booking.filter-time-type" /></label>
                 <Select
                   value={selectedTime}
                   onChange={this.handleChangeTime}
@@ -323,7 +323,7 @@ class TableManageBooking extends Component {
               </div>
 
               <div className="filter-item">
-                <label className="filter-label">Ngày</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-booking.filter-date" /></label>
                 <DatePicker
                   className="form-control"
                   onChange={this.handleOnchangeDatePicker}
@@ -332,35 +332,35 @@ class TableManageBooking extends Component {
               </div>
 
               <button className="btn-clear" onClick={this.clearFilters}>
-                Bỏ lọc
+               <FormattedMessage id="admin.filter-cancel" />
               </button>
             </div>
           </div>
 
           <div className="bookings-table mt-3 mx-1">
-            {loading && <div className="loading-overlay">Loading...</div>}
+            {loading && <div className="loading-overlay"><FormattedMessage id="admin.loading" /></div>}
 
             <table>
               <tbody>
                 <tr>
                   <th>STT</th>
                   <th onClick={() => this.handleSort('doctorId')}>
-                    Doctor{this.renderSortLabel('doctorId')}
+                    <FormattedMessage id="admin.manage-booking.booking.doctor" />{this.renderSortLabel('doctorId')}
                   </th>
                   <th onClick={() => this.handleSort('patientId')}>
-                    Patient{this.renderSortLabel('patientId')}
+                    <FormattedMessage id="admin.manage-booking.booking.patient" />{this.renderSortLabel('patientId')}
                   </th>
                   <th onClick={() => this.handleSort('statusId')}>
-                    Status{this.renderSortLabel('statusId')}
+                    <FormattedMessage id="admin.manage-booking.booking.status" />{this.renderSortLabel('statusId')}
                   </th>
                   <th onClick={() => this.handleSort('timeType')}>
-                    Time type{this.renderSortLabel('timeType')}
+                    <FormattedMessage id="admin.manage-booking.booking.time-type" />{this.renderSortLabel('timeType')}
                   </th>
                   <th onClick={() => this.handleSort('date')}>
-                    Date{this.renderSortLabel('date')}
+                    <FormattedMessage id="admin.manage-booking.booking.date" />{this.renderSortLabel('date')}
                   </th>
                   <th onClick={() => this.handleSort('createdAt')}>
-                    Created at{this.renderSortLabel('createdAt')}
+                    <FormattedMessage id="admin.manage-booking.booking.createdAt" />{this.renderSortLabel('createdAt')}
                   </th>
                 </tr>
 
@@ -403,7 +403,7 @@ class TableManageBooking extends Component {
                 ) : (
                   <tr>
                     <td colSpan="7" style={{ textAlign: 'center' }}>
-                      No bookings found
+                      <FormattedMessage id="admin.manage-booking.booking-no-found" />
                     </td>
                   </tr>
                 )}
@@ -417,17 +417,17 @@ class TableManageBooking extends Component {
               onClick={() => this.handleChangePage('prev')}
               disabled={page <= 1}
             >
-              Prev
+              <FormattedMessage id="admin.prev" />
             </button>
             <span>
-              Page {page} of {totalPages}. Total {totalBookings || 0} bookings
+              <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" /> {totalPages}. <FormattedMessage id="admin.total" /> {totalBookings || 0} <FormattedMessage id="admin.manage-booking.bookings" />
             </span>
             <button
               className="btn btn-light mx-2"
               onClick={() => this.handleChangePage('next')}
               disabled={page >= totalPages}
             >
-              Next
+              <FormattedMessage id="admin.next" />
             </button>
           </div>
         </div>

@@ -288,14 +288,14 @@ class ManagePatient extends Component {
         >
           <div className="manage-patient-container">
             <div className="manage-patient-title">
-              Quản lý bệnh nhân khám bệnh
+              <FormattedMessage id="admin.doctor.manage-booking.booking-title" />
             </div>
 
             <div className="manage-patient-body row">
               {/* thanh filter mới */}
               <div className="col-12 filter-bar">
                 <div className=" filter-item">
-                  <label className="filter-label">Chọn ngày khám</label>
+                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-date" /></label>
                   <DatePicker
                     onChange={this.handleOnChangeDatePicker}
                     className="form-control"
@@ -303,7 +303,7 @@ class ManagePatient extends Component {
                   />
                 </div>
                 <div className="filter-item">
-                  <label className="filter-label">Thời gian khám</label>
+                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-time-type" /></label>
                   <Select
                     value={selectedTime}
                     onChange={this.handleChangeTime}
@@ -315,7 +315,7 @@ class ManagePatient extends Component {
                 </div>
 
                 <div className="filter-item">
-                  <label className="filter-label">Trạng thái</label>
+                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-status" /></label>
                   <Select
                     value={selectedStatus}
                     onChange={this.handleChangeStatus}
@@ -327,7 +327,7 @@ class ManagePatient extends Component {
                 </div>
 
                 <div className="filter-item filter-item-search">
-                  <label className="filter-label">Tìm theo tên bệnh nhân</label>
+                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-name" /></label>
                   <input
                     type="text"
                     className="form-control"
@@ -346,7 +346,7 @@ class ManagePatient extends Component {
                     className="btn-reset-filters"
                     onClick={this.handleResetFilters}
                   >
-                    Xóa bộ lọc
+                    <FormattedMessage id="admin.filter-cancel" />
                   </button>
                 </div>
               </div>
@@ -356,12 +356,12 @@ class ManagePatient extends Component {
                   <tbody>
                     <tr>
                       <th>STT</th>
-                      <th>Thời gian</th>
-                      <th>Họ và tên</th>
-                      <th>Giới tính</th>
-                      <th>Địa chỉ</th>
-                      <th>Trạng thái</th>
-                      <th>Hành động</th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.time" /></th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.name" /></th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.gender" /></th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.address" /></th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.status" /></th>
+                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.action" /></th>
                     </tr>
                     {dataPatient && dataPatient.length > 0 ? (
                       dataPatient.map((item, index) => {
@@ -398,13 +398,13 @@ class ManagePatient extends Component {
                                   this.handleBtnConfirm(item);
                                 }}
                               >
-                                Xác nhận
+                                <FormattedMessage id="admin.doctor.manage-booking.patient.confirm" />
                               </button>
                               <button
                                 className="mp-btn-detail"
                                 onClick={() => this.handleBtnViewDetail(item)}
                               >
-                                Xem chi tiết
+                                <FormattedMessage id="admin.doctor.manage-booking.patient.view-detail" />
                               </button>
                             </td>
                           </tr>
@@ -413,7 +413,7 @@ class ManagePatient extends Component {
                     ) : (
                       <tr>
                         <td colSpan="7" style={{ textAlign: "center" }}>
-                          no data
+                          <FormattedMessage id="admin.doctor.manage-booking.booking-no-found" />
                         </td>
                       </tr>
                     )}

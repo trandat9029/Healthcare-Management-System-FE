@@ -242,7 +242,7 @@ class TableManageHandbook extends Component {
         <div className="handbooks-container">
 
           <div className="title text-center">
-            QUẢN LÍ CẨM NANG
+            <FormattedMessage id="admin.manage-handbook.handbook-title"/>
           </div>
 
           <div className="handbook-function">
@@ -260,7 +260,7 @@ class TableManageHandbook extends Component {
             <div className="handbook-right-tools">
 
               <div className="filter-group">
-                <label className="filter-label">Lọc theo trạng thái</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-handbook.handbook-filter-status"/></label>
                 <select
                   className="status-select"
                   value={statusFilter}
@@ -275,7 +275,7 @@ class TableManageHandbook extends Component {
               </div>
 
               <div className="filter-group">
-                <label className="filter-label">Lọc theo ngày đăng</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-handbook.handbook-filter-date"/></label>
                 <DatePicker
                   className="date-filter-input"
                   value={dateFilter}
@@ -289,7 +289,7 @@ class TableManageHandbook extends Component {
                 className="btn-clear-filter"
                 onClick={this.handleClearFilters}
               >
-                Bỏ lọc
+                <FormattedMessage id="admin.filter-cancel"/>
               </button>
 
             </div>
@@ -302,15 +302,15 @@ class TableManageHandbook extends Component {
                 <tr>
                   <th>STT</th>
                   <th onClick={() => this.handleSort('name')}>
-                    TITLE {this.renderSortLabel('name')}
+                    <FormattedMessage id="admin.manage-handbook.handbook.title"/> {this.renderSortLabel('name')}
                   </th>
-                  <th>IMAGE</th>
-                  <th>AUTHOR</th>
+                  <th><FormattedMessage id="admin.manage-handbook.handbook.image"/></th>
+                  <th><FormattedMessage id="admin.manage-handbook.handbook.author"/></th>
                   <th onClick={() => this.handleSort('datePublish')}>
-                    DATE PUBLIC {this.renderSortLabel('datePublish')}
+                    <FormattedMessage id="admin.manage-handbook.handbook.date-publish"/> {this.renderSortLabel('datePublish')}
                   </th>
-                  <th>STATUS</th>
-                  <th>ACTIONS</th>
+                  <th><FormattedMessage id="admin.manage-handbook.handbook.status"/></th>
+                  <th><FormattedMessage id="admin.manage-handbook.handbook.action"/></th>
                 </tr>
 
                 {filteredHandbooks.length > 0 ? (
@@ -325,7 +325,7 @@ class TableManageHandbook extends Component {
                             <img src={item.image} alt={item.name} />
                           </div>
                         ) : (
-                          <span>No image</span>
+                          <span><FormattedMessage id="admin.manage-handbook.handbook.no-image"/></span>
                         )}
                       </td>
 
@@ -357,7 +357,7 @@ class TableManageHandbook extends Component {
                     </tr>
                   ))
                 ) : (
-                  <tr><td colSpan="7" style={{ textAlign: 'center' }}>No handbooks found</td></tr>
+                  <tr><td colSpan="7" style={{ textAlign: 'center' }}><FormattedMessage id="admin.manage-handbook.handbook-no-found"/></td></tr>
                 )}
               </tbody>
             </table>
@@ -366,15 +366,15 @@ class TableManageHandbook extends Component {
           {/* PAGINATION */}
           <div className="pagination mt-3 d-flex justify-content-center align-items-center">
             <button className="btn btn-light mx-2" onClick={() => this.handleChangePage('prev')} disabled={page <= 1}>
-              Prev
+              <FormattedMessage id="admin.prev"/>
             </button>
 
             <span>
-              Page {page} of {totalPages}. Total {totalHandbooks || 0} handbooks
+              <FormattedMessage id="admin.page"/> {page} <FormattedMessage id="admin.of"/> {totalPages}. <FormattedMessage id="admin.total"/> {totalHandbooks || 0} <FormattedMessage id="admin.manage-handbook.handbooks"/>
             </span>
 
             <button className="btn btn-light mx-2" onClick={() => this.handleChangePage('next')} disabled={page >= totalPages}>
-              Next
+              <FormattedMessage id="admin.next"/>
             </button>
           </div>
         </div>

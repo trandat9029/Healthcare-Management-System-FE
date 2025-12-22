@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './PatientModal.scss';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { CommonUtils } from '../../../utils';
+import { FormattedMessage } from 'react-intl';
 
 // PatientModal.jsx
 class PatientModal extends Component {
@@ -89,7 +90,7 @@ class PatientModal extends Component {
             centered
         >
             <div className="patient-modal-header">
-            <h5 className="patient-modal-title">Thông tin bệnh nhân</h5>
+            <h5 className="patient-modal-title"><FormattedMessage id="admin.doctor.manage-booking.patient-detail.title" /></h5>
             <button
                 className="patient-modal-close"
                 type="button"
@@ -103,53 +104,53 @@ class PatientModal extends Component {
             <ModalBody className="patient-modal-body">
             <div className="row">
                 <div className="col-6 form-group">
-                <label>Họ và tên</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.fullName" /></label>
                 <input className="form-control" value={fullName} disabled />
                 </div>
                 <div className="col-6 form-group">
-                <label>Email</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.email" /></label>
                 <input className="form-control" value={email} disabled />
                 </div>
 
                 <div className="col-6 form-group">
-                <label>Số điện thoại</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.phoneNumber" /></label>
                 <input className="form-control" value={phoneNumber} disabled />
                 </div>
                 <div className="col-6 form-group">
-                <label>Giới tính</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.gender" /></label>
                 <input className="form-control" value={genderText} disabled />
                 </div>
 
                 <div className="col-12 form-group">
-                <label>Địa chỉ</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.address" /></label>
                 <input className="form-control" value={address} disabled />
                 </div>
 
                 <div className="col-6 form-group">
-                <label>Ngày sinh</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.birthday" /></label>
                 <input className="form-control" value={birthday} disabled />
                 </div>
                 <div className="col-6 form-group">
-                <label>Số BHYT</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.insuranceNumber" /></label>
                 <input className="form-control" value={insuranceNumber} disabled />
                 </div>
 
                 <div className="col-12 form-group">
-                <label>Lý do khám</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.reason" /></label>
                 <input className="form-control" value={reason} disabled />
                 </div>
 
                 <div className="col-12 form-group">
-                <label>Ghi chú</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.note" /></label>
                 <input className="form-control" value={note} disabled />
                 </div>
 
                 <div className="col-6 form-group">
-                <label>Khung giờ</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.timeType" /></label>
                 <input className="form-control" value={timeString} disabled />
                 </div>
                 <div className="col-6 form-group">
-                <label>Trạng thái</label>
+                <label><FormattedMessage id="admin.doctor.manage-booking.patient-detail.status" /></label>
                 <input className="form-control" value={statusText} disabled />
                 </div>
             </div>
@@ -161,7 +162,7 @@ class PatientModal extends Component {
                 className="btn-patient btn-patient-cancel"
                 onClick={closePatientModal}
             >
-                Đóng
+                <FormattedMessage id="admin.doctor.manage-booking.patient-detail.close" />
             </button>
             </ModalFooter>
         </Modal>

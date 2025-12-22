@@ -165,22 +165,36 @@ class TableManageUser extends Component {
     return sortOrder === "ASC" ? " ↑" : " ↓";
   };
 
- handleChangeSearch = (e) => {
+  handleChangeSearch = (e) => {
     const keyword = e.target.value;
     this.setState({ search: keyword, page: 1 }, () => {
       const { page, limit, sortBy, sortOrder, roleFilter, search } = this.state;
-      this.props.fetchUserRedux(page, limit, sortBy, sortOrder, search, roleFilter);
+      this.props.fetchUserRedux(
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        search,
+        roleFilter
+      );
     });
   };
 
   handleChangeRole = (selectedRole) => {
-    const roleId = selectedRole && selectedRole.value ? selectedRole.value : 'ALL';
+    const roleId =
+      selectedRole && selectedRole.value ? selectedRole.value : "ALL";
     this.setState({ selectedRole, roleFilter: roleId, page: 1 }, () => {
       const { page, limit, sortBy, sortOrder, roleFilter, search } = this.state;
-      this.props.fetchUserRedux(page, limit, sortBy, sortOrder, search, roleFilter);
+      this.props.fetchUserRedux(
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        search,
+        roleFilter
+      );
     });
   };
-
 
   render() {
     const {
@@ -234,7 +248,7 @@ class TableManageUser extends Component {
             <div className="users-header">
               <div className="users-header-top">
                 <div className="title">
-                  <FormattedMessage id="admin.manage-user.title" />
+                  <FormattedMessage id="admin.manage-user.user-title" />
                 </div>
               </div>
 
@@ -253,7 +267,9 @@ class TableManageUser extends Component {
                 <div className="users-filter">
                   <div className="users-filter-row">
                     <div className="filter-group">
-                      <label className="filter-label">Lọc theo vai trò</label>
+                      <label className="filter-label">
+                        <FormattedMessage id="admin.manage-user.user-filter" />
+                      </label>
                       <Select
                         value={selectedRole}
                         onChange={this.handleChangeRole}
@@ -272,7 +288,9 @@ class TableManageUser extends Component {
                       onClick={this.openCreateUserModal}
                     >
                       <i className="fa-solid fa-user-plus"></i>
-                      <span>Thêm người dùng</span>
+                      <span>
+                        <FormattedMessage id="admin.manage-user.user-btn-create" />
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -288,16 +306,23 @@ class TableManageUser extends Component {
                       Email{this.renderSortLabel("email")}
                     </th>
                     <th onClick={() => this.handleSort("firstName")}>
-                      First name{this.renderSortLabel("firstName")}
+                      <FormattedMessage id="admin.manage-user.user-name" />
+                      {this.renderSortLabel("firstName")}
                     </th>
-                    <th>Address</th>
+                    <th>
+                      <FormattedMessage id="admin.manage-user.user-address" />
+                    </th>
                     <th onClick={() => this.handleSort("roleId")}>
-                      Vai trò{this.renderSortLabel("roleId")}
+                      <FormattedMessage id="admin.manage-user.user-role" />
+                      {this.renderSortLabel("roleId")}
                     </th>
                     <th onClick={() => this.handleSort("createdAt")}>
-                      Created at{this.renderSortLabel("createdAt")}
+                      <FormattedMessage id="admin.manage-user.user-createAt" />
+                      {this.renderSortLabel("createdAt")}
                     </th>
-                    <th>Actions</th>
+                    <th>
+                      <FormattedMessage id="admin.manage-user.user-action" />
+                    </th>
                   </tr>
 
                   {arrUsers && arrUsers.length > 0 ? (
@@ -340,7 +365,7 @@ class TableManageUser extends Component {
                   ) : (
                     <tr>
                       <td colSpan="7" style={{ textAlign: "center" }}>
-                        No users found
+                        <FormattedMessage id="admin.manage-user.user-no-found" />
                       </td>
                     </tr>
                   )}
@@ -354,17 +379,17 @@ class TableManageUser extends Component {
                 onClick={() => this.handleChangePage("prev")}
                 disabled={page <= 1}
               >
-                Prev
+                <FormattedMessage id="admin.prev" />
               </button>
               <span>
-                Page {page} of {totalPages}. Total {totalUsers || 0} users
+                <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" /> {totalPages}. <FormattedMessage id="admin.total" /> {totalUsers || 0}  <FormattedMessage id="admin.manage-user.user" />
               </span>
               <button
                 className="btn btn-light mx-2"
                 onClick={() => this.handleChangePage("next")}
                 disabled={page >= totalPages}
               >
-                Next
+                <FormattedMessage id="admin.next" />
               </button>
             </div>
           </div>
@@ -396,7 +421,16 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUserRedux: (page, limit, sortBy, sortOrder, keyword, roleId) =>
-     dispatch(actions.fetchAllUsersStart(page, limit, sortBy, sortOrder, keyword, roleId)),
+      dispatch(
+        actions.fetchAllUsersStart(
+          page,
+          limit,
+          sortBy,
+          sortOrder,
+          keyword,
+          roleId
+        )
+      ),
     deleteUserRedux: (id) => dispatch(actions.deleteUser(id)),
   };
 };

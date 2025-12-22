@@ -14,6 +14,7 @@ import "./StatisticalClinic.scss";
 
 import { handleGetStatisticalBookingByDate } from "../../../services/patientService";
 import { getAllClinicService } from "../../../services/clinicService";
+import { FormattedMessage } from "react-intl";
 
 class StatisticalClinic extends Component {
   constructor(props) {
@@ -186,8 +187,8 @@ class StatisticalClinic extends Component {
     return (
       <div className="bh-tooltip">
         <div className="bh-tooltip-title">{label}</div>
-        <div>Đã khám xong: {complete} lịch</div>
-        <div>Hủy: {cancel} lịch</div>
+        <div><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed"/>: {complete} <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar"/></div>
+        <div><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled"/>: {cancel} <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar"/></div>
       </div>
     );
   };
@@ -209,15 +210,15 @@ class StatisticalClinic extends Component {
       <div className="stat-clinic-dashboard">
         <div className="dashboard-header">
           <div>
-            <div className="dashboard-title">Thống kê phòng khám</div>
+            <div className="dashboard-title"><FormattedMessage id="admin.manage-clinic.clinic-statistical.title"/></div>
             <div className="dashboard-subtitle">
-              Biểu đồ và các chỉ số tổng hiển thị dữ liệu trong ngày đã chọn.
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.subtitle"/>
             </div>
           </div>
 
           <div className="dashboard-header-right">
             <div className="filter-item">
-              <label className="filter-label">Ngày xem dữ liệu</label>
+              <label className="filter-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.filter"/></label>
               <input
                 className="bh-date-input"
                 type="date"
@@ -227,7 +228,7 @@ class StatisticalClinic extends Component {
             </div>
 
             <button type="button" className="btn-dashboard-tag" onClick={this.onClickRefresh}>
-              Refresh
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.refresh"/>
             </button>
           </div>
         </div>
@@ -239,27 +240,27 @@ class StatisticalClinic extends Component {
             <div className="metric-icon clinics">
               <i className="fa-solid fa-hospital" />
             </div>
-            <div className="metric-label">Tổng phòng khám</div>
+            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic"/></div>
             <div className="metric-value">{totalClinic}</div>
-            <div className="metric-desc">Số cơ sở trong hệ thống</div>
+            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic-desc"/></div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon finished">
               <i className="fa-regular fa-circle-check" />
             </div>
-            <div className="metric-label">Tổng lịch đặt</div>
+            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-completed"/></div>
             <div className="metric-value">{totalBookingToday}</div>
-            <div className="metric-desc">Ngày {displayDate}</div>
+            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date"/> {displayDate}</div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon cancelled">
               <i className="fa-regular fa-circle-xmark" />
             </div>
-            <div className="metric-label">Tổng lịch hủy</div>
+            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-canceled"/></div>
             <div className="metric-value">{totalCancelToday}</div>
-            <div className="metric-desc">Ngày {displayDate}</div>
+            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date"/> {displayDate}</div>
           </div>
         </div>
 
@@ -267,16 +268,16 @@ class StatisticalClinic extends Component {
           <div className="dashboard-section wide">
             <div className="section-header">
               <div>
-                <h3>Chi tiết theo từng phòng khám</h3>
-                <p>Trạng thái S3 (Đã khám xong) và S4 (Hủy). Ngày {displayDate}.</p>
+                <h3><FormattedMessage id="admin.manage-clinic.clinic-statistical.header-h3"/></h3>
+                <p><FormattedMessage id="admin.manage-clinic.clinic-statistical.header-p"/> {displayDate}.</p>
               </div>
             </div>
 
             <div className="section-body chart-body-lg">
               {isLoadingToday ? (
-                <div className="loading">Đang tải dữ liệu biểu đồ...</div>
+                <div className="loading"><FormattedMessage id="admin.manage-clinic.clinic-statistical.loading"/></div>
               ) : todayByClinic.length === 0 ? (
-                <div className="no-data">Không có dữ liệu cho ngày này</div>
+                <div className="no-data"><FormattedMessage id="admin.manage-clinic.clinic-statistical.no-data"/></div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={todayByClinic} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
@@ -298,8 +299,8 @@ class StatisticalClinic extends Component {
                       iconSize={8}
                       wrapperStyle={{ fontSize: 12 }}
                     />
-                    <Bar dataKey="complete" name="Đã khám xong" fill="#22c55e" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="cancel" name="Hủy" fill="#fb923c" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="complete" name={<FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed"/>} fill="#22c55e" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="cancel" name={<FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled"/>} fill="#fb923c" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               )}

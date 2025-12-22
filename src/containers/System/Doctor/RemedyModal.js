@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './RemedyModal.scss';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { CommonUtils } from '../../../utils';
+import { FormattedMessage } from 'react-intl';
 
 class RemedyModal extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class RemedyModal extends Component {
       >
         <div className="remedy-modal-header">
           <h5 className="remedy-modal-title">
-            Gửi hóa đơn khám bệnh thành công
+            <FormattedMessage id="admin.doctor.manage-booking.remedy.title" />
           </h5>
           <button
             className="remedy-modal-close"
@@ -80,7 +81,7 @@ class RemedyModal extends Component {
         <ModalBody className="remedy-modal-body">
           <div className="row">
             <div className="col-6 form-group">
-              <label>Email bệnh nhân</label>
+              <label><FormattedMessage id="admin.doctor.manage-booking.remedy.email" /></label>
               <input
                 className="form-control"
                 type="email"
@@ -89,7 +90,7 @@ class RemedyModal extends Component {
               />
             </div>
             <div className="col-6 form-group">
-              <label>Chọn file hóa đơn</label>
+              <label><FormattedMessage id="admin.doctor.manage-booking.remedy.file" /></label>
               <input
                 className="form-control"
                 type="file"
@@ -105,14 +106,14 @@ class RemedyModal extends Component {
             className="btn-remedy btn-remedy-send"
             onClick={this.handleSendRemedy}
           >
-            Send
+            <FormattedMessage id="admin.doctor.manage-booking.remedy.send" />
           </button>
           <button
             type="button"
             className="btn-remedy btn-remedy-cancel"
             onClick={closeRemedyModal}
           >
-            Cancel
+            <FormattedMessage id="admin.doctor.manage-booking.remedy.cancel" />
           </button>
         </ModalFooter>
       </Modal>

@@ -220,14 +220,14 @@ class ManageSchedule extends Component {
 
           <div className="manage-schedule-container">
             <div className="manage-schedule-title">
-              <FormattedMessage id="manage-schedule.title" />
+              <FormattedMessage id="admin.doctor.manage-schedule.schedule-create.title" />
             </div>
 
             <div className="manage-schedule-form container">
               <div className="row ">
                 <div className="col-6 form-group">
                   <label className="manage-schedule-label">
-                    <FormattedMessage id="manage-schedule.choose-doctor" />
+                    <FormattedMessage id="admin.doctor.manage-schedule.schedule-create.doctor" />
                   </label>
                   <Select
                     value={selectedDoctor}
@@ -239,7 +239,7 @@ class ManageSchedule extends Component {
                 </div>
                 <div className="col-6 form-group">
                   <label className="manage-schedule-label">
-                    <FormattedMessage id="manage-schedule.choose-date" />
+                    <FormattedMessage id="admin.doctor.manage-schedule.schedule-create.choose-date" />
                   </label>
                   <DatePicker
                     className="form-control manage-schedule-date"
@@ -276,7 +276,7 @@ class ManageSchedule extends Component {
                     className="btn btn-primary btn-save-schedule"
                     onClick={this.handleSaveSchedule}
                   >
-                    <FormattedMessage id="manage-schedule.save-info" />
+                    <FormattedMessage id="admin.doctor.manage-schedule.schedule-create.save" />
                   </button>
                 </div>
               </div>

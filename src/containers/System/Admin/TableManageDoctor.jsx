@@ -230,7 +230,7 @@ class TableManageDoctor extends Component {
 
             <div className="doctor-filter-group">
               <div className="filter-item">
-                <label className="filter-label">Chức danh</label>
+                <label className="filter-label"><FormattedMessage id="admin.manage-user.user-create.position" /></label>
                 <Select
                   value={selectedPosition}
                   onChange={this.handleChangePosition}
@@ -245,7 +245,7 @@ class TableManageDoctor extends Component {
                 className="btn-clear-filter"
                 onClick={this.handleClearFilter}
               >
-                Bỏ lọc
+                <FormattedMessage id="admin.filter-cancel" />
               </button>
             </div>
           </div>
@@ -258,17 +258,17 @@ class TableManageDoctor extends Component {
                   <th>Email</th>
 
                   <th onClick={() => this.handleSort("firstName")}>
-                    Họ tên{this.renderSortLabel("firstName")}
+                    <FormattedMessage id="admin.manage-doctor.doctor-fullName" /> {this.renderSortLabel("firstName")}
                   </th>
 
-                  <th>Chức danh</th>
-                  <th>Ảnh đại diện</th>
+                  <th><FormattedMessage id="admin.manage-user.user-create.position" /></th>
+                  <th><FormattedMessage id="admin.manage-user.user-create.avatar" /></th>
 
                   <th onClick={() => this.handleSort("createdAt")}>
-                    Created at{this.renderSortLabel("createdAt")}
+                    <FormattedMessage id="admin.manage-user.user-createAt" />{this.renderSortLabel("createdAt")}
                   </th>
 
-                  <th>Actions</th>
+                  <th><FormattedMessage id="admin.manage-user.user-action" /></th>
                 </tr>
 
                 {filteredDoctors.length > 0 ? (
@@ -296,7 +296,7 @@ class TableManageDoctor extends Component {
                             alt="avatar"
                           />
                         ) : (
-                          <span>Không có</span>
+                          <span><FormattedMessage id="admin.nothing" /></span>
                         )}
                       </td>
 
@@ -319,7 +319,7 @@ class TableManageDoctor extends Component {
                 ) : (
                   <tr>
                     <td colSpan="5" style={{ textAlign: "center" }}>
-                      No doctors found
+                      <FormattedMessage id="admin.manage-user.user-no-found" />
                     </td>
                   </tr>
                 )}
@@ -333,11 +333,11 @@ class TableManageDoctor extends Component {
               onClick={() => this.handleChangePage("prev")}
               disabled={page <= 1}
             >
-              Prev
+              <FormattedMessage id="admin.prev" />
             </button>
 
             <span>
-              Page {page} of {totalPages}. Total {totalDoctors || 0} doctors
+              <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" /> {totalPages}. <FormattedMessage id="admin.total" /> {totalDoctors || 0} <FormattedMessage id="admin.manage-doctor.doctor" />
             </span>
 
             <button
@@ -345,7 +345,7 @@ class TableManageDoctor extends Component {
               onClick={() => this.handleChangePage("next")}
               disabled={page >= totalPages}
             >
-              Next
+              <FormattedMessage id="admin.next" />
             </button>
           </div>
         </div>

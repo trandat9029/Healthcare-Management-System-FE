@@ -239,8 +239,8 @@ class UserRedux extends Component {
                     <div className="user-modal-header">
                     <div className="title">
                         {this.state.action === CRUD_ACTIONS.EDIT
-                        ? 'Chỉnh sửa người dùng'
-                        : 'Thêm người dùng'}
+                        ? <FormattedMessage id="admin.manage-user.user-create.title-edit" />
+                        : <FormattedMessage id="admin.manage-user.user-create.title-create" />}
                     </div>
                     <button className="user-modal-close" onClick={this.props.onClose}>
                         ×
@@ -249,8 +249,9 @@ class UserRedux extends Component {
 
                     <div className="user-redux-body">
                         <div className="container-fluid">
-                            <form autoComplete="off">
+                            <form autoComplete="off" className='user-form'>
                                 <div className="row">
+                                    
                                     <div className="col-3">
                                         <label>Email</label>
                                         <input
@@ -269,7 +270,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Mật khẩu</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.password" /></label>
                                         <input
                                             name="bh_password"
                                             autoComplete="new-password"
@@ -286,7 +287,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Tên</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.firstName" /></label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -298,7 +299,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Họ</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.lastName" /></label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -310,7 +311,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Số điện thoại</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.phone" /></label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -322,7 +323,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-9">
-                                        <label>Địa chỉ</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.address" /></label>
                                         <input
                                             className="form-control"
                                             type="text"
@@ -334,7 +335,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Giới tính</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.gender" /></label>
                                         <select
                                             className="form-control"
                                             value={gender}
@@ -355,7 +356,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                        <label>Chức danh</label>
+                                        <label><FormattedMessage id="admin.manage-user.user-create.position" /></label>
                                         <select
                                             className="form-control"
                                             value={position}
@@ -376,7 +377,7 @@ class UserRedux extends Component {
                                     </div>
 
                                     <div className="col-3">
-                                    <label>Vai trò</label>
+                                    <label><FormattedMessage id="admin.manage-user.user-create.role" /></label>
                                         <select
                                             className="form-control"
                                             value={role}
@@ -396,8 +397,8 @@ class UserRedux extends Component {
                                         </select>
                                     </div>
 
-                                    <div className="col-3">
-                                        <label>Image</label>
+                                    {/* <div className="col-3">
+                                        <label><FormattedMessage id="admin.manage-user.user-create.avatar" /></label>
                                         <div className="preview-img-container">
                                             <input
                                                 id="previewImg"
@@ -412,17 +413,17 @@ class UserRedux extends Component {
                                                 className="label-upload"
                                                 htmlFor="previewImg"
                                             >
-                                                Tải ảnh <i className="fas fa-upload"></i>
+                                                <FormattedMessage id="admin.manage-user.user-create.import-file" /> <i className="fas fa-upload"></i>
                                             </label>
                                             <div
                                                 className="preview-image"
                                                 style={{
-                                                    backgroundImage: `url(${this.state.previewImgURL})`,
+                                                    backgroundImage: `url(${this.state.previewImgURL})`, width: '120px', height: '120px'
                                                 }}
                                                 onClick={() => this.openPreviewImage()}
                                             ></div>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <div className="col-12 my-3">
                                         <button
@@ -434,11 +435,38 @@ class UserRedux extends Component {
                                             onClick={this.handleSaveUser}
                                         >
                                             {this.state.action === CRUD_ACTIONS.EDIT
-                                            ? 'Cập nhật'
-                                            : 'Lưu user'}
+                                            ? <FormattedMessage id="admin.manage-user.user-create.update" />
+                                            : <FormattedMessage id="admin.manage-user.user-create.save" />}
                                         </button>
                                     </div>
                                 </div>
+                                                                    <div className="col-3">
+                                        <label><FormattedMessage id="admin.manage-user.user-create.avatar" /></label>
+                                        <div className="preview-img-container">
+                                            <input
+                                                id="previewImg"
+                                                className="form-control"
+                                                type="file"
+                                                hidden
+                                                onChange={(event) =>
+                                                    this.handleOnChangeImage(event)
+                                                }
+                                            />
+                                            <label
+                                                className="label-upload"
+                                                htmlFor="previewImg"
+                                            >
+                                                <FormattedMessage id="admin.manage-user.user-create.import-file" /> <i className="fas fa-upload"></i>
+                                            </label>
+                                            <div
+                                                className="preview-image"
+                                                style={{
+                                                    backgroundImage: `url(${this.state.previewImgURL})`, width: '120px', height: '120px'
+                                                }}
+                                                onClick={() => this.openPreviewImage()}
+                                            ></div>
+                                        </div>
+                                    </div>
                             </form>
                         </div>
                     </div>

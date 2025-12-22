@@ -5,6 +5,7 @@ import './ManageProfile.scss';
 import { getDetailInfoDoctorService } from '../../../services/doctorService';
 import ProfileUpdate from './ProfileUpdate';
 import ChangePassword from './ChangePassword';
+import { FormattedMessage } from 'react-intl';
 
 class ManageProfile extends Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class ManageProfile extends Component {
     return (
       <>
         <div className="manage-profile-container">
-          {loading && <div className="profile-loading">Đang tải hồ sơ...</div>}
+          {loading && <div className="profile-loading"><FormattedMessage id="admin.doctor.manage-profile.profile-loading" /></div>}
 
           {!loading && error && (
             <div className="profile-error">
@@ -116,66 +117,66 @@ class ManageProfile extends Component {
             <div className="manage-profile-grid">
               <div className="manage-profile-left">
                 <div className="card-section">
-                  <div className="section-title">Thông tin khám bệnh</div>
+                  <div className="section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-title" /></div>
 
                   <div className="info-row">
-                    <div className="info-label">Bác sĩ</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-doctor" /></div>
                     <div className="info-value">
-                      {fullName || 'Chưa cập nhật'}
+                      {fullName || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Email</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-email" /></div>
                     <div className="info-value">
-                      {email || 'Chưa cập nhật'}
+                      {email || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Ngày sinh</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-birthday" /></div>
                     <div className="info-value">
-                      {info.dateOfBirth || 'Chưa cập nhật'}
+                      {info.dateOfBirth || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Tỉnh thành</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-province" /></div>
                     <div className="info-value">
-                      {provinceText || 'Chưa cập nhật'}
+                      {provinceText || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Giá khám</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-price" /></div>
                     <div className="info-value">
-                      {priceText ? priceText : 'Chưa cập nhật'}
+                      {priceText ? priceText : <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Thanh toán</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-payment" /></div>
                     <div className="info-value">
-                      {paymentText || 'Chưa cập nhật'}
+                      {paymentText || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
 
                   <div className="info-row">
-                    <div className="info-label">Mô tả ngắn</div>
+                    <div className="info-label"><FormattedMessage id="admin.doctor.manage-profile.profile-desc" /></div>
                     <div className="info-value">
-                      {markdown.description || 'Chưa cập nhật'}
+                      {markdown.description || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                     </div>
                   </div>
                 </div>
 
                 <div className="card-section card-scroll">
-                  <div className="section-title">Giới thiệu chi tiết</div>
+                  <div className="section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-detail" /></div>
                   <div className="scroll-body">
                     <div
                       className="markdown-content"
                       dangerouslySetInnerHTML={{
                         __html:
-                          markdown.contentHTML || '<p>Chưa có nội dung</p>',
+                          markdown.contentHTML || '<p><FormattedMessage id="admin.doctor.manage-profile.profile-nodata" /></p>',
                       }}
                     />
                   </div>
@@ -195,7 +196,7 @@ class ManageProfile extends Component {
                   </div>
 
                   <div className="profile-name">
-                    {fullName || 'Chưa có tên'}
+                    {fullName || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}
                   </div>
                   <div className="profile-role">
                     {basic.positionData?.valueVi ||
@@ -209,21 +210,21 @@ class ManageProfile extends Component {
                     <span className="icon">
                       <i className="fa-regular fa-envelope" />
                     </span>
-                    <span>{email || 'Chưa cập nhật email'}</span>
+                    <span>{email || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}</span>
                   </div>
 
                   <div className="profile-info-row">
                     <span className="icon">
                       <i className="fa-solid fa-phone" />
                     </span>
-                    <span>{phoneNumber || 'Chưa cập nhật số điện thoại'}</span>
+                    <span>{phoneNumber || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}</span>
                   </div>
 
                   <div className="profile-info-row">
                     <span className="icon">
                       <i className="fa-solid fa-location-dot" />
                     </span>
-                    <span>{address || 'Chưa cập nhật địa chỉ'}</span>
+                    <span>{address || <FormattedMessage id="admin.doctor.manage-profile.profile-nodata" />}</span>
                   </div>
 
                   <div className="profile-actions">
@@ -231,22 +232,21 @@ class ManageProfile extends Component {
                       className="btn-primary"
                       onClick={this.openUpdateModal}
                     >
-                      Chỉnh sửa hồ sơ
+                      <FormattedMessage id="admin.doctor.manage-profile.profile-btn-update" />
                     </button>
                     <button
                       className="btn-outline"
                       onClick={this.openChangePasswordModal}
                     >
-                      Đổi mật khẩu
+                      <FormattedMessage id="admin.doctor.manage-profile.profile-btn-password" />
                     </button>
                   </div>
                 </div>
 
                 <div className="card-section small-note">
-                  <div className="section-title">Gợi ý</div>
+                  <div className="section-title"><FormattedMessage id="admin.doctor.manage-profile.profile-idea" /></div>
                   <p>
-                    Bạn nên cập nhật đầy đủ thông tin phòng khám, mô tả chi tiết
-                    và ảnh đại diện để bệnh nhân dễ nhận diện và tin tưởng hơn.
+                    <FormattedMessage id="admin.doctor.manage-profile.profile-p" />
                   </p>
                 </div>
               </div>

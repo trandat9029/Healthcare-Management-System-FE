@@ -105,9 +105,9 @@ class ManageHandbook extends Component {
       <div className="manage-handbook-page">
         <div className="manage-handbook-container">
           <div className="ms-header">
-            <div className="ms-title">Quản lý cẩm nang</div>
+            <div className="ms-title"><FormattedMessage id="admin.manage-handbook.handbook-create.title"/></div>
             <div className="ms-subtitle">
-              Tạo và quản lý các bài viết hướng dẫn cho bệnh nhân
+              <FormattedMessage id="admin.manage-handbook.handbook-create.subtitle"/>
             </div>
           </div>
 
@@ -115,7 +115,7 @@ class ManageHandbook extends Component {
             {/* Cột trái */}
             <div className="handbook-left">
               <div className="form-group mb-3">
-                <label className="mb-2">Tên cẩm nang</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-create.name"/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -126,7 +126,7 @@ class ManageHandbook extends Component {
               </div>
 
               <div className="form-group mb-3">
-                <label className="mb-2">Ngày đăng tải</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-create.date-publish"/></label>
                 <DatePicker
                   className="form-control"
                   onChange={this.handleOnchangeDatePicker}
@@ -135,7 +135,7 @@ class ManageHandbook extends Component {
               </div>
 
               <div className="form-group editor-wrapper">
-                <label className="mb-2">Nội dung cẩm nang</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-create.content"/></label>
                 <MdEditor
                   style={{ height: '380px' }}
                   renderHTML={(text) => mdParser.render(text)}
@@ -148,7 +148,7 @@ class ManageHandbook extends Component {
             {/* Cột phải */}
             <div className="handbook-right">
               <div className="form-group mb-3">
-                <label className="mb-2">Tên tác giả</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-create.author"/></label>
                 <input
                   className="form-control"
                   type="text"
@@ -159,7 +159,7 @@ class ManageHandbook extends Component {
               </div>
 
               <div className="form-group mb-4">
-                <label className="mb-2">Ảnh cẩm nang</label>
+                <label className="mb-2"><FormattedMessage id="admin.manage-handbook.handbook-create.thumbnail"/></label>
                 <div className="custom-upload">
                   <input
                     id="handbookImage"
@@ -169,16 +169,16 @@ class ManageHandbook extends Component {
                   />
                   <label htmlFor="handbookImage" className="custom-upload-btn">
                     <i className="fa-regular fa-image" />
-                    Chọn ảnh
+                    <FormattedMessage id="admin.manage-handbook.handbook-create.choose-thumbnail"/>
                   </label>
                   <span className="custom-upload-text">
-                    Chưa có tệp nào được chọn
+                    <FormattedMessage id="admin.manage-handbook.handbook-create.not-selected"/>
                   </span>
                 </div>
               </div>
 
               <div className="form-group mb-4 status-row">
-                <div className="status-label">Trạng thái hiển thị</div>
+                <div className="status-label"><FormattedMessage id="admin.manage-handbook.handbook-create.status"/></div>
                 <div
                   className={`toggle-switch ${isPublished ? 'on' : ''}`}
                   onClick={this.handleToggleStatus}
@@ -186,7 +186,7 @@ class ManageHandbook extends Component {
                   <div className="toggle-circle" />
                 </div>
                 <span className="status-text">
-                  {isPublished ? 'Đang hiển thị' : 'Đang ẩn'}
+                  {isPublished ? <FormattedMessage id="admin.manage-handbook.handbook-create.status-onl"/> : <FormattedMessage id="admin.manage-handbook.handbook-create.status-off"/>}
                 </span>
               </div>
 
@@ -195,7 +195,7 @@ class ManageHandbook extends Component {
                   className="btn-save-handbook"
                   onClick={this.handleSaveNewSpecialty}
                 >
-                  Save
+                  <FormattedMessage id="admin.manage-handbook.handbook-create.save"/>
                 </button>
               </div>
             </div>
