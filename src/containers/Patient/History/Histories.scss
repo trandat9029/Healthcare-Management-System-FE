@@ -2,6 +2,7 @@
 .breadcrumb {
   font-size: 16px;
   margin: 0 auto 24px;
+  margin-top: 20px;
   max-width: 1200px;
   padding: 0 24px;
   color: #444;
@@ -18,7 +19,7 @@
 /* nền trang */
 .histories-page {
   width: 100%;
-  background-color: #f5f7fb;
+  // background-color: #f5f7fb;
   padding: 24px 0 48px;
   /* cho phần body đủ cao để footer tụt xuống dưới */
   min-height: calc(100vh - 220px);

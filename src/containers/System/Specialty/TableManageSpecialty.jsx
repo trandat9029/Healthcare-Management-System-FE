@@ -14,7 +14,7 @@ class TableManageSpecialty extends Component {
     this.state = {
       specialties: [],
       page: 1,
-      limit: 7,
+      limit: 8,
       sortBy: 'name',
       sortOrder: 'ASC',
 

@@ -226,7 +226,6 @@ class BookingModal extends Component {
                     <label>
                     <FormattedMessage
                         id="patient.booking-modal.lastName"
-                        defaultMessage="Họ"
                     />
                     </label>
                     <input
@@ -241,7 +240,6 @@ class BookingModal extends Component {
                     <label>
                     <FormattedMessage
                         id="patient.booking-modal.firstName"
-                        defaultMessage="Tên"
                     />
                     </label>
                     <input

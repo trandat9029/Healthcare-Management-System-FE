@@ -43,7 +43,7 @@ class Specialties extends Component {
                 
                 {/* ==== Breadcrumb ==== */}
                 <div className="breadcrumb">
-                    <i className="fa-solid fa-house"></i> / Khám Chuyên khoa
+                    <i className="fa-solid fa-house"></i> / <FormattedMessage id="patient.specialty.specialty" />
                 </div>
 
                 {/* ==== Ô tìm kiếm ==== */}

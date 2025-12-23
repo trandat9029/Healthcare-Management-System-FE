@@ -45,8 +45,7 @@ class Handbook extends Component {
           <div className="section-container">
             <div className="section-header">
               <span className="title-section">
-                {/* nếu bạn có text riêng cho handbook thì đổi id lại */}
-                <FormattedMessage id="homepage.handbook" defaultMessage="Cẩm nang" />
+                <FormattedMessage id="homepage.handbook"/>
               </span>
               <button
                 className="btn-section"

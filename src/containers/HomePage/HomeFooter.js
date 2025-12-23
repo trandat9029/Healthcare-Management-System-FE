@@ -5,6 +5,7 @@ import logo from "../../assets/logo.svg";
 import logoFooter1 from "../../assets/footer/hellodoctorlogo.png";
 import logoFooter2 from "../../assets/footer/logo-bernard.png";
 import logoFooter3 from "../../assets/footer/doctor-check-2.png";
+import { FormattedMessage } from "react-intl";
 
 class HomeFooter extends Component {
   render() {
@@ -14,33 +15,32 @@ class HomeFooter extends Component {
         <div className="footer-top">
           {/* cột thông tin công ty */}
           <div className="footer-col footer-company">
-            <h4>Công ty Cổ phần Công nghệ BookingHealth</h4>
+            <h4><FormattedMessage id="footer.company.title" /></h4>
 
             <p>
               <i className="fa-solid fa-map-location-dot icon-inline"></i>
-              Lô B4/D21. Khu đô thị mới Cầu Giấy. Phường Dịch Vọng Hậu. Quận Cầu
-              Giấy. Thành phố Hà Nội. Việt Nam
+              <FormattedMessage id="footer.company.address" />
             </p>
 
             <ul className="footer-info-list">
               <li>
                 <i className="fa-solid fa-clipboard-check icon-inline"></i>
-                ĐKKD số 0106790291. Sở KHĐT Hà Nội cấp ngày 16/03/2015
+                <FormattedMessage id="footer.company.dkhd" />
               </li>
               <li>
                 <i className="fa-solid fa-phone-volume icon-inline"></i>
-                Điện thoại. 024 7301 2468 (7h đến 18h)
+                <FormattedMessage id="footer.company.sdt" />
               </li>
               <li>
                 <i className="fa-solid fa-envelope icon-inline"></i>
-                Email. support@bookinghealth.vn (7h đến 18h)
+                <FormattedMessage id="footer.company.email" />
               </li>
             </ul>
 
-            <h5>Văn phòng tại TP Hồ Chí Minh</h5>
+            <h5><FormattedMessage id="footer.company.subtitle" /></h5>
             <p>
               <i className="fa-solid fa-map-location-dot icon-inline"></i>
-              Tòa nhà H3. 384 Hoàng Diệu. Phường 6. Quận 4. TP HCM
+              <FormattedMessage id="footer.company.location" />
             </p>
           </div>
 
@@ -53,27 +53,27 @@ class HomeFooter extends Component {
             </div>
 
             <ul className="footer-link-list">
-              <li>Liên hệ hợp tác</li>
-              <li>Chuyển đổi số</li>
-              <li>Chính sách bảo mật</li>
-              <li>Quy chế hoạt động</li>
-              <li>Điều khoản sử dụng</li>
-              <li>Câu hỏi thường gặp</li>
+              <li><FormattedMessage id="footer.logo.title1" /></li>
+              <li><FormattedMessage id="footer.logo.title2" /></li>
+              <li><FormattedMessage id="footer.logo.title3" /></li>
+              <li><FormattedMessage id="footer.logo.title4" /></li>
+              <li><FormattedMessage id="footer.logo.title5" /></li>
+              <li><FormattedMessage id="footer.logo.title6" /></li>
             </ul>
           </div>
 
           {/* cột đối tác */}
           <div className="footer-col footer-partners">
-            <h4>Đối tác bảo trợ nội dung</h4>
+            <h4><FormattedMessage id="footer.partner.title" /></h4>
 
             <div className="partner-item">
               <div className="partner-logo">
                 <img src={logoFooter1} alt="Hello Doctor" />
               </div>
               <div className="partner-text">
-                <div className="partner-name">Hello Doctor</div>
+                <div className="partner-name"><FormattedMessage id="footer.partner.name1" /></div>
                 <div className="partner-desc">
-                  Bảo trợ chuyên mục nội dung sức khỏe tinh thần
+                  <FormattedMessage id="footer.partner.desc1" />
                 </div>
               </div>
             </div>
@@ -84,10 +84,10 @@ class HomeFooter extends Component {
               </div>
               <div className="partner-text">
                 <div className="partner-name">
-                  Hệ thống y khoa chuyên sâu quốc tế Bernard
+                  <FormattedMessage id="footer.partner.name2" />
                 </div>
                 <div className="partner-desc">
-                  Bảo trợ chuyên mục nội dung y khoa chuyên sâu
+                  <FormattedMessage id="footer.partner.desc2" />
                 </div>
               </div>
             </div>
@@ -98,10 +98,10 @@ class HomeFooter extends Component {
               </div>
               <div className="partner-text">
                 <div className="partner-name">
-                  Doctor Check. Tầm soát bệnh để sống thọ hơn
+                  <FormattedMessage id="footer.partner.name3" />
                 </div>
                 <div className="partner-desc">
-                  Bảo trợ chuyên mục nội dung sức khỏe tổng quát
+                  <FormattedMessage id="footer.partner.desc3" />
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@ class HomeFooter extends Component {
         <div className="footer-bottom">
           <div className="footer-bottom-inner">
             <div className="footer-bottom-left">
-              © 2025 BookingHealth. Tất cả các quyền được bảo lưu.
+              <FormattedMessage id="footer.copyright" />
             </div>
             <div className="footer-bottom-right">
               <a

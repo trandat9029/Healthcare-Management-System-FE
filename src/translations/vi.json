@@ -78,7 +78,39 @@
     "homepage": {
         "outstanding-doctor": "Bác sĩ nổi bật",
         "more-info": "Xem thêm",
-        "specialty-popular": "Chuyên khoa phổ biến"
+        "specialty-popular": "Chuyên khoa phổ biến",
+        "clinic-popular": "Phòng khám phổ biến",
+        "handbook": "Cẩm nang",
+        "about": "Truyền thông nói gì về BookingHealth"
+    },
+    "footer": {
+        "company":{
+            "title": "Công ty Cổ phần Công nghệ BookingHealth",
+            "address": "Lô B4/D21. Khu đô thị mới Cầu Giấy. Phường Dịch Vọng Hậu. Quận Cầu Giấy. Thành phố Hà Nội. Việt Nam",
+            "dkhd": "ĐKKD số 0106790291. Sở KHĐT Hà Nội cấp ngày 16/03/2015",
+            "sdt": "Điện thoại. 024 7301 2468 (7h đến 18h)",
+            "email": "Email. support@bookinghealth.vn (7h đến 18h)",
+            "subtitle": "Văn phòng tại TP Hồ Chí Minh",
+            "location": "Tòa nhà H3. 384 Hoàng Diệu. Phường 6. Quận 4. TP HCM"
+        },
+        "logo":{
+            "title1": "Liên hệ hợp tác",
+            "title2": "Chuyển đổi số",
+            "title3": "Chính sách bảo mật",
+            "title4": "Quy chế hoạt động",
+            "title5": "Điều khoản sử dụng",
+            "title6": "Câu hỏi thường gặp"
+        },
+        "partner":{
+            "title": "Đối tác bảo trợ nội dung",
+            "name1": "Hello Doctor",
+            "desc1": "Bảo trợ chuyên mục nội dung sức khỏe tinh thần",
+            "name2": "Hệ thống y khoa chuyên sâu quốc tế Bernard",
+            "desc2": "Bảo trợ chuyên mục nội dung y khoa chuyên sâu",
+            "name3": "Doctor Check. Tầm soát bệnh để sống thọ hơn",
+            "desc3": "Bảo trợ chuyên mục nội dung sức khỏe tổng quát"
+        },
+        "copyright": "© 2025 BookingHealth. Tất cả các quyền được bảo lưu."
     },
     "manage-schedule": {
         "title": "Quản lý kết hoạch khám bệnh của bác sĩ ",
@@ -88,6 +120,7 @@
     },
     "patient":{
         "detail-doctor": {
+            "doctor":"Bác sĩ",
             "schedule": "Lịch khám",
             "no-schedule": "Bác sĩ không có lịch hẹn trong khoảng thời gian này, vui lòng chọn thời gian khác! ",
             "choose": "Chọn ",
@@ -102,17 +135,71 @@
         },
         "booking-modal":{
             "title": "Thông tin đặt lịch khám bệnh",
-            "fullName": "Họ và tên",
+            "lastName": "Tên",
+            "firstName": "Họ",
             "phoneNumber": "Số điện thoại",
             "email": "Địa chỉ email",
             "address": "Địa chỉ liên lạc",
             "reason": "Lý do khám",
             "birthday": "Ngày sinh",
             "gender":"Giới tính",
+            "insuranceNumber":"Số bảo hiểm",
             "btnConfirm": "Xác nhận",
             "btnCancel": "Hủy bỏ",
             "priceBooking": "Miễn phí đặt lịch",
-            "price":"Giá khám "
+            "price":"Giá khám ",
+            "note":"Ghi chú"
+        },
+        "clinic": {
+            "clinic": "Phòng khám",
+            "no-result": "Không tìm thấy phòng khám phù hợp",
+            "clinic-detail": {
+                "title": "Khám tại cơ sở y tế",
+                "address": "Địa chỉ",
+                "more": "Xem thêm",
+                "less": "Thu gọn"
+            }
+        },
+        "specialty": {
+            "specialty": "Khám chuyên khoa",
+            "no-result": "Không tìm thấy chuyên khoa phù hợp",
+            "specialty-detail": {
+                "title": "Khám chuyên khoa",
+                "subtitle": "giỏi. giàu kinh nghiệm. lịch khám linh hoạt",
+                "doctor": "Bác sĩ",
+                "address": "Địa chỉ",
+                "more": "Xem thêm",
+                "less": "Thu gọn"
+            }
+        },
+        "handbook":{
+            "handbook":"Cẩm nang",
+            "no-result": "Không tìm thấy bài viết phù hợp",
+            "handbook-detail": {
+                "homepage":"Trang chủ",
+                "handbook":"Cẩm nang",
+                "title": "Thông tin bài viết",
+                "author":"Tác giả",
+                "date-publish":"Ngày đăng tải",
+                "label": "Tiêu đề"
+
+            }
+        },
+        "history":{
+            "history": "Lịch sử khám",
+            "no-history": "Không tìm thấy lịch sử",
+            "no-booking":"Chưa có lịch sử đặt lịch nào.",
+            "title": "Lịch sử đặt lịch",
+            "subtitle": "Nhập email để xem lại các lần đặt lịch khám của bạn.",
+            "doctor":"Bác sĩ",
+            "time":"THỜI GIAN KHÁM",
+            "reason":"Lý do khám",
+            "status":"Trạng thái",
+            "action":"Hành động",
+            "cancel": "Hủy",
+            "search": "Tìm kiếm",
+            "searching": "Đang tìm..."
+
         }
     },
     "admin":{

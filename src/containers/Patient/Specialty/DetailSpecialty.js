@@ -128,7 +128,7 @@ class DetailSpecialty extends Component {
           {/* breadcrumb */}
           <div className="breadcrumb">
             <i className="fa-solid fa-house"></i>
-            <span> / Khám Chuyên khoa / </span>
+            <span> / <FormattedMessage id="patient.specialty.specialty-detail.title" /> / </span>
             <span className="breadcrumb-current">{specialtyName}</span>
           </div>
 
@@ -138,7 +138,7 @@ class DetailSpecialty extends Component {
               <div className="specialty-header-text">
                 <h1 className="specialty-title">{specialtyName}</h1>
                 <p className="specialty-subtitle">
-                  Bác sĩ {specialtyName} giỏi. giàu kinh nghiệm. lịch khám linh hoạt
+                  <FormattedMessage id="patient.specialty.specialty-detail.doctor" /> {specialtyName} <FormattedMessage id="patient.specialty.specialty-detail.subtitle" />
                 </p>
               </div>
 
@@ -169,7 +169,7 @@ class DetailSpecialty extends Component {
                     onClick={this.handleToggleDescription}
                     className="toggle-description-btn"
                   >
-                    {isShowFullDescription ? 'Thu gọn' : 'Xem thêm'}
+                    {isShowFullDescription ? <FormattedMessage id="patient.specialty.specialty-detail.less" /> : <FormattedMessage id="patient.specialty.specialty-detail.more" />}
                   </button>
                 </div>
               </div>

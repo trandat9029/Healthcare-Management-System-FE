@@ -6,6 +6,7 @@ import {
 } from "../../../services/bookingService";
 import { LANGUAGES } from "../../../utils";
 import "./Histories.scss";
+import { FormattedMessage } from "react-intl";
 
 class Histories extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Histories extends Component {
       } else {
         this.setState({
           bookings: [],
-          error: res.data?.errMessage || "Không tìm thấy lịch sử",
+          error: res.data?.errMessage || <FormattedMessage id="patient.history.no-history" />,
         });
       }
     } catch (e) {
@@ -119,15 +120,15 @@ class Histories extends Component {
       <>
         {/* breadcrumb */}
         <div className="breadcrumb">
-          <i className="fa-solid fa-house"></i> / Lịch sử khám
+          <i className="fa-solid fa-house"></i> / <FormattedMessage id="patient.history.history" />
         </div>
 
         <div className="histories-page">
           <div className="histories-container">
             <div className="histories-header">
-              <h2 className="histories-title">Lịch sử đặt lịch</h2>
+              <h2 className="histories-title"><FormattedMessage id="patient.history.title" /></h2>
               <p className="histories-subtitle">
-                Nhập email để xem lại các lần đặt lịch khám của bạn.
+                <FormattedMessage id="patient.history.subtitle" />
               </p>
             </div>
 
@@ -141,7 +142,7 @@ class Histories extends Component {
                   onChange={this.handleChangeEmail}
                 />
                 <button onClick={this.handleSearch} disabled={loading}>
-                  {loading ? "Đang tìm..." : "Tìm kiếm"}
+                  {loading ? <FormattedMessage id="patient.history.searching" /> : <FormattedMessage id="patient.history.search" />}
                 </button>
               </div>
               {error && <div className="histories-error">{error}</div>}
@@ -154,10 +155,11 @@ class Histories extends Component {
                   <thead>
                     <tr>
                       <th>STT</th>
-                      <th>Bác sĩ</th>
-                      <th>Thời gian khám</th>
-                      <th>Trạng thái</th>
-                      <th>Hành động</th>
+                      <th><FormattedMessage id="patient.history.doctor" /></th>
+                      <th><FormattedMessage id="patient.history.time" /></th>
+                      <th><FormattedMessage id="patient.history.reason" /></th>
+                      <th><FormattedMessage id="patient.history.status" /></th>
+                      <th><FormattedMessage id="patient.history.action" /></th>
                     </tr>
                   </thead>
 
@@ -167,14 +169,15 @@ class Histories extends Component {
                       const timeType = item.timeTypeDataPatient || {};
                       const statusData = item.statusData || {};
 
-                      const doctorName = `${doctor.lastName || ""} ${
+                      const doctorName = ` ${
                         doctor.firstName || ""
-                      }`.trim();
+                      } ${doctor.lastName || ""}`.trim();
 
                       const timeLabel =
                         language === LANGUAGES.VI
                           ? timeType.valueVi || ""
                           : timeType.valueEn || "";
+                      const reason = item.patientData?.patientInfoData?.reason || "";
 
                       const statusLabel =
                         language === LANGUAGES.VI
@@ -200,6 +203,7 @@ class Histories extends Component {
                           <td>
                             {timeLabel} {dateLabel}
                           </td>
+                          <td>{reason }</td>
                           <td>
                             <span className={`status-badge ${statusClass}`}>
                               {statusLabel}
@@ -215,7 +219,7 @@ class Histories extends Component {
                               }
                               onClick={() => canCancel && this.handleCancel(item)}
                             >
-                              Hủy
+                              <FormattedMessage id="patient.history.cancel" />
                             </button>
                           </td>
                         </tr>

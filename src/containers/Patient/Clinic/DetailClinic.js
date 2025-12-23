@@ -7,6 +7,7 @@ import DoctorExtraInfo from '../Doctor/DoctorExtraInfo';
 import ProfileDoctor from '../Doctor/ProfileDoctor';
 import { getAllDetailClinicByIdService } from '../../../services/clinicService';
 import _ from 'lodash';
+import { FormattedMessage } from 'react-intl';
 
 class DetailClinic extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class DetailClinic extends Component {
 
           <div className="breadcrumb">
             <i className="fa-solid fa-house"></i>
-            <span> / Khám tại cơ sở y tế / </span>
+            <span> / <FormattedMessage id="patient.clinic.clinic-detail.title" /> / </span>
             <span className="breadcrumb-current">{clinicName}</span>
           </div>
 
@@ -73,7 +74,7 @@ class DetailClinic extends Component {
             <div className="clinic-header">
               <div className="clinic-header-text">
                 <h1 className="clinic-title">{clinicName}</h1>
-                <p className="clinic-subtitle">Địa chỉ. {clinicAddress}</p>
+                <p className="clinic-subtitle"><FormattedMessage id="patient.clinic.clinic-detail.address" />. {clinicAddress}</p>
               </div>
 
               {clinicImage && (
@@ -103,7 +104,7 @@ class DetailClinic extends Component {
                     onClick={this.handleToggleDescription}
                     className="toggle-description-btn"
                   >
-                    {isShowFullDescription ? 'Thu gọn' : 'Xem thêm'}
+                    {isShowFullDescription ? <FormattedMessage id="patient.clinic.clinic-detail.less" /> : <FormattedMessage id="patient.clinic.clinic-detail.more" />}
                   </button>
                 </div>
               </div>

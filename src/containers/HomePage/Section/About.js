@@ -7,6 +7,7 @@ import vietnamnet from "../../../assets/aboutus/142415-logo-vnnet.png";
 import vtcnews from "../../../assets/aboutus/165432-vtcnewslogosvg.png";
 import suckhoedoisong from "../../../assets/aboutus/suckhoedoisong.png";
 import vtv1 from "../../../assets/aboutus/vtv1.png";
+import { FormattedMessage } from "react-intl";
 
 class About extends Component {
   render() {
@@ -24,7 +25,7 @@ class About extends Component {
       <>
         <div className="section-share section-about">
           <div className="section-about-header">
-            Truyền thông nói gì về BookingHealth
+            <FormattedMessage id="homepage.about"/>
           </div>
 
           <div className="section-about-content">

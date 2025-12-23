@@ -5,6 +5,7 @@ import './HandbookDetail.scss';
 import _ from 'lodash';
 import banner from '../../../assets/images/banner.jpg';
 import { handleGetDetailHandbookById } from '../../../services/handbookService';
+import { FormattedMessage } from 'react-intl';
 
 class HandbookDetail extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class HandbookDetail extends Component {
           <div className="hb-hero-overlay" />
           <div className="hb-hero-inner">
             <div className="hb-breadcrumb">
-              Trang chủ {'>'} Cẩm nang {'>'} {title}
+              <FormattedMessage id="patient.handbook.handbook-detail.homepage" /> {'>'} <FormattedMessage id="patient.handbook.handbook-detail.handbook" /> {'>'} {title}
             </div>
             <h1 className="hb-hero-title">{title}</h1>
           </div>
@@ -77,20 +78,20 @@ class HandbookDetail extends Component {
           {/* Cột phải */}
           <div className="hb-right">
             <div className="hb-meta-box">
-              <h3 className="hb-meta-title">Thông tin bài viết</h3>
+              <h3 className="hb-meta-title"><FormattedMessage id="patient.handbook.handbook-detail.title" /></h3>
 
               <div className="hb-meta-row">
-                <span className="hb-meta-label">Tác giả</span>
+                <span className="hb-meta-label"><FormattedMessage id="patient.handbook.handbook-detail.author" /></span>
                 <span className="hb-meta-value">{author}</span>
               </div>
 
               <div className="hb-meta-row">
-                <span className="hb-meta-label">Ngày đăng</span>
+                <span className="hb-meta-label"><FormattedMessage id="patient.handbook.handbook-detail.date-publish" /></span>
                 <span className="hb-meta-value">{date}</span>
               </div>
 
               <div className="hb-meta-row">
-                <span className="hb-meta-label">Tiêu đề</span>
+                <span className="hb-meta-label"><FormattedMessage id="patient.handbook.handbook-detail.label" /></span>
                 <span className="hb-meta-value">{title}</span>
               </div>
             </div>

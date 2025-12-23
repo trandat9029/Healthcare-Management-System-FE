@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import './Clinics.scss';
 import { getAllClinicService } from '../../../services/clinicService';
 import { withRouter } from 'react-router';
+import { FormattedMessage } from 'react-intl';
 
 class Clinics extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class Clinics extends Component {
       <div className="clinics-page">
         {/* breadcrumb */}
         <div className="breadcrumb">
-          <i className="fa-solid fa-house"></i> / Phòng khám
+          <i className="fa-solid fa-house"></i> / <FormattedMessage id="patient.clinic.clinic" />
         </div>
 
         {/* ô tìm kiếm */}
@@ -75,7 +76,7 @@ class Clinics extends Component {
             ))}
 
           {filtered.length === 0 && (
-            <div className="no-result">Không tìm thấy phòng khám phù hợp</div>
+            <div className="no-result"><FormattedMessage id="patient.clinic.no-result" /></div>
           )}
         </div>
       </div>

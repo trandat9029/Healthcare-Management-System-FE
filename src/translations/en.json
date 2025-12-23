@@ -79,7 +79,39 @@
     "homepage": {
         "outstanding-doctor": "Featured doctor",
         "more-info": "More info",
-        "specialty-popular": "Popular specialties"
+        "specialty-popular": "Popular specialties",
+        "clinic-popular": "Popular clinics",
+        "handbook": "Handbook",
+        "about": "What the media is saying about BookingHealth?"
+    },
+    "footer": {
+        "company": {
+            "title": "BookingHealth Technology Joint Stock Company",
+            "address": "Lot B4/D21, New Cau Giay Urban Area, Dich Vong Hau Ward, Cau Giay District, Hanoi City, Vietnam",
+            "dkhd": "Business Registration No. 0106790291, issued by Hanoi Department of Planning and Investment on March 16, 2015",
+            "sdt": "Phone: 024 7301 2468 (7:00 AM to 6:00 PM)",
+            "email": "Email: support@bookinghealth.vn (7:00 AM to 6:00 PM)",
+            "subtitle": "Office in Ho Chi Minh City",
+            "location": "H3 Building, 384 Hoang Dieu Street, Ward 6, District 4, Ho Chi Minh City"
+        },
+        "logo": {
+            "title1": "Contact for Partnership",
+            "title2": "Digital Transformation",
+            "title3": "Privacy Policy",
+            "title4": "Terms of Operation",
+            "title5": "Terms of Use",
+            "title6": "Frequently Asked Questions"
+        },
+        "partner": {
+            "title": "Content Sponsoring Partners",
+            "name1": "Hello Doctor",
+            "desc1": "Sponsor of mental health content section",
+            "name2": "Bernard International Specialized Medical System",
+            "desc2": "Sponsor of specialized medical content section",
+            "name3": "Doctor Check - Screening for Diseases to Live Longer",
+            "desc3": "Sponsor of general health content section"
+        },
+        "copyright": "© 2025 BookingHealth. All rights reserved."
     },
     "manage-schedule": {
         "title": "Manage doctor's examination plan",
@@ -89,6 +121,7 @@
     },
     "patient":{
         "detail-doctor": {
+            "doctor": "Doctor",
             "schedule": "Schedule",
             "no-schedule": "The doctor has no appointments available at this time, please choose another time!",
             "choose": "Choose ",
@@ -103,17 +136,69 @@
         },
         "booking-modal":{
             "title": "Medical appointment information",
-            "fullName": "Full name",
+            "lastName": "Last Name",
+            "firstName": "First Name",
             "phoneNumber": "Phone number",
             "email": "Email",
             "address": "Address",
             "reason": "Reason for examination",
             "birthday": "Date of birth",
             "gender":"Gender",
+            "insuranceNumber":"Insurance Number",
             "btnConfirm": "Confirm",
             "btnCancel": "Cancel",
             "priceBooking": "Free booking",
-            "price":"Examination price"
+            "price":"Examination price",
+            "note": "Note"
+        },
+        "clinic": {
+            "clinic": "Clinic",
+            "no-result": "No matching clinics found",
+            "clinic-detail": {
+                "title": "Examination at Medical Facility",
+                "address": "Address",
+                "more": "View More",
+                "less": "Collapse"
+            }
+        },
+        "specialty": {
+            "specialty": "Specialty Examination",
+            "no-result": "No matching specialties found",
+            "specialty-detail": {
+                "title": "Specialty Examination",
+                "subtitle": "highly skilled, experienced, flexible schedule",
+                "doctor": "Doctor",
+                "address": "Address",
+                "more": "View More",
+                "less": "Collapse"
+            }
+        },
+        "handbook": {
+            "handbook": "Handbook",
+            "no-result": "No matching articles found",
+            "handbook-detail": {
+                "homepage": "Home",
+                "handbook": "Handbook",
+                "title": "Article Information",
+                "author": "Author",
+                "date-publish": "Publish Date",
+                "label": "Title"
+            }
+        },
+        "history": {
+            "history": "Examination History",
+            "no-history": "No history found",
+            "no-booking": "No booking history yet.",
+            "title": "Booking History",
+            "subtitle": "Enter your email to review your past examination bookings.",
+            "doctor": "Doctor",
+            "time": "EXAMINATION TIME",
+            "reason": "Reason for Visit",
+            "status": "Status",
+            "action": "Action",
+            "cancel": "Cancel",
+            "search": "Search",
+            "searching": "Searching..."
         }
     }, 
     "admin":{

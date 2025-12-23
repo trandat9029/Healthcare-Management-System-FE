@@ -8,6 +8,7 @@ import { getDetailInfoDoctorService } from '../../../services/doctorService';
 import { LANGUAGES } from '../../../utils';
 import DoctorSchedule from './DoctorSchedule';
 import DoctorExtraInfo from './DoctorExtraInfo';
+import { FormattedMessage } from 'react-intl';
 
 class DetailDoctor extends Component {
   constructor(props) {
@@ -53,7 +54,9 @@ class DetailDoctor extends Component {
           {/* BREADCRUMB */}
           <div className="breadcrumb">
             <i className="fa-solid fa-house"></i>
-            <span> / Bác sĩ / </span>
+            <span> / <FormattedMessage
+                        id="patient.detail-doctor.doctor"
+                    /> / </span>
             <span className="breadcrumb-current">{displayName}</span>
           </div>
 
