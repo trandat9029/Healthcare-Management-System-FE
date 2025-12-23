@@ -38,7 +38,7 @@
   padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid #d1fae5;
-  background-color: #ecfdf5;
+  background-color: #fff;;
   box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
   cursor: text;
   min-height: 36px;
@@ -94,7 +94,8 @@
   height: 36px;
 
   &:hover {
-    background-color: #ecfdf5;
+    background: #b91c1c;
+        color: #ffffff;
   }
 }
 

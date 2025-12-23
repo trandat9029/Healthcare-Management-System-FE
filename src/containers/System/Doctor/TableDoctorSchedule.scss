@@ -12,7 +12,6 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #065f46;
-  margin-top: 15px;
 }
 
 .d-schedule-function{
@@ -174,7 +173,7 @@
     padding: 6px 14px;
     border-radius: 999px;
     border: 1px solid #d1fae5;
-    background-color: #ecfdf5;
+    background-color: #fff;;
     box-shadow: 0 2px 6px rgba(22, 163, 74, 0.12);
     cursor: text;
 
@@ -294,8 +293,9 @@
       cursor: pointer;
       transition: all 0.15s ease;
 
-      &:hover:not(:disabled) {
-        background: #ecfdf3;
+      &:hover {
+        background: #b91c1c;
+        color: #ffffff;
       }
 
       &:disabled {

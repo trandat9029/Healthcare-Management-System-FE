@@ -428,7 +428,7 @@
             },
             "manage-profile": {
                 "profile-loading": "Loading profile...",
-                "profile-title": "Examination Information",
+                "profile-title": "Personal information",
                 "profile-doctor": "Doctor",
                 "profile-email": "Email",
                 "profile-birthday": "Date of Birth",
@@ -489,9 +489,9 @@
         "of": "of", 
         "total": "Total",
         "filter-cancel": "Remove filter",
-        "nothing": "Không có",
-        "loading": "Loading..." 
-
+        "nothing": "Nothing selected",
+        "loading": "Loading...", 
+        "export-excel": "Export Excel"
 
     }
 }

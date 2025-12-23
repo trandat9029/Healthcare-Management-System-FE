@@ -1,5 +1,7 @@
 // src/containers/System/Statistical/StatisticalClinic.jsx
 import React, { Component } from "react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import {
   BarChart,
   Bar,
@@ -43,9 +45,57 @@ class StatisticalClinic extends Component {
     await this.fetchTodayByClinic();
   }
 
+  handleExportExcel = () => {
+    const {
+      totalClinic,
+      totalBookingToday,
+      totalCancelToday,
+      selectedDate,
+      todayByClinic,
+    } = this.state;
+
+    const dateLabel = selectedDate; // yyyy-mm-dd
+
+    // Sheet 1: Summary
+    const summaryRows = [
+      {
+        Date: dateLabel,
+        TotalClinic: totalClinic,
+        TotalBookingCompleted: totalBookingToday,
+        TotalBookingCanceled: totalCancelToday,
+      },
+    ];
+    const sheetSummary = XLSX.utils.json_to_sheet(summaryRows);
+
+    // Sheet 2: Detail by clinic
+    const detailRows = (todayByClinic || []).map((x) => ({
+      ClinicId: x.clinicId,
+      ClinicName: x.clinicName,
+      Completed: x.complete,
+      Canceled: x.cancel,
+      Total: x.total,
+    }));
+    const sheetDetail = XLSX.utils.json_to_sheet(detailRows);
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, sheetSummary, "Summary");
+    XLSX.utils.book_append_sheet(wb, sheetDetail, "ByClinic");
+
+    const buffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(blob, `stat_clinic_${dateLabel}.xlsx`);
+  };
+
   safePayload = (res) => {
     if (!res) return null;
-    if (res.data && (res.data.errCode !== undefined || res.data.data !== undefined)) return res.data;
+    if (
+      res.data &&
+      (res.data.errCode !== undefined || res.data.data !== undefined)
+    )
+      return res.data;
     if (res.errCode !== undefined || res.data !== undefined) return res;
     return res;
   };
@@ -137,10 +187,18 @@ class StatisticalClinic extends Component {
           map.set(clinicId, item);
         });
 
-        const todayByClinic = Array.from(map.values()).sort((a, b) => a.clinicId - b.clinicId);
+        const todayByClinic = Array.from(map.values()).sort(
+          (a, b) => a.clinicId - b.clinicId
+        );
 
-        const totalBookingToday = todayByClinic.reduce((sum, x) => sum + x.complete, 0);
-        const totalCancelToday = todayByClinic.reduce((sum, x) => sum + x.cancel, 0);
+        const totalBookingToday = todayByClinic.reduce(
+          (sum, x) => sum + x.complete,
+          0
+        );
+        const totalCancelToday = todayByClinic.reduce(
+          (sum, x) => sum + x.cancel,
+          0
+        );
 
         this.setState({
           todayByClinic,
@@ -187,8 +245,16 @@ class StatisticalClinic extends Component {
     return (
       <div className="bh-tooltip">
         <div className="bh-tooltip-title">{label}</div>
-        <div><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed"/>: {complete} <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar"/></div>
-        <div><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled"/>: {cancel} <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar"/></div>
+        <div>
+          <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed" />
+          : {complete}{" "}
+          <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar" />
+        </div>
+        <div>
+          <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled" />
+          : {cancel}{" "}
+          <FormattedMessage id="admin.manage-clinic.clinic-statistical.calendar" />
+        </div>
       </div>
     );
   };
@@ -210,15 +276,19 @@ class StatisticalClinic extends Component {
       <div className="stat-clinic-dashboard">
         <div className="dashboard-header">
           <div>
-            <div className="dashboard-title"><FormattedMessage id="admin.manage-clinic.clinic-statistical.title"/></div>
+            <div className="dashboard-title">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.title" />
+            </div>
             <div className="dashboard-subtitle">
-              <FormattedMessage id="admin.manage-clinic.clinic-statistical.subtitle"/>
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.subtitle" />
             </div>
           </div>
 
           <div className="dashboard-header-right">
             <div className="filter-item">
-              <label className="filter-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.filter"/></label>
+              <label className="filter-label">
+                <FormattedMessage id="admin.manage-clinic.clinic-statistical.filter" />
+              </label>
               <input
                 className="bh-date-input"
                 type="date"
@@ -227,8 +297,12 @@ class StatisticalClinic extends Component {
               />
             </div>
 
-            <button type="button" className="btn-dashboard-tag" onClick={this.onClickRefresh}>
-              <FormattedMessage id="admin.manage-clinic.clinic-statistical.refresh"/>
+            <button
+              type="button"
+              className="btn-dashboard-tag"
+              onClick={this.onClickRefresh}
+            >
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.refresh" />
             </button>
           </div>
         </div>
@@ -240,27 +314,41 @@ class StatisticalClinic extends Component {
             <div className="metric-icon clinics">
               <i className="fa-solid fa-hospital" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic"/></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic" />
+            </div>
             <div className="metric-value">{totalClinic}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic-desc"/></div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.total-clinic-desc" />
+            </div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon finished">
               <i className="fa-regular fa-circle-check" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-completed"/></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-completed" />
+            </div>
             <div className="metric-value">{totalBookingToday}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date"/> {displayDate}</div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date" />{" "}
+              {displayDate}
+            </div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon cancelled">
               <i className="fa-regular fa-circle-xmark" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-canceled"/></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.total-booking-canceled" />
+            </div>
             <div className="metric-value">{totalCancelToday}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date"/> {displayDate}</div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-date" />{" "}
+              {displayDate}
+            </div>
           </div>
         </div>
 
@@ -268,19 +356,31 @@ class StatisticalClinic extends Component {
           <div className="dashboard-section wide">
             <div className="section-header">
               <div>
-                <h3><FormattedMessage id="admin.manage-clinic.clinic-statistical.header-h3"/></h3>
-                <p><FormattedMessage id="admin.manage-clinic.clinic-statistical.header-p"/> {displayDate}.</p>
+                <h3>
+                  <FormattedMessage id="admin.manage-clinic.clinic-statistical.header-h3" />
+                </h3>
+                <p>
+                  <FormattedMessage id="admin.manage-clinic.clinic-statistical.header-p" />{" "}
+                  {displayDate}.
+                </p>
               </div>
             </div>
 
             <div className="section-body chart-body-lg">
               {isLoadingToday ? (
-                <div className="loading"><FormattedMessage id="admin.manage-clinic.clinic-statistical.loading"/></div>
+                <div className="loading">
+                  <FormattedMessage id="admin.manage-clinic.clinic-statistical.loading" />
+                </div>
               ) : todayByClinic.length === 0 ? (
-                <div className="no-data"><FormattedMessage id="admin.manage-clinic.clinic-statistical.no-data"/></div>
+                <div className="no-data">
+                  <FormattedMessage id="admin.manage-clinic.clinic-statistical.no-data" />
+                </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={todayByClinic} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                  <BarChart
+                    data={todayByClinic}
+                    margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+                  >
                     <CartesianGrid vertical={false} stroke="#e5e7eb" />
                     <XAxis
                       dataKey="clinicName"
@@ -299,12 +399,35 @@ class StatisticalClinic extends Component {
                       iconSize={8}
                       wrapperStyle={{ fontSize: 12 }}
                     />
-                    <Bar dataKey="complete" name={<FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed"/>} fill="#22c55e" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="cancel" name={<FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled"/>} fill="#fb923c" radius={[6, 6, 0, 0]} />
+                    <Bar
+                      dataKey="complete"
+                      name={
+                        <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-completed" />
+                      }
+                      fill="#22c55e"
+                      radius={[6, 6, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="cancel"
+                      name={
+                        <FormattedMessage id="admin.manage-clinic.clinic-statistical.booking-canceled" />
+                      }
+                      fill="#fb923c"
+                      radius={[6, 6, 0, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               )}
             </div>
+          </div>
+          <div className="export-file">
+            <button
+              type="button"
+              className="btn-export"
+              onClick={this.handleExportExcel}
+            >
+              Export Excel
+            </button>
           </div>
         </div>
       </div>

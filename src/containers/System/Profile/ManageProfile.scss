@@ -47,7 +47,7 @@
 }
 
 .section-title {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -87,7 +87,7 @@
 /* Tăng chiều cao tối thiểu */
 .card-section.card-scroll .scroll-body {
   min-height: 260px;    /* tăng từ 260px → 360px */
-  max-height: 320px;    /* cho phép kéo dài đẹp */
+  max-height: 400px;    /* cho phép kéo dài đẹp */
   overflow-y: auto;
   padding-right: 6px;
 }

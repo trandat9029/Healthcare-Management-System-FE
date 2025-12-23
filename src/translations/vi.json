@@ -432,7 +432,7 @@
             },
             "manage-profile": {
                 "profile-loading": "Đang tải hồ sơ...",
-                "profile-title": "Thông tin khám bệnh",
+                "profile-title": "Thông tin cá nhân",
                 "profile-doctor": "Bác sĩ",
                 "profile-email": "Email",
                 "profile-birthday": "Ngày sinh",
@@ -494,6 +494,7 @@
         "total": "Tổng",
         "filter-cancel": "Bỏ lọc",
         "nothing": "Không có",
-        "loading": "Đang tải..." 
+        "loading": "Đang tải...", 
+        "export-excel": "Xuất file excel"
     }
 }

@@ -78,11 +78,11 @@ div._loading_overlay_wrapper {
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      text-transform: uppercase;
       letter-spacing: 0.04em;
 
       &:hover {
-        background-color: #dcfce7;
+        background: #b91c1c;
+        color: #ffffff;
       }
     }
   }

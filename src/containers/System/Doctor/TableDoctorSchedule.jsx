@@ -303,7 +303,7 @@ class TableDoctorSchedule extends Component {
                 <button
                   className="btn-clear-filter"
                   onClick={this.handleClearFilter}
-                  disabled={!selectedTime && !selectedDate}
+                  // disabled={!selectedTime && !selectedDate}
                 >
                   <FormattedMessage id="admin.filter-cancel" />
                 </button>

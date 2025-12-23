@@ -14,7 +14,7 @@ class TableManageDoctor extends Component {
       doctors: [],
 
       page: 1,
-      limit: 5,
+      limit: 6,
       sortBy: "createdAt",
       sortOrder: "DESC",
 

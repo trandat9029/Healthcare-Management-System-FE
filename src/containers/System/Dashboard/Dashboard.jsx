@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import DatePicker from "../../../components/Input/DatePicker";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -61,6 +64,60 @@ class Dashboard extends Component {
     this.setState({ selectedDate: date });
   };
 
+  handleExportExcel = () => {
+    const { bookingStatusData, patientByClinicMonthly, topDoctors } =
+      this.state;
+
+    // Sheet 1: Booking status by month
+    const sheet1 = XLSX.utils.json_to_sheet(
+      (bookingStatusData || []).map((r) => ({
+        Month: r.month,
+        Confirmed: r.confirmed,
+        Finished: r.finished,
+        Pending: r.pending,
+        Cancelled: r.cancelled,
+      }))
+    );
+
+    // Sheet 2: Patients completed by clinic (monthly)
+    const sheet2 = XLSX.utils.json_to_sheet(
+      (patientByClinicMonthly || []).map((r) => ({
+        Month: r.month,
+        ClinicId: r.clinicId,
+        ClinicName: r.name,
+        Completed: r.countComplete,
+      }))
+    );
+
+    // Sheet 3: Top doctors
+    const sheet3 = XLSX.utils.json_to_sheet(
+      (topDoctors || []).map((d, idx) => ({
+        Rank: idx + 1,
+        DoctorId: d.id,
+        Name: d.name,
+        Specialty: d.specialty,
+        CompletedThisMonth: d.count,
+      }))
+    );
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, sheet1, "BookingStatus");
+    XLSX.utils.book_append_sheet(wb, sheet2, "ClinicMonthly");
+    XLSX.utils.book_append_sheet(wb, sheet3, "TopDoctors");
+
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, "0");
+    const d = String(today.getDate()).padStart(2, "0");
+
+    saveAs(blob, `dashboard_export_${y}${m}${d}.xlsx`);
+  };
+
   getCurrentMonthLabel = () => {
     const now = new Date();
     const mm = String(now.getMonth() + 1).padStart(2, "0");
@@ -113,14 +170,19 @@ class Dashboard extends Component {
   fecthTopDoctors = async () => {
     try {
       const res = await getTopDoctorHomeService(5);
-      
+
       if (res && res.errCode === 0) {
         const { specialtyNameMap } = this.state;
-        const { language } =this.props;
-                     
+        const { language } = this.props;
+
         const topDoctors = (res.data || []).map((d) => {
-          const position = language === LANGUAGES.VI ? d.positionData.valueVi : d.positionData.valueEn;
-          const fullName = `${position} ${d.firstName || ""} ${d.lastName || ""}`.trim();
+          const position =
+            language === LANGUAGES.VI
+              ? d.positionData.valueVi
+              : d.positionData.valueEn;
+          const fullName = `${position} ${d.firstName || ""} ${
+            d.lastName || ""
+          }`.trim();
 
           const specialtyId = Number(d.doctorInfoData?.specialtyId || 0);
           const specialtyName =
@@ -184,7 +246,7 @@ class Dashboard extends Component {
       topDoctors,
     } = this.state;
 
-    const { language } = this.props
+    const { language } = this.props;
 
     const formattedDate = selectedDate
       ? new Date(selectedDate).toLocaleDateString("vi-VN")
@@ -196,7 +258,9 @@ class Dashboard extends Component {
 
       return (
         <div className="bh-tooltip">
-          <div className="bh-tooltip-title"><FormattedMessage id="admin.dashboard.dashboard-month" /> {label}</div>
+          <div className="bh-tooltip-title">
+            <FormattedMessage id="admin.dashboard.dashboard-month" /> {label}
+          </div>
           {payload.map((item) => (
             <div key={item.dataKey} className="bh-tooltip-row">
               <span
@@ -209,7 +273,8 @@ class Dashboard extends Component {
                 }}
               />
               <span>
-                {item.name}: {item.value} <FormattedMessage id="admin.dashboard.dashboard-calendar" /> 
+                {item.name}: {item.value}{" "}
+                <FormattedMessage id="admin.dashboard.dashboard-calendar" />
               </span>
             </div>
           ))}
@@ -226,7 +291,11 @@ class Dashboard extends Component {
       return (
         <div className="bh-tooltip">
           <div className="bh-tooltip-title">{label}</div>
-          <div><FormattedMessage id="admin.dashboard.dashboard-booked" />: {complete} <FormattedMessage id="admin.dashboard.dashboard-calendar" /></div>
+          <div>
+            <FormattedMessage id="admin.dashboard.dashboard-booked" />:{" "}
+            {complete}{" "}
+            <FormattedMessage id="admin.dashboard.dashboard-calendar" />
+          </div>
         </div>
       );
     };
@@ -235,15 +304,19 @@ class Dashboard extends Component {
       <div className="dashboard-page">
         <div className="dashboard-header">
           <div>
-            <div className="dashboard-title"><FormattedMessage id="admin.dashboard.dashboard-title" /></div>
+            <div className="dashboard-title">
+              <FormattedMessage id="admin.dashboard.dashboard-title" />
+            </div>
             <div className="dashboard-subtitle">
-              <FormattedMessage id="admin.dashboard.dashboard-subtitle" /> 
+              <FormattedMessage id="admin.dashboard.dashboard-subtitle" />
             </div>
           </div>
 
           <div className="dashboard-header-right">
             <div className="filter-item">
-              <label className="filter-label"><FormattedMessage id="admin.dashboard.dashboard-date" /> </label>
+              <label className="filter-label">
+                <FormattedMessage id="admin.dashboard.dashboard-date" />{" "}
+              </label>
               <DatePicker
                 className="form-control"
                 onChange={this.handleOnchangeDatePicker}
@@ -262,34 +335,48 @@ class Dashboard extends Component {
             <div className="metric-icon doctors">
               <i className="fa-solid fa-user-doctor" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-doctor" /></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.dashboard.dashboard-total-doctor" />
+            </div>
             <div className="metric-value">{totalDoctor}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-doctor-desc" /></div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.dashboard.dashboard-total-doctor-desc" />
+            </div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon patients">
               <i className="fa-solid fa-users" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-patient" /></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.dashboard.dashboard-total-patient" />
+            </div>
             <div className="metric-value">{totalPatient}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-patient-desc" /></div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.dashboard.dashboard-total-patient-desc" />
+            </div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon specialties">
               <i className="fa-solid fa-stethoscope" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-specialty" /></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.dashboard.dashboard-total-specialty" />
+            </div>
             <div className="metric-value">{totalSpecialty}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-specialty-desc" /></div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.dashboard.dashboard-total-specialty-desc" />
+            </div>
           </div>
 
           <div className="metric-card">
             <div className="metric-icon clinics">
               <i className="fa-solid fa-hospital" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-clinic" /></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.dashboard.dashboard-total-clinic" />
+            </div>
             <div className="metric-value">{totalClinic}</div>
             <div className="metric-desc">
               <FormattedMessage id="admin.dashboard.dashboard-total-clinic-desc" />
@@ -300,9 +387,13 @@ class Dashboard extends Component {
             <div className="metric-icon posts">
               <i className="fa-regular fa-newspaper" />
             </div>
-            <div className="metric-label"><FormattedMessage id="admin.dashboard.dashboard-total-handbook" /></div>
+            <div className="metric-label">
+              <FormattedMessage id="admin.dashboard.dashboard-total-handbook" />
+            </div>
             <div className="metric-value">{totalHandbook}</div>
-            <div className="metric-desc"><FormattedMessage id="admin.dashboard.dashboard-total-handbook-desc" /></div>
+            <div className="metric-desc">
+              <FormattedMessage id="admin.dashboard.dashboard-total-handbook-desc" />
+            </div>
           </div>
         </div>
 
@@ -310,8 +401,12 @@ class Dashboard extends Component {
           <div className="dashboard-section wide">
             <div className="section-header">
               <div>
-                <h3><FormattedMessage id="admin.dashboard.dashboard-header-h3" /></h3>
-                <p><FormattedMessage id="admin.dashboard.dashboard-header-p" /></p>
+                <h3>
+                  <FormattedMessage id="admin.dashboard.dashboard-header-h3" />
+                </h3>
+                <p>
+                  <FormattedMessage id="admin.dashboard.dashboard-header-p" />
+                </p>
               </div>
               <button type="button" className="btn-small-secondary">
                 <FormattedMessage id="admin.dashboard.dashboard-header-button" />
@@ -393,7 +488,9 @@ class Dashboard extends Component {
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
-                  <h3><FormattedMessage id="admin.dashboard.dashboard-lower-h3" /></h3>
+                  <h3>
+                    <FormattedMessage id="admin.dashboard.dashboard-lower-h3" />
+                  </h3>
                   <p>
                     <FormattedMessage id="admin.dashboard.dashboard-lower-p" />{" "}
                     {currentMonthLabel}
@@ -438,8 +535,12 @@ class Dashboard extends Component {
             <div className="dashboard-section">
               <div className="section-header">
                 <div>
-                  <h3><FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" /></h3>
-                  <p><FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" /></p>
+                  <h3>
+                    <FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" />
+                  </h3>
+                  <p>
+                    <FormattedMessage id="admin.dashboard.dashboard-doctor-outStanding-header" />
+                  </p>
                 </div>
               </div>
 
@@ -450,15 +551,32 @@ class Dashboard extends Component {
                       <div className="rank-badge">{index + 1}</div>
 
                       <div className="doctor-info">
-                        <div className="name">{language === LANGUAGES.VI ? doctor.positionData?.valueVi : doctor.positionData?.valueEn} {doctor.name}</div>
+                        <div className="name">
+                          {language === LANGUAGES.VI
+                            ? doctor.positionData?.valueVi
+                            : doctor.positionData?.valueEn}{" "}
+                          {doctor.name}
+                        </div>
                         <div className="meta">{doctor.specialty}</div>
                       </div>
 
-                      <div className="count-tag">{doctor.count} <FormattedMessage id="admin.dashboard.dashboard-count" /></div>
+                      <div className="count-tag">
+                        {doctor.count}{" "}
+                        <FormattedMessage id="admin.dashboard.dashboard-count" />
+                      </div>
                     </li>
                   ))}
                 </ul>
               </div>
+            </div>
+            <div className="export-file">
+              <button
+                type="button"
+                className="btn-export"
+                onClick={this.handleExportExcel}
+              >
+                <FormattedMessage id="admin.export-excel" />
+              </button>
             </div>
           </div>
         </div>

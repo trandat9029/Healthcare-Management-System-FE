@@ -468,3 +468,17 @@
     max-width: 100%;
   }
 }
+.export-file{
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-export{
+  width: 150px;
+  padding: 10px 0;
+  border-radius: 20px;
+  background-color: #f97316 !important;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: cornsilk;
+}
