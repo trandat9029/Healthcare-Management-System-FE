@@ -66,7 +66,9 @@ const updateProfileDoctorService = (data) => {
     return axios.put('/api/doctors/profile', data);
 };
 
-
+const handleCancelBookingByDoctor = (data) =>{
+    return axios.post(`/api/doctors/cancel-booking`, data)
+}
 
 export { 
     getTopDoctorHomeService,
@@ -83,5 +85,6 @@ export {
     // getSchedules,
     handleGetScheduleByDoctor,
     updateProfileDoctorService,
-    getAllPatientsService
+    getAllPatientsService,
+    handleCancelBookingByDoctor
 }

@@ -180,3 +180,20 @@ div._loading_overlay_wrapper {
     }
   }
 }
+
+.mp-btn-cancel {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-left: 8px;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

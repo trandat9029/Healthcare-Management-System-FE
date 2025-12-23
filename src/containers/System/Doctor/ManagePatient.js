@@ -14,6 +14,7 @@ import Select from "react-select";
 import {
   getAllPatientForDoctorService,
   postSendRemedy,
+  handleCancelBookingByDoctor 
 } from "../../../services/doctorService";
 import PatientModal from "./PatientModal";
 
@@ -74,6 +75,41 @@ class ManagePatient extends Component {
       console.log("fetchFilterOptions error:", error);
     }
   };
+ 
+handleCancelBooking = async (item) => {
+  try {
+    const { user, language } = this.props;
+
+    // Chỉ cho hủy khi statusId là S1 hoặc S2
+    if (!item?.statusId || !["S1", "S2"].includes(item.statusId)) {
+      toast.warning("Chỉ được hủy lịch khi trạng thái là S1 hoặc S2");
+      return;
+    }
+
+    const ok = window.confirm("Bạn chắc chắn muốn hủy lịch khám này không?");
+    if (!ok) return;
+
+    const payload = {
+      bookingId: item.id, // khuyến nghị backend nhận bookingId
+      doctorId: user.id,
+      language,
+      cancelReason: "Bác sĩ hủy lịch",
+    };
+
+    const res = await handleCancelBookingByDoctor(payload);
+
+    if (res && res.errCode === 0) {
+      toast.success("Hủy lịch thành công. Đã gửi email cho bệnh nhân.");
+      await this.getDataPatient();
+    } else {
+      toast.error(res?.errMessage || "Hủy lịch thất bại");
+    }
+  } catch (e) {
+    console.log(e);
+    toast.error("Có lỗi khi hủy lịch");
+  }
+};
+
 
   buildOptionsFromAllcode = (data) => {
     const { language } = this.props;
@@ -392,21 +428,24 @@ class ManagePatient extends Component {
                             <td>{patient.address || ""}</td>
                             <td>{status || ""}</td>
                             <td>
-                              <button
-                                className="mp-btn-confirm"
-                                onClick={() => {
-                                  this.handleBtnConfirm(item);
-                                }}
-                              >
+                              <button className="mp-btn-confirm" onClick={() => this.handleBtnConfirm(item)}>
                                 <FormattedMessage id="admin.doctor.manage-booking.patient.confirm" />
                               </button>
-                              <button
-                                className="mp-btn-detail"
-                                onClick={() => this.handleBtnViewDetail(item)}
-                              >
+
+                              <button className="mp-btn-detail" onClick={() => this.handleBtnViewDetail(item)}>
                                 <FormattedMessage id="admin.doctor.manage-booking.patient.view-detail" />
                               </button>
+
+                              <button
+                                className="mp-btn-cancel"
+                                onClick={() => this.handleCancelBooking(item)}
+                                disabled={!["S1", "S2"].includes(item?.statusId)}
+                                title={!["S1", "S2"].includes(item?.statusId) ?<FormattedMessage id="admin.doctor.manage-booking.patient.booking-cancel-s" /> : ""}
+                              >
+                                <FormattedMessage id="admin.doctor.manage-booking.patient.booking-cancel" />
+                              </button>
                             </td>
+
                           </tr>
                         );
                       })

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './TableDoctorSchedule.scss';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../../utils/constant';
-import { handleGetScheduleByDoctor } from '../../../services/doctorService';
+import { handleGetScheduleByDoctor,  } from '../../../services/doctorService';
 
 import Select from 'react-select';
 import { getAllCodeService } from '../../../services/userService';

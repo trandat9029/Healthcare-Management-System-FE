@@ -405,7 +405,10 @@
                     "status":"Trạng thái",
                     "action":"Hành động",
                     "confirm":"Xác nhận",
-                    "view-detail":"Xem chi tiết"
+                    "view-detail":"Xem chi tiết",
+                    "booking-cancel":"Hủy lịch khám",
+                    "booking-cancel-s":"Chỉ hủy được khi S1 hoặc S2"
+
                 },
                 "remedy": {
                     "title":" Gửi hóa đơn khám bệnh cho bệnh nhân",
