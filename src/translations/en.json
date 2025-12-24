@@ -199,6 +199,18 @@
             "cancel": "Cancel",
             "search": "Search",
             "searching": "Searching..."
+        },
+        "verify-email": {
+            "loading": "Verifying your appointment. Please wait a moment.",
+            "back-home": "Back to Home",
+            "title-success": "Appointment Confirmed Successfully",
+            "subtitle-success": "Thank you for booking your examination. The detailed information has been sent to your email.",
+            "title-expire": "Confirmation Link Has Expired",
+            "subtitle-expire": "The link is only valid for 15 minutes. Please go back and book a new appointment.",
+            "title-slot-full": "Time Slot Is Fully Booked",
+            "subtitle-slot-full": "Unfortunately, this time slot is now full. Please go back and select a different time slot.",
+            "title-failed": "Appointment Already Confirmed or Does Not Exist",
+            "subtitle-failed": "Please check the confirmation link in your email again, or contact our support team if you need further assistance."
         }
     }, 
     "admin":{

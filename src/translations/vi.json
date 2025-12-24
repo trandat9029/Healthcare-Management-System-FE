@@ -200,6 +200,19 @@
             "search": "Tìm kiếm",
             "searching": "Đang tìm..."
 
+        }, 
+        "verify-email":{
+            "loading": "Đang xác nhận lịch hẹn. vui lòng chờ trong giây lát.",
+            "back-home": "Về trang chủ",
+            "title-success": "Xác nhận lịch hẹn thành công",
+            "subtitle-success": "Cảm ơn bạn đã đặt lịch khám. Thông tin chi tiết đã được gửi vào email của bạn.",
+            "title-expire": "Link xác nhận đã hết hạn",
+            "subtitle-expire": "Link chỉ có hiệu lực trong 15 phút. Vui lòng quay lại và đặt lịch lại.",
+            "title-slot-full": "Khung giờ đã đủ người",
+            "subtitle-slot-full": "Rất tiếc, khung giờ này đã đủ số lượng. Vui lòng quay lại và chọn khung giờ khác.",
+            "title-failed": "Lịch hẹn đã được xác nhận hoặc không tồn tại",
+            "subtitle-failed": "Vui lòng kiểm tra lại đường link xác nhận trong email, hoặc liên hệ bộ phận hỗ trợ nếu cần thêm trợ giúp."
+
         }
     },
     "admin":{

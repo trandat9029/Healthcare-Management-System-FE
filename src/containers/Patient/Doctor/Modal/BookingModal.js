@@ -172,11 +172,16 @@ class BookingModal extends Component {
     });
 
     if (res && res.errCode === 0) {
-      toast.success('Booking a new appointment succeed');
-      this.props.closeBookingModal();
-    } else {
-      toast.error('Booking a new appointment error');
-    }
+  toast.success('Đã gửi email xác nhận. Vui lòng kiểm tra email để hoàn tất.');
+  this.props.closeBookingModal();
+} else if (res && res.errCode === 4) {
+  toast.error('Khung giờ đã đủ người. Vui lòng chọn khung giờ khác.');
+} else if (res && res.errCode === 2) {
+  toast.error('Bạn đã đặt khung giờ này rồi.');
+} else {
+  toast.error(res?.errMessage || 'Đặt lịch thất bại. Vui lòng thử lại.');
+}
+
   };
 
   render() {
@@ -191,7 +196,18 @@ class BookingModal extends Component {
       <LoadingOverlay
         active={this.state.isShowLoading}
         spinner
-        text="Loading..."
+        text="Đang tải..."
+        styles={{
+          overlay: (base) => ({
+            ...base,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 2000,
+          }),
+        }}
       >
         <Modal
           isOpen={isOpenModal}

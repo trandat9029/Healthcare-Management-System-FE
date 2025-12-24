@@ -47,58 +47,76 @@ class VerifyEmail extends Component {
   }
 
   render() {
-    const { statusVerify, errCode } = this.state;
+  const { statusVerify, errCode } = this.state;
 
-    const isSuccess = +errCode === 0;
+  const isSuccess = +errCode === 0;
+  const isSlotFull = +errCode === 4;
+  const isExpired = +errCode === 5;
 
-    return (
-      <>
-        <div className="verify-email-page">
-          <div className="verify-email-wrapper">
-            {!statusVerify && (
-              <div className="verify-card loading-card">
-                <div className="spinner" />
-                <p className="loading-text">Đang xác nhận lịch hẹn. vui lòng chờ trong giây lát.</p>
-              </div>
-            )}
+  let title = '';
+  let subtitle = '';
 
-            {statusVerify && (
-              <div className="verify-card">
-                <div
-                  className={
-                    isSuccess ? 'status-icon status-success' : 'status-icon status-fail'
-                  }
-                >
-                  <i
-                    className={
-                      isSuccess ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'
-                    }
-                  />
-                </div>
-
-                <h2 className="status-title">
-                  {isSuccess
-                    ? 'Xác nhận lịch hẹn thành công'
-                    : 'Lịch hẹn đã được xác nhận hoặc không tồn tại'}
-                </h2>
-
-                <p className="status-subtitle">
-                  {isSuccess
-                    ? 'Cảm ơn bạn đã đặt lịch khám. Thông tin chi tiết đã được gửi vào email của bạn.'
-                    : 'Vui lòng kiểm tra lại đường link xác nhận trong email. hoặc liên hệ bộ phận hỗ trợ nếu cần thêm trợ giúp.'}
-                </p>
-
-                <a href="/home" className="back-home-btn">
-                  <i className="fa-solid fa-arrow-left" />
-                  <span>Về trang chủ</span>
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      </>
-    );
+  if (isSuccess) {
+    title = <FormattedMessage id="patient.verify-email.title-success" />;
+    subtitle = <FormattedMessage id="patient.verify-email.subtitle-success" />;
+  } else if (isExpired) {
+    title = <FormattedMessage id="patient.verify-email.title-expire" />;
+    subtitle = <FormattedMessage id="patient.verify-email.subtitle-expire" />;
+  } else if (isSlotFull) {
+    title = <FormattedMessage id="patient.verify-email.title-slot-full" />;
+    subtitle =<FormattedMessage id="patient.verify-email.subtitle-slot-full" />;
+  } else {
+    title = <FormattedMessage id="patient.verify-email.title-failed" />;
+    subtitle = <FormattedMessage id="patient.verify-email.subtitle-failed" />;
   }
+
+  return (
+    <>
+      <div className="verify-email-page">
+        <div className="verify-email-wrapper">
+          {!statusVerify && (
+            <div className="verify-card loading-card">
+              <div className="spinner" />
+              <p className="loading-text">
+                <FormattedMessage id="patient.verify-email.loading" />
+              </p>
+            </div>
+          )}
+
+          {statusVerify && (
+            <div className="verify-card">
+              <div
+                className={
+                  isSuccess
+                    ? 'status-icon status-success'
+                    : 'status-icon status-fail'
+                }
+              >
+                <i
+                  className={
+                    isSuccess
+                      ? 'fa-solid fa-circle-check'
+                      : 'fa-solid fa-circle-xmark'
+                  }
+                />
+              </div>
+
+              <h2 className="status-title">{title}</h2>
+
+              <p className="status-subtitle">{subtitle}</p>
+
+              <a href="/home" className="back-home-btn">
+                <i className="fa-solid fa-arrow-left" />
+                <span><FormattedMessage id="patient.verify-email.back-home" /></span>
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
 }
 
 const mapStateToProps = (state) => {
