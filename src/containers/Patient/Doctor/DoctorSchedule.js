@@ -228,6 +228,18 @@ class DoctorSchedule extends Component {
     });
   };
 
+  handleBookingSuccess = async () => {
+  const { doctorIdFromParent } = this.props;
+  const { selectedDate } = this.state;
+
+  // đóng modal trước hoặc sau đều được
+  this.setState({ isOpenModalBooking: false });
+
+  if (doctorIdFromParent && selectedDate) {
+    await this.fetchAndApplySchedule(doctorIdFromParent, selectedDate);
+  }
+};
+
   render() {
     let { allDays, allAvailableTime, isOpenModalBooking, dataScheduleTimeModal, selectedDate } = this.state;
     let { language } = this.props;
@@ -300,6 +312,7 @@ class DoctorSchedule extends Component {
           isOpenModal={isOpenModalBooking}
           closeBookingModal={this.closeBookingModal}
           dataTime={dataScheduleTimeModal}
+            onBookingSuccess={this.handleBookingSuccess}
         />
       </>
     );

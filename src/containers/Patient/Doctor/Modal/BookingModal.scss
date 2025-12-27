@@ -59,6 +59,30 @@
       border-radius: 14px;
       padding: 16px 18px 10px 18px;
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      position: relative;
+    }
+
+    /* Fix cho react-loading-overlay để overlay mượt và không nhấp nháy */
+    .booking-form > ._loading_overlay_wrapper {
+      position: relative;
+    }
+
+    .booking-form ._loading_overlay_overlay {
+      border-radius: 14px;
+      animation: overlayFadeIn 0.12s ease-in;
+    }
+
+    .booking-form ._loading_overlay_content {
+      width: 100%;
+    }
+
+    @keyframes overlayFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     label {
@@ -115,6 +139,11 @@
       border-radius: 999px;
       font-weight: 600;
       font-size: 14px;
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
     }
 
     .btn-booking-confirm {
@@ -165,4 +194,8 @@
   &:hover {
     background: #ebc106;
   }
+}
+
+._loading_overlay_overlay {
+  z-index: 2000;
 }
