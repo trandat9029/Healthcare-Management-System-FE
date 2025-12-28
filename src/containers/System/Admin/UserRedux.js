@@ -234,8 +234,8 @@ class UserRedux extends Component {
 
     return (
         <>
-            <div className="user-modal-overlay" onClick={this.props.onClose}>
-                <div className="user-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="user-modal-overlay" >
+                <div className="user-modal" >
                     <div className="user-modal-header">
                     <div className="title">
                         {this.state.action === CRUD_ACTIONS.EDIT

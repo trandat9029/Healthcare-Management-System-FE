@@ -298,7 +298,7 @@ class ManageDoctor extends Component {
             console.log('check state: ', this.state);
 
     return (
-      <div className="doctor-modal-overlay" onClick={this.props.onClose}>
+      <div className="doctor-modal-overlay" >
         <div className="doctor-modal-container" onClick={(e) => e.stopPropagation()}>
           <div className="doctor-modal-header">
             <span>

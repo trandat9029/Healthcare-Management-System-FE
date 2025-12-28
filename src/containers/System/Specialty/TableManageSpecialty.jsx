@@ -1,12 +1,12 @@
 // src/containers/System/Specialty/TableManageSpecialty.js
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './TableManageSpecialty.scss';
-import * as actions from '../../../store/actions';
-import { FormattedMessage } from 'react-intl';
-import ManageSpecialty from './ManageSpecialty';     // modal tạo mới
-import UpdateSpecialty from './UpdateSpecialty';     // modal sửa
-import { handleDeleteSpecialty } from '../../../services/specialtyService';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import "./TableManageSpecialty.scss";
+import * as actions from "../../../store/actions";
+import { FormattedMessage } from "react-intl";
+import ManageSpecialty from "./ManageSpecialty"; // modal tạo mới
+import UpdateSpecialty from "./UpdateSpecialty"; // modal sửa
+import { handleDeleteSpecialty } from "../../../services/specialtyService";
 
 class TableManageSpecialty extends Component {
   constructor(props) {
@@ -15,20 +15,26 @@ class TableManageSpecialty extends Component {
       specialties: [],
       page: 1,
       limit: 8,
-      sortBy: 'name',
-      sortOrder: 'ASC',
+      sortBy: "name",
+      sortOrder: "ASC",
 
-      keyword: '',
+      keyword: "",
 
-      showCreateModal: false,      // modal tạo
-      showUpdateModal: false,      // modal sửa
-      selectedSpecialty: null,     // chuyên khoa đang sửa
+      showCreateModal: false, // modal tạo
+      showUpdateModal: false, // modal sửa
+      selectedSpecialty: null, // chuyên khoa đang sửa
     };
   }
 
   async componentDidMount() {
     const { page, limit, sortBy, sortOrder, keyword } = this.state;
-    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
+    await this.props.fetchAllSpecialtyRedux(
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keyword
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -39,16 +45,25 @@ class TableManageSpecialty extends Component {
     }
   }
 
-   handleChangeSearch = (e) =>{
+  handleChangeSearch = (e) => {
     const keyword = e.target.value;
-    this.setState({
-      keyword,
-      page: 1,
-    }, ()=>{
-      const { page, limit, sortBy, sortOrder } = this.state;
-      this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
-    })
-  }
+    this.setState(
+      {
+        keyword,
+        page: 1,
+      },
+      () => {
+        const { page, limit, sortBy, sortOrder } = this.state;
+        this.props.fetchAllSpecialtyRedux(
+          page,
+          limit,
+          sortBy,
+          sortOrder,
+          keyword
+        );
+      }
+    );
+  };
 
   handleChangePage = (type) => {
     const { page, limit, sortBy, sortOrder, keyword } = this.state;
@@ -57,11 +72,11 @@ class TableManageSpecialty extends Component {
     const totalPages = Math.ceil((totalSpecialties || 0) / limit) || 1;
     let newPage = page;
 
-    if (type === 'prev' && page > 1) {
+    if (type === "prev" && page > 1) {
       newPage = page - 1;
     }
 
-    if (type === 'next' && page < totalPages) {
+    if (type === "next" && page < totalPages) {
       newPage = page + 1;
     }
 
@@ -76,7 +91,7 @@ class TableManageSpecialty extends Component {
             this.state.limit,
             this.state.sortBy,
             this.state.sortOrder,
-            this.state.keyword,
+            this.state.keyword
           );
         }
       );
@@ -85,10 +100,10 @@ class TableManageSpecialty extends Component {
 
   handleSort = (field) => {
     const { sortBy, sortOrder, keyword } = this.state;
-    let newSortOrder = 'ASC';
+    let newSortOrder = "ASC";
 
-    if (sortBy === field && sortOrder === 'ASC') {
-      newSortOrder = 'DESC';
+    if (sortBy === field && sortOrder === "ASC") {
+      newSortOrder = "DESC";
     }
 
     this.setState(
@@ -103,7 +118,7 @@ class TableManageSpecialty extends Component {
           this.state.limit,
           this.state.sortBy,
           this.state.sortOrder,
-          keyword,
+          keyword
         );
       }
     );
@@ -112,7 +127,7 @@ class TableManageSpecialty extends Component {
   renderSortLabel = (field) => {
     const { sortBy, sortOrder } = this.state;
     if (sortBy !== field) return null;
-    return sortOrder === 'ASC' ? ' ↑' : ' ↓';
+    return sortOrder === "ASC" ? " ↑" : " ↓";
   };
 
   // mở modal tạo mới
@@ -151,7 +166,13 @@ class TableManageSpecialty extends Component {
   // sau khi save xong thì reload list và đóng mọi modal
   handleSpecialtySaved = async () => {
     const { page, limit, sortBy, sortOrder, keyword } = this.state;
-    await this.props.fetchAllSpecialtyRedux(page, limit, sortBy, sortOrder, keyword);
+    await this.props.fetchAllSpecialtyRedux(
+      page,
+      limit,
+      sortBy,
+      sortOrder,
+      keyword
+    );
     this.setState({
       showCreateModal: false,
       showUpdateModal: false,
@@ -160,11 +181,20 @@ class TableManageSpecialty extends Component {
   };
 
   handleDeleteSpecialty = async (specialty) => {
-    if (window.confirm('Bạn có chắc muốn xóa chuyên khoa này không?')) {
+    if (window.confirm("Bạn có chắc muốn xóa chuyên khoa này không?")) {
       await handleDeleteSpecialty(specialty.id);
+
+      const { page, limit, sortBy, sortOrder, keyword } = this.state;
+      await this.props.fetchAllSpecialtyRedux(
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+        keyword
+      );
     }
   };
-  
+
   render() {
     const {
       specialties,
@@ -214,12 +244,19 @@ class TableManageSpecialty extends Component {
               <tbody>
                 <tr>
                   <th>STT</th>
-                  <th onClick={() => this.handleSort('name')}>
-                    <FormattedMessage id="admin.manage-specialty.specialty.name" />{this.renderSortLabel('name')}
+                  <th onClick={() => this.handleSort("name")}>
+                    <FormattedMessage id="admin.manage-specialty.specialty.name" />
+                    {this.renderSortLabel("name")}
                   </th>
-                  <th><FormattedMessage id="admin.manage-specialty.specialty.createAt" /></th>
-                  <th><FormattedMessage id="admin.manage-specialty.specialty.thumbnail" /></th>
-                  <th><FormattedMessage id="admin.manage-specialty.specialty.action" /></th>
+                  <th>
+                    <FormattedMessage id="admin.manage-specialty.specialty.createAt" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="admin.manage-specialty.specialty.thumbnail" />
+                  </th>
+                  <th>
+                    <FormattedMessage id="admin.manage-specialty.specialty.action" />
+                  </th>
                 </tr>
 
                 {arrSpecialties && arrSpecialties.length > 0 ? (
@@ -231,14 +268,14 @@ class TableManageSpecialty extends Component {
                         <td
                           style={{
                             maxWidth: 300,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                         >
                           {item.createdAt
                             ? new Date(item.createdAt).toLocaleString()
-                            : ''}
+                            : ""}
                         </td>
                         <td>
                           {item.image && (
@@ -248,7 +285,7 @@ class TableManageSpecialty extends Component {
                               style={{
                                 width: 80,
                                 height: 50,
-                                objectFit: 'cover',
+                                objectFit: "cover",
                                 borderRadius: 4,
                               }}
                             />
@@ -261,7 +298,7 @@ class TableManageSpecialty extends Component {
                           >
                             <i className="fa-solid fa-pen-to-square"></i>
                           </button>
-                          <button 
+                          <button
                             className="btn-delete"
                             onClick={() => this.handleDeleteSpecialty(item)}
                           >
@@ -273,7 +310,7 @@ class TableManageSpecialty extends Component {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="5" style={{ textAlign: 'center' }}>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
                       <FormattedMessage id="admin.manage-specialty.specialty-no-found" />
                     </td>
                   </tr>
@@ -285,18 +322,20 @@ class TableManageSpecialty extends Component {
           <div className="pagination mt-3 d-flex justify-content-center align-items-center">
             <button
               className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('prev')}
+              onClick={() => this.handleChangePage("prev")}
               disabled={page <= 1}
             >
               <FormattedMessage id="admin.prev" />
             </button>
             <span>
-              <FormattedMessage id="admin.page" /> {page} <FormattedMessage id="admin.of" /> {totalPages}. <FormattedMessage id="admin.total" /> {totalSpecialties || 0}{' '}
+              <FormattedMessage id="admin.page" /> {page}{" "}
+              <FormattedMessage id="admin.of" /> {totalPages}.{" "}
+              <FormattedMessage id="admin.total" /> {totalSpecialties || 0}{" "}
               <FormattedMessage id="admin.manage-specialty.specialties" />
             </span>
             <button
               className="btn btn-light mx-2"
-              onClick={() => this.handleChangePage('next')}
+              onClick={() => this.handleChangePage("next")}
               disabled={page >= totalPages}
             >
               <FormattedMessage id="admin.next" />
@@ -339,7 +378,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAllSpecialtyRedux: (page, limit, sortBy, sortOrder, keyword) =>
-      dispatch(actions.fetchAllSpecialty(page, limit, sortBy, sortOrder, keyword)),
+      dispatch(
+        actions.fetchAllSpecialty(page, limit, sortBy, sortOrder, keyword)
+      ),
   };
 };
 

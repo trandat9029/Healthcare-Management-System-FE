@@ -495,6 +495,7 @@
                 "filter-status":"Trạng thái",
                 "filter-name":"Tìm theo tên bệnh nhân",
                 "booking-btn-create": "Thêm lịch khám",
+                "booking-btn-confirm": "Chỉ được xác nhận khi đến ngày khám",
                 "booking-no-found": "Không có bệnh nhân nào ",
                 "patients": "bệnh nhân",
                 "patient": {

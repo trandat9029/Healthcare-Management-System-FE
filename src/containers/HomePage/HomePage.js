@@ -25,11 +25,25 @@ class HomePage extends Component {
 
     return (
       <div>
-        <Specialty settings={settings} />
-        <MedicalFacility settings={settings} />
-        <OutstandingDoctor settings={settings} />
-        <Handbook settings={settings} />
-        <About />
+        <div id="section-specialty">
+          <Specialty settings={settings} />
+        </div>
+
+        <div id="section-medical-facility">
+          <MedicalFacility settings={settings} />
+        </div>
+
+        <div id="section-outstanding-doctor">
+          <OutstandingDoctor settings={settings} />
+        </div>
+
+        <div id="section-handbook">
+          <Handbook settings={settings} />
+        </div>
+
+        <div id="section-about">
+          <About />
+        </div>
       </div>
     );
   }

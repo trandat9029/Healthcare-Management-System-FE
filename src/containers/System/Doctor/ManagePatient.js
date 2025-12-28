@@ -14,15 +14,19 @@ import Select from "react-select";
 import {
   getAllPatientForDoctorService,
   postSendRemedy,
-  handleCancelBookingByDoctor 
+  handleCancelBookingByDoctor,
 } from "../../../services/doctorService";
 import PatientModal from "./PatientModal";
+
+const savedDate = localStorage.getItem("mp_currentDate");
 
 class ManagePatient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDate: moment(new Date()).startOf("day").valueOf(),
+      currentDate: savedDate
+        ? Number(savedDate)
+        : moment().startOf("day").valueOf(),
       dataPatient: [],
       isOpenRemedyModal: false,
       isOpenPatientModal: false,
@@ -49,7 +53,6 @@ class ManagePatient extends Component {
     }
   }
 
-  // gọi Allcode để build option cho filter
   fetchFilterOptions = async () => {
     try {
       const [resTime, resStatus] = await Promise.all([
@@ -75,41 +78,45 @@ class ManagePatient extends Component {
       console.log("fetchFilterOptions error:", error);
     }
   };
- 
-handleCancelBooking = async (item) => {
-  try {
-    const { user, language } = this.props;
 
-    // Chỉ cho hủy khi statusId là S1 hoặc S2
-    if (!item?.statusId || !["S1", "S2"].includes(item.statusId)) {
-      toast.warning("Chỉ được hủy lịch khi trạng thái là S1 hoặc S2");
-      return;
+  handleCancelBooking = async (item) => {
+    try {
+      const { user, language } = this.props;
+
+      if (!item?.statusId || !["S1", "S2"].includes(item.statusId)) {
+        toast.warning("Chỉ được hủy lịch khi trạng thái là S1 hoặc S2");
+        return;
+      }
+
+      const ok = window.confirm("Bạn chắc chắn muốn hủy lịch khám này không?");
+      if (!ok) return;
+
+      // bật loading khi bắt đầu hủy
+      this.setState({ isShowLoading: true });
+
+      const payload = {
+        bookingId: item.id,
+        doctorId: user.id,
+        language,
+        cancelReason: "Bác sĩ hủy lịch",
+      };
+
+      const res = await handleCancelBookingByDoctor(payload);
+
+      if (res && res.errCode === 0) {
+        toast.success("Hủy lịch thành công. Đã gửi email cho bệnh nhân.");
+        await this.getDataPatient();
+      } else {
+        toast.error(res?.errMessage || "Hủy lịch thất bại");
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error("Có lỗi khi hủy lịch");
+    } finally {
+      // tắt loading dù thành công hay lỗi
+      this.setState({ isShowLoading: false });
     }
-
-    const ok = window.confirm("Bạn chắc chắn muốn hủy lịch khám này không?");
-    if (!ok) return;
-
-    const payload = {
-      bookingId: item.id, // khuyến nghị backend nhận bookingId
-      doctorId: user.id,
-      language,
-      cancelReason: "Bác sĩ hủy lịch",
-    };
-
-    const res = await handleCancelBookingByDoctor(payload);
-
-    if (res && res.errCode === 0) {
-      toast.success("Hủy lịch thành công. Đã gửi email cho bệnh nhân.");
-      await this.getDataPatient();
-    } else {
-      toast.error(res?.errMessage || "Hủy lịch thất bại");
-    }
-  } catch (e) {
-    console.log(e);
-    toast.error("Có lỗi khi hủy lịch");
-  }
-};
-
+  };
 
   buildOptionsFromAllcode = (data) => {
     const { language } = this.props;
@@ -124,7 +131,7 @@ handleCancelBooking = async (item) => {
     let { user } = this.props;
     let { currentDate, selectedTime, selectedStatus, keyword } = this.state;
 
-    let formatedDate = new Date(currentDate).getTime();
+    const formatedDate = moment(currentDate).startOf("day").valueOf();
 
     let res = await getAllPatientForDoctorService({
       doctorId: user.id,
@@ -133,24 +140,19 @@ handleCancelBooking = async (item) => {
       statusId: selectedStatus ? selectedStatus.value : "",
       keyword: keyword || "",
     });
-    console.log("check res all patient: ", res);
 
     if (res && res.errCode === 0) {
-      this.setState({
-        dataPatient: res.data,
-      });
+      this.setState({ dataPatient: res.data });
     }
   };
 
   handleOnChangeDatePicker = (date) => {
-    this.setState(
-      {
-        currentDate: date[0],
-      },
-      async () => {
-        await this.getDataPatient();
-      }
-    );
+    const selected = moment(date[0]).startOf("day").valueOf();
+    localStorage.setItem("mp_currentDate", String(selected));
+
+    this.setState({ currentDate: selected }, async () => {
+      await this.getDataPatient();
+    });
   };
 
   handleChangeTime = async (selectedTime) => {
@@ -204,34 +206,46 @@ handleCancelBooking = async (item) => {
   closePatientModal = () => {
     this.setState({
       isOpenPatientModal: false,
-      // dataModal: {},
     });
   };
 
   handleResetFilters = async () => {
+    const today = moment().startOf("day").valueOf();
+    localStorage.setItem("mp_currentDate", String(today));
+
     this.setState(
       {
         selectedTime: null,
         selectedStatus: null,
         keyword: "",
-        currentDate: moment(new Date()).startOf("day").valueOf(),
+        currentDate: today,
       },
       async () => {
-        await this.getDataPatient(); // load lại danh sách
+        await this.getDataPatient();
       }
     );
   };
 
+  canConfirmBooking = (item) => {
+    if (!item?.date) return false;
+
+    const today = moment().startOf("day").valueOf();
+    const bookingDate = moment(+item.date).startOf("day").valueOf();
+
+    if (bookingDate > today) return false;
+    if (!["S2"].includes(item.statusId)) return false;
+
+    return true;
+  };
+
   handleBtnViewDetail = (item) => {
     const data = {
-      // thông tin booking cần nếu bạn muốn hiển thị thêm
       bookingId: item.id,
       doctorId: item.doctorId,
       patientId: item.patientId,
       date: item.date,
       timeType: item.timeType,
 
-      // thông tin patient
       email: item.patientData?.email || "",
       firstName: item.patientData?.firstName || "",
       lastName: item.patientData?.lastName || "",
@@ -241,13 +255,11 @@ handleCancelBooking = async (item) => {
       address: item.patientData?.address || "",
       phoneNumber: item.patientData?.phoneNumber || "",
 
-      // các field mở rộng nếu API của bạn có trả về
       birthday: item.patientData.patientInfoData?.birthday || "",
       insuranceNumber: item.patientData.patientInfoData?.insuranceNumber || "",
       note: item.patientData.patientInfoData?.note || "",
       reason: item.patientData.patientInfoData?.reason || "",
 
-      // display text
       timeString:
         this.props.language === LANGUAGES.VI
           ? item.timeTypeDataPatient?.valueVi
@@ -272,32 +284,36 @@ handleCancelBooking = async (item) => {
 
   sendRemedy = async (dataChild) => {
     let { dataModal } = this.state;
+
     this.setState({
       isShowLoading: true,
     });
 
-    let res = await postSendRemedy({
-      email: dataChild.email,
-      imgBase64: dataChild.imgBase64,
-      doctorId: dataModal.doctorId,
-      patientId: dataModal.patientId,
-      timeType: dataModal.timeType,
-      language: this.props.language,
-      patientName: dataModal.patientName,
-    });
+    try {
+      let res = await postSendRemedy({
+        email: dataChild.email,
+        imgBase64: dataChild.imgBase64,
+        doctorId: dataModal.doctorId,
+        patientId: dataModal.patientId,
+        timeType: dataModal.timeType,
+        language: this.props.language,
+        patientName: dataModal.patientName,
+      });
 
-    if (res && res.errCode === 0) {
-      this.setState({
-        isShowLoading: false,
-      });
-      toast.success("Gửi hóa đơn thành công");
-      await this.getDataPatient();
-      this.closeRemedyModal();
-    } else {
-      this.setState({
-        isShowLoading: false,
-      });
+      if (res && res.errCode === 0) {
+        toast.success("Gửi hóa đơn thành công");
+        await this.getDataPatient();
+        this.closeRemedyModal();
+      } else {
+        toast.error("Gửi hóa đơn thất bại");
+      }
+    } catch (e) {
+      console.log(e);
       toast.error("Gửi hóa đơn thất bại");
+    } finally {
+      this.setState({
+        isShowLoading: false,
+      });
     }
   };
 
@@ -328,18 +344,22 @@ handleCancelBooking = async (item) => {
             </div>
 
             <div className="manage-patient-body row">
-              {/* thanh filter mới */}
               <div className="col-12 filter-bar">
-                <div className=" filter-item">
-                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-date" /></label>
+                <div className="filter-item">
+                  <label className="filter-label">
+                    <FormattedMessage id="admin.doctor.manage-booking.filter-date" />
+                  </label>
                   <DatePicker
                     onChange={this.handleOnChangeDatePicker}
                     className="form-control"
                     value={this.state.currentDate}
                   />
                 </div>
+
                 <div className="filter-item">
-                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-time-type" /></label>
+                  <label className="filter-label">
+                    <FormattedMessage id="admin.doctor.manage-booking.filter-time-type" />
+                  </label>
                   <Select
                     value={selectedTime}
                     onChange={this.handleChangeTime}
@@ -351,7 +371,9 @@ handleCancelBooking = async (item) => {
                 </div>
 
                 <div className="filter-item">
-                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-status" /></label>
+                  <label className="filter-label">
+                    <FormattedMessage id="admin.doctor.manage-booking.filter-status" />
+                  </label>
                   <Select
                     value={selectedStatus}
                     onChange={this.handleChangeStatus}
@@ -363,7 +385,9 @@ handleCancelBooking = async (item) => {
                 </div>
 
                 <div className="filter-item filter-item-search">
-                  <label className="filter-label"><FormattedMessage id="admin.doctor.manage-booking.filter-name" /></label>
+                  <label className="filter-label">
+                    <FormattedMessage id="admin.doctor.manage-booking.filter-name" />
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -375,12 +399,14 @@ handleCancelBooking = async (item) => {
                     }}
                   />
                 </div>
+
                 <div className="filter-item">
                   <label className="filter-label">&nbsp;</label>
                   <button
                     type="button"
                     className="btn-reset-filters"
                     onClick={this.handleResetFilters}
+                    disabled={this.state.isShowLoading}
                   >
                     <FormattedMessage id="admin.filter-cancel" />
                   </button>
@@ -392,13 +418,26 @@ handleCancelBooking = async (item) => {
                   <tbody>
                     <tr>
                       <th>STT</th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.time" /></th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.name" /></th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.gender" /></th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.address" /></th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.status" /></th>
-                      <th><FormattedMessage id="admin.doctor.manage-booking.patient.action" /></th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.time" />
+                      </th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.name" />
+                      </th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.gender" />
+                      </th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.address" />
+                      </th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.status" />
+                      </th>
+                      <th>
+                        <FormattedMessage id="admin.doctor.manage-booking.patient.action" />
+                      </th>
                     </tr>
+
                     {dataPatient && dataPatient.length > 0 ? (
                       dataPatient.map((item, index) => {
                         const patient = item?.patientData || {};
@@ -428,24 +467,50 @@ handleCancelBooking = async (item) => {
                             <td>{patient.address || ""}</td>
                             <td>{status || ""}</td>
                             <td>
-                              <button className="mp-btn-confirm" onClick={() => this.handleBtnConfirm(item)}>
+                              <button
+                                className="mp-btn-confirm"
+                                onClick={() => this.handleBtnConfirm(item)}
+                                disabled={
+                                  this.state.isShowLoading ||
+                                  !this.canConfirmBooking(item)
+                                }
+                                title={
+                                  !this.canConfirmBooking(item) ? (
+                                    <FormattedMessage id="admin.doctor.manage-booking.patient-confirm" />
+                                  ) : (
+                                    ""
+                                  )
+                                }
+                              >
                                 <FormattedMessage id="admin.doctor.manage-booking.patient.confirm" />
                               </button>
 
-                              <button className="mp-btn-detail" onClick={() => this.handleBtnViewDetail(item)}>
+                              <button
+                                className="mp-btn-detail"
+                                onClick={() => this.handleBtnViewDetail(item)}
+                                disabled={this.state.isShowLoading}
+                              >
                                 <FormattedMessage id="admin.doctor.manage-booking.patient.view-detail" />
                               </button>
 
                               <button
                                 className="mp-btn-cancel"
                                 onClick={() => this.handleCancelBooking(item)}
-                                disabled={!["S1", "S2"].includes(item?.statusId)}
-                                title={!["S1", "S2"].includes(item?.statusId) ?<FormattedMessage id="admin.doctor.manage-booking.patient.booking-cancel-s" /> : ""}
+                                disabled={
+                                  this.state.isShowLoading ||
+                                  !["S1", "S2"].includes(item?.statusId)
+                                }
+                                title={
+                                  !["S1", "S2"].includes(item?.statusId) ? (
+                                    <FormattedMessage id="admin.doctor.manage-booking.patient.booking-cancel-s" />
+                                  ) : (
+                                    ""
+                                  )
+                                }
                               >
                                 <FormattedMessage id="admin.doctor.manage-booking.patient.booking-cancel" />
                               </button>
                             </td>
-
                           </tr>
                         );
                       })

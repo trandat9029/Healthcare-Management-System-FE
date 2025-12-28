@@ -487,6 +487,7 @@
                 "filter-time-type": "Examination Time",
                 "filter-status": "Status",
                 "filter-name": "Search by Patient Name",
+                "booking-btn-confirm": "Only confirm when the examination date arrives",
                 "booking-btn-create": "Add Examination Booking",
                 "booking-no-found": "No patients found",
                 "patients": "patients",
